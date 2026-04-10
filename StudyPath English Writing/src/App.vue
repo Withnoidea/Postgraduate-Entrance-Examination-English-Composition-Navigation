@@ -366,18 +366,121 @@
 
                 <el-form :model="apiConfig" label-width="120px">
                   <el-form-item label="API提供商">
-                    <el-select v-model="apiConfig.provider" placeholder="请选择API提供商">
+                    <el-select v-model="apiConfig.provider" placeholder="请选择API提供商" @change="handleProviderChange">
                       <el-option label="通义千问（阿里云）" value="qwen" />
                       <el-option label="OpenAI" value="openai" />
+                      <el-option label="智增增" value="zhizengzeng" />
+                      <el-option label="DeepSeek" value="deepseek" />
+                      <el-option label="Kimi（月之暗面）" value="kimi" />
+                      <el-option label="Claude" value="claude" />
+                      <el-option label="自定义" value="custom" />
                     </el-select>
                   </el-form-item>
+                  <el-form-item label="Base URL">
+                    <el-input v-model="apiConfig.baseUrl" placeholder="API基础地址" :disabled="apiConfig.provider !== 'custom'">
+                      <template #append>
+                        <el-button @click="apiConfig.provider = 'custom'">自定义</el-button>
+                      </template>
+                    </el-input>
+                    <div style="font-size: 12px; color: #909399; margin-top: 5px;">
+                      当前：{{ apiConfig.baseUrl }}
+                    </div>
+                  </el-form-item>
                   <el-form-item label="API Key">
-                    <el-input v-model="apiConfig.apiKey" type="password" placeholder="请输入API Key" />
+                    <el-input v-model="apiConfig.apiKey" type="password" placeholder="请输入API Key" show-password />
                   </el-form-item>
                   <el-form-item label="模型名称">
-                    <el-input v-model="apiConfig.model" placeholder="qwen-turbo 或 gpt-3.5-turbo" />
+                    <el-select v-model="apiConfig.model" placeholder="请选择模型" filterable allow-create>
+                      <!-- 通义千问模型 -->
+                      <el-option-group v-if="apiConfig.provider === 'qwen'" label="Qwen Omni系列（全模态✅）">
+                        <el-option label="qwen-omni-plus（图文✅）" value="qwen-omni-plus" />
+                        <el-option label="qwen-omni-turbo（图文✅）" value="qwen-omni-turbo" />
+                        <el-option label="qwen-omni-lite（图文✅）" value="qwen-omni-lite" />
+                      </el-option-group>
+                      <el-option-group v-if="apiConfig.provider === 'qwen'" label="Qwen VL系列（图文✅）">
+                        <el-option label="qwen-vl-max（图文）" value="qwen-vl-max" />
+                        <el-option label="qwen-vl-plus（图文）" value="qwen-vl-plus" />
+                      </el-option-group>
+                      <el-option-group v-if="apiConfig.provider === 'qwen'" label="Qwen 文本系列">
+                        <el-option label="qwen-turbo（快速）" value="qwen-turbo" />
+                        <el-option label="qwen-plus（增强）" value="qwen-plus" />
+                        <el-option label="qwen-max（最强）" value="qwen-max" />
+                        <el-option label="qwen-long（长文本）" value="qwen-long" />
+                      </el-option-group>
+                      <!-- OpenAI模型 -->
+                      <el-option-group v-if="apiConfig.provider === 'openai'" label="GPT-4 系列（支持图文）">
+                        <el-option label="gpt-4o（最新多模态）" value="gpt-4o" />
+                        <el-option label="gpt-4o-mini（轻量多模态）" value="gpt-4o-mini" />
+                        <el-option label="gpt-4-turbo（快速）" value="gpt-4-turbo" />
+                        <el-option label="gpt-4（标准）" value="gpt-4" />
+                      </el-option-group>
+                      <el-option-group v-if="apiConfig.provider === 'openai'" label="GPT-3.5 系列">
+                        <el-option label="gpt-3.5-turbo（快速经济）" value="gpt-3.5-turbo" />
+                        <el-option label="gpt-3.5-turbo-16k（长文本）" value="gpt-3.5-turbo-16k" />
+                      </el-option-group>
+                      <!-- 智增增模型 -->
+                      <el-option-group v-if="apiConfig.provider === 'zhizengzeng'" label="智增增模型">
+                        <el-option label="gpt-4o（图文）" value="gpt-4o" />
+                        <el-option label="gpt-4o-mini（图文）" value="gpt-4o-mini" />
+                        <el-option label="gpt-4-turbo" value="gpt-4-turbo" />
+                        <el-option label="gpt-3.5-turbo" value="gpt-3.5-turbo" />
+                        <el-option label="claude-3-opus（图文）" value="claude-3-opus-20240229" />
+                        <el-option label="claude-3-sonnet（图文）" value="claude-3-sonnet-20240229" />
+                        <el-option label="gemini-pro（图文）" value="gemini-pro" />
+                      </el-option-group>
+                      <!-- DeepSeek模型 -->
+                      <el-option-group v-if="apiConfig.provider === 'deepseek'" label="DeepSeek模型">
+                        <el-option label="deepseek-chat（对话）" value="deepseek-chat" />
+                        <el-option label="deepseek-coder（代码）" value="deepseek-coder" />
+                        <el-option label="deepseek-reasoner（推理）" value="deepseek-reasoner" />
+                      </el-option-group>
+                      <!-- Kimi模型 -->
+                      <el-option-group v-if="apiConfig.provider === 'kimi'" label="Kimi模型">
+                        <el-option label="moonshot-v1-8k" value="moonshot-v1-8k" />
+                        <el-option label="moonshot-v1-32k（长文本）" value="moonshot-v1-32k" />
+                        <el-option label="moonshot-v1-128k（超长文本）" value="moonshot-v1-128k" />
+                      </el-option-group>
+                      <!-- Claude模型 -->
+                      <el-option-group v-if="apiConfig.provider === 'claude'" label="Claude模型（支持图文）">
+                        <el-option label="claude-3-opus（最强）" value="claude-3-opus-20240229" />
+                        <el-option label="claude-3-sonnet（平衡）" value="claude-3-sonnet-20240229" />
+                        <el-option label="claude-3-haiku（快速）" value="claude-3-haiku-20240307" />
+                        <el-option label="claude-3.5-sonnet（最新）" value="claude-3-5-sonnet-20241022" />
+                      </el-option-group>
+                      <!-- 自定义 -->
+                      <el-option-group v-if="apiConfig.provider === 'custom'" label="自定义模型">
+                        <el-option label="自定义模型名称" value="custom-model" />
+                      </el-option-group>
+                    </el-select>
                   </el-form-item>
                 </el-form>
+                
+                <el-collapse style="margin-top: 15px;">
+                  <el-collapse-item title="📊 模型说明与图文支持" name="model-info">
+                    <el-descriptions :column="1" border size="small">
+                      <el-descriptions-item label="✅ 支持图文">
+                        <strong>OpenAI</strong>：gpt-4o、gpt-4o-mini<br>
+                        <strong>Claude</strong>：claude-3/3.5全系列<br>
+                        <strong>智增增</strong>：gpt-4o、claude-3、gemini<br>
+                        <strong>通义千问</strong>：qwen-omni系列、qwen-vl系列
+                      </el-descriptions-item>
+                      <el-descriptions-item label="❌ 仅文本">
+                        <strong>DeepSeek</strong>：deepseek-chat/coder<br>
+                        <strong>Kimi</strong>：moonshot-v1系列<br>
+                        <strong>通义千问</strong>：qwen-turbo/plus/max/long
+                      </el-descriptions-item>
+                      <el-descriptions-item label="💰 性价比推荐">
+                        <strong>通义千问</strong>：omni系列有免费额度<br>
+                        <strong>DeepSeek</strong>：极便宜，效果不错<br>
+                        <strong>Kimi</strong>：免费额度，长文本强
+                      </el-descriptions-item>
+                      <el-descriptions-item label="🎯 批改推荐">
+                        <strong>文本批改</strong>：qwen-turbo、DeepSeek<br>
+                        <strong>图文批改</strong>：qwen-omni-plus、gpt-4o-mini
+                      </el-descriptions-item>
+                    </el-descriptions>
+                  </el-collapse-item>
+                </el-collapse>
 
                 <el-button type="primary" @click="saveAPIConfig">保存配置</el-button>
                 <el-button @click="testAPIConnection" :loading="apiTestLoading">测试连接</el-button>
@@ -1102,7 +1205,8 @@ const meetingMinutesData = ref([
 const apiConfig = ref({
   provider: 'qwen',
   apiKey: '',
-  model: 'qwen-turbo'
+  model: 'qwen-turbo',
+  baseUrl: 'https://dashscope.aliyuncs.com'
 })
 const apiTestLoading = ref(false)
 
@@ -1769,56 +1873,116 @@ ${aiEssayForm.value.content}
     }
 
     let response
+    const provider = apiConfig.value.provider
+    const apiKey = apiConfig.value.apiKey
+    const model = apiConfig.value.model || 'qwen-turbo'
     
-    if (apiConfig.value.provider === 'qwen') {
-      // 通义千问API调用
-      const requestBody = hasImage ? {
-        model: 'qwen-vl-max', // 使用支持视觉的模型
-        input: {
-          messages: messages
-        }
-      } : {
-        model: apiConfig.value.model || 'qwen-turbo',
-        input: {
-          messages: messages
-        }
-      }
+    // 通义千问
+    if (provider === 'qwen') {
+      const isOmniModel = model.includes('omni')
       
-      response = await fetch('/api/qwen/api/v1/services/aigc/text-generation/generation', {
+      if (isOmniModel) {
+        // Omni系列：使用兼容模式接口
+        response = await fetch('/api/qwen/compatible-mode/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + apiKey
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: messages,
+            max_tokens: 2048
+          })
+        })
+      } else {
+        // 普通模型和VL模型：使用原接口
+        const actualModel = hasImage ? 'qwen-vl-max' : model
+        const requestBody = {
+          model: actualModel,
+          input: { messages: messages }
+        }
+        
+        response = await fetch('/api/qwen/api/v1/services/aigc/text-generation/generation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + apiKey
+          },
+          body: JSON.stringify(requestBody)
+        })
+      }
+    }
+    // 智增增、DeepSeek、Kimi
+    else if (['zhizengzeng', 'deepseek', 'kimi'].includes(provider)) {
+      response = await fetch(`/api/${provider}/v1/chat/completions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + apiConfig.value.apiKey
+          'Authorization': 'Bearer ' + apiKey
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify({
+          model: model,
+          messages: messages,
+          max_tokens: 2048
+        })
       })
-    } else {
-      // OpenAI API调用
-      const model = hasImage ? 'gpt-4o' : (apiConfig.value.model || 'gpt-3.5-turbo')
+    }
+    // Claude
+    else if (provider === 'claude') {
+      const claudeMessages = messages.map(m => {
+        if (typeof m.content === 'string') {
+          return { role: m.role, content: m.content }
+        }
+        return m
+      })
+      
+      response = await fetch('/api/claude/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: claudeMessages,
+          max_tokens: 2048
+        })
+      })
+    }
+    // OpenAI及其他
+    else {
+      const visionModel = hasImage ? 'gpt-4o' : model
       
       response = await fetch('/api/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + apiConfig.value.apiKey
+          'Authorization': 'Bearer ' + apiKey
         },
         body: JSON.stringify({
-          model: model,
+          model: visionModel,
           messages: messages,
-          max_tokens: 4000
+          max_tokens: 2048
         })
       })
     }
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
-      throw new Error(errorData.message || 'API请求失败: ' + response.status)
+      throw new Error(errorData.error?.message || errorData.message || 'API请求失败: ' + response.status)
     }
 
     const data = await response.json()
     
-    if (apiConfig.value.provider === 'qwen') {
+    // 解析结果
+    const isOmniModel = model.includes('omni')
+    
+    if (provider === 'qwen' && !isOmniModel) {
       aiCorrectionResult.value = data.output?.text || data.output?.choices?.[0]?.message?.content || '批改结果解析失败'
+    } else if (provider === 'claude') {
+      aiCorrectionResult.value = data.content?.[0]?.text || '批改结果解析失败'
     } else {
       aiCorrectionResult.value = data.choices?.[0]?.message?.content || '批改结果解析失败'
     }
@@ -1919,6 +2083,44 @@ const convertMarkdownToHtml = (markdown) => {
 }
 
 // API配置相关
+const handleProviderChange = (provider) => {
+  // 切换提供商时自动设置默认模型和baseUrl
+  const configs = {
+    qwen: {
+      model: 'qwen-turbo',
+      baseUrl: 'https://dashscope.aliyuncs.com'
+    },
+    openai: {
+      model: 'gpt-4o-mini',
+      baseUrl: 'https://api.openai.com'
+    },
+    zhizengzeng: {
+      model: 'gpt-4o-mini',
+      baseUrl: 'https://api.zhizengzeng.com'
+    },
+    deepseek: {
+      model: 'deepseek-chat',
+      baseUrl: 'https://api.deepseek.com'
+    },
+    kimi: {
+      model: 'moonshot-v1-8k',
+      baseUrl: 'https://api.moonshot.cn'
+    },
+    claude: {
+      model: 'claude-3-5-sonnet-20241022',
+      baseUrl: 'https://api.anthropic.com'
+    },
+    custom: {
+      model: '',
+      baseUrl: ''
+    }
+  }
+  
+  const config = configs[provider] || configs.custom
+  apiConfig.value.model = config.model
+  apiConfig.value.baseUrl = config.baseUrl
+}
+
 const saveAPIConfig = () => {
   if (!apiConfig.value.apiKey) {
     ElMessage.warning('请输入API Key！')
@@ -1938,36 +2140,90 @@ const testAPIConnection = async () => {
   apiTestLoading.value = true
 
   try {
+    const provider = apiConfig.value.provider
+    const apiKey = apiConfig.value.apiKey
+    const model = apiConfig.value.model || 'qwen-turbo'
+    
     let response
     
-    if (apiConfig.value.provider === 'qwen') {
-      response = await fetch('/api/qwen/api/v1/services/aigc/text-generation/generation', {
+    // 通义千问
+    if (provider === 'qwen') {
+      const isOmniModel = model.includes('omni')
+      
+      if (isOmniModel) {
+        // Omni系列：使用兼容模式接口
+        response = await fetch('/api/qwen/compatible-mode/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [{ role: 'user', content: 'Hello' }],
+            max_tokens: 10
+          })
+        })
+      } else {
+        // 普通模型：使用原接口
+        response = await fetch('/api/qwen/api/v1/services/aigc/text-generation/generation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: model,
+            input: {
+              messages: [{ role: 'user', content: 'Hello' }]
+            }
+          })
+        })
+      }
+    }
+    // 智增增、DeepSeek、Kimi
+    else if (['zhizengzeng', 'deepseek', 'kimi'].includes(provider)) {
+      response = await fetch(`/api/${provider}/v1/chat/completions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiConfig.value.apiKey}`
+          'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          model: apiConfig.value.model || 'qwen-turbo',
-          input: {
-            messages: [
-              { role: 'user', content: 'Hello' }
-            ]
-          }
+          model: model,
+          messages: [{ role: 'user', content: 'Hello' }],
+          max_tokens: 10
         })
       })
-    } else {
+    }
+    // Claude
+    else if (provider === 'claude') {
+      response = await fetch('/api/claude/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [{ role: 'user', content: 'Hello' }],
+          max_tokens: 10
+        })
+      })
+    }
+    // OpenAI及其他
+    else {
       response = await fetch('/api/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiConfig.value.apiKey}`
+          'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          model: apiConfig.value.model || 'gpt-3.5-turbo',
-          messages: [
-            { role: 'user', content: 'Hello' }
-          ]
+          model: model,
+          messages: [{ role: 'user', content: 'Hello' }],
+          max_tokens: 10
         })
       })
     }
@@ -1975,7 +2231,9 @@ const testAPIConnection = async () => {
     if (response.ok) {
       ElMessage.success('API连接成功！')
     } else {
-      throw new Error('连接失败')
+      const errorData = await response.json().catch(() => ({}))
+      const errorMsg = errorData.error?.message || errorData.message || errorData.code || `状态码: ${response.status}`
+      throw new Error(errorMsg)
     }
   } catch (error) {
     ElMessage.error(`API连接失败：${error.message}`)
