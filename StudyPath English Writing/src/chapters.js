@@ -1,252 +1,257 @@
 // 考研英语作文背诵系统 - 章节配置
 export const chapters = [
   {
-    id: 'chapter-start',
-    title: '开始使用',
-    icon: 'Reading',
+    id: "chapter-start",
+    title: "开始使用",
+    icon: "Reading",
     sections: [
       {
-        id: 'start-1',
-        title: '欢迎使用',
-        type: 'info',
-        content: 'welcome'
+        id: "start-1",
+        title: "欢迎使用",
+        type: "info",
+        content: "welcome",
       },
       {
-        id: 'start-2',
-        title: '使用指南',
-        type: 'info',
-        content: 'guide'
+        id: "start-2",
+        title: "使用指南",
+        type: "info",
+        content: "guide",
       },
       {
-        id: 'start-3',
-        title: '功能说明',
-        type: 'info',
-        content: 'features'
-      }
-    ]
+        id: "start-3",
+        title: "功能说明",
+        type: "info",
+        content: "features",
+      },
+    ],
   },
   {
-    id: 'chapter-application',
-    title: '应用文',
-    icon: 'Document',
+    id: "chapter-application",
+    title: "应用文",
+    icon: "Document",
     sections: [
       {
-        id: 'app-1',
-        title: '写作框架构建',
-        type: 'framework',
-        content: null
+        id: "app-1",
+        title: "写作框架构建",
+        type: "framework",
+        content: null,
       },
       {
-        id: 'app-2',
-        title: '19个锦囊妙句',
-        type: 'practice',
-        templateFile: '/template.txt'
-      }
-    ]
+        id: "app-2",
+        title: "23个锦囊妙句",
+        type: "practice",
+        templateFile: "/template.txt",
+      },
+    ],
   },
   {
-    id: 'chapter-picture',
-    title: '图画作文',
-    icon: 'Picture',
+    id: "chapter-picture",
+    title: "图画作文",
+    icon: "Picture",
     sections: [
       {
-        id: 'pic-1',
-        title: '写作框架构建',
-        type: 'framework',
-        content: null
+        id: "pic-1",
+        title: "写作框架构建",
+        type: "framework",
+        content: null,
       },
       {
-        id: 'pic-2',
-        title: '10个锦囊妙句',
-        type: 'practice',
-        templateFile: '/templates/picture-10.txt'
-      }
-    ]
+        id: "pic-2",
+        title: "10个锦囊妙句",
+        type: "practice",
+        templateFile: "/templates/picture-10.txt",
+      },
+    ],
   },
   {
-    id: 'chapter-chart',
-    title: '图表作文',
-    icon: 'DataAnalysis',
+    id: "chapter-chart",
+    title: "图表作文",
+    icon: "DataAnalysis",
     sections: [
       {
-        id: 'chart-1',
-        title: '写作框架构建',
-        type: 'framework',
-        content: null
+        id: "chart-1",
+        title: "写作框架构建",
+        type: "framework",
+        content: null,
       },
       {
-        id: 'chart-2',
-        title: '7个锦囊妙句',
-        type: 'practice',
-        templateFile: '/templates/chart-7.txt'
-      }
-    ]
+        id: "chart-2",
+        title: "7个锦囊妙句",
+        type: "practice",
+        templateFile: "/templates/chart-7.txt",
+      },
+    ],
   },
   {
-    id: 'chapter-text',
-    title: '文字作文',
-    icon: 'Edit',
+    id: "chapter-text",
+    title: "文字作文",
+    icon: "Edit",
     sections: [
       {
-        id: 'text-1',
-        title: '写作框架构建',
-        type: 'framework',
-        content: null
+        id: "text-1",
+        title: "写作框架构建",
+        type: "framework",
+        content: null,
       },
       {
-        id: 'text-2',
-        title: '大纲样题套用',
-        type: 'practice',
-        templateFile: '/templates/text-sample.txt'
-      }
-    ]
+        id: "text-2",
+        title: "大纲样题套用",
+        type: "practice",
+        templateFile: "/templates/text-sample.txt",
+      },
+    ],
   },
   {
-    id: 'chapter-mixed',
-    title: '混合型作文',
-    icon: 'Connection',
+    id: "chapter-mixed",
+    title: "混合型作文",
+    icon: "Connection",
     sections: [
       {
-        id: 'mixed-1',
-        title: '写作框架构建',
-        type: 'framework',
-        content: null
+        id: "mixed-1",
+        title: "写作框架构建",
+        type: "framework",
+        content: null,
       },
       {
-        id: 'mixed-2',
-        title: '真题&大纲样题&模拟题套用',
-        type: 'practice',
-        templateFile: '/templates/mixed.txt'
-      }
-    ]
+        id: "mixed-2",
+        title: "真题&大纲样题&模拟题套用",
+        type: "practice",
+        templateFile: "/templates/mixed.txt",
+      },
+    ],
   },
   {
-    id: 'chapter-real',
-    title: '真题练习',
-    icon: 'Reading',
+    id: "chapter-real",
+    title: "真题练习",
+    icon: "Reading",
     sections: [
       {
-        id: 'real-1',
-        title: '应用文真题',
-        type: 'practice',
-        templateFile: '/templates/application-real.txt'
+        id: "real-1",
+        title: "应用文真题",
+        type: "practice",
+        templateFile: "/templates/application-real.txt",
       },
       {
-        id: 'real-2',
-        title: '图画作文真题',
-        type: 'practice',
-        templateFile: '/templates/picture-real.txt'
+        id: "real-2",
+        title: "图画作文真题",
+        type: "practice",
+        templateFile: "/templates/picture-real.txt",
       },
       {
-        id: 'real-3',
-        title: '图表作文真题',
-        type: 'practice',
-        templateFile: '/templates/chart-real.txt'
+        id: "real-3",
+        title: "图表作文真题",
+        type: "practice",
+        templateFile: "/templates/chart-real.txt",
       },
       {
-        id: 'real-4',
-        title: '文字作文真题',
-        type: 'practice',
-        templateFile: '/templates/text-sample.txt'
+        id: "real-4",
+        title: "文字作文真题",
+        type: "practice",
+        templateFile: "/templates/text-sample.txt",
       },
       {
-        id: 'real-5',
-        title: '混合型作文真题',
-        type: 'practice',
-        templateFile: '/templates/mixed.txt'
-      }
-    ]
+        id: "real-5",
+        title: "混合型作文真题",
+        type: "practice",
+        templateFile: "/templates/mixed.txt",
+      },
+    ],
   },
   {
-    id: 'chapter-correction',
-    title: '作文批改',
-    icon: 'Edit',
+    id: "chapter-correction",
+    title: "作文批改",
+    icon: "Edit",
     sections: [
       {
-        id: 'corr-1',
-        title: '评分标准',
-        type: 'info',
-        content: null
+        id: "corr-1",
+        title: "评分标准",
+        type: "info",
+        content: null,
       },
       {
-        id: 'corr-2',
-        title: '历年真题',
-        type: 'info',
-        content: null
+        id: "corr-2",
+        title: "历年真题",
+        type: "info",
+        content: null,
       },
       {
-        id: 'corr-3',
-        title: '写作报告模板',
-        type: 'info',
-        content: null
+        id: "corr-3",
+        title: "写作报告模板",
+        type: "info",
+        content: null,
       },
       {
-        id: 'corr-4',
-        title: 'KIMI使用指南',
-        type: 'info',
-        content: null
+        id: "corr-4",
+        title: "KIMI使用指南",
+        type: "info",
+        content: null,
       },
       {
-        id: 'corr-5',
-        title: '作文自检工具',
-        type: 'practice',
-        templateFile: null
-      }
-    ]
+        id: "corr-5",
+        title: "作文自检工具",
+        type: "practice",
+        templateFile: null,
+      },
+    ],
   },
   {
-    id: 'chapter-correction2',
-    title: '作文批改2',
-    icon: 'MagicStick',
+    id: "chapter-correction2",
+    title: "作文批改2",
+    icon: "MagicStick",
     sections: [
       {
-        id: 'corr2-1',
-        title: '智能批改',
-        type: 'practice',
-        templateFile: null
+        id: "corr2-1",
+        title: "智能批改",
+        type: "practice",
+        templateFile: null,
       },
       {
-        id: 'corr2-2',
-        title: 'API设置',
-        type: 'info',
-        content: null
-      }
-    ]
-  }
-]
+        id: "corr2-2",
+        title: "API设置",
+        type: "info",
+        content: null,
+      },
+    ],
+  },
+];
 
 // 章节类型定义
 export const sectionTypes = {
-  info: 'info',           // 信息展示
-  framework: 'framework', // 框架构建
-  practice: 'practice'    // 练习模式
-}
+  info: "info", // 信息展示
+  framework: "framework", // 框架构建
+  practice: "practice", // 练习模式
+};
 
 // 获取章节路径
 export function getChapterPath(chapterId, sectionId) {
-  return `/chapter/${chapterId}/section/${sectionId}`
+  return `/chapter/${chapterId}/section/${sectionId}`;
 }
 
 // 根据ID查找章节
 export function findSection(chapterId, sectionId) {
-  console.log('findSection 调用，chapterId:', chapterId, 'sectionId:', sectionId)
-  
+  console.log(
+    "findSection 调用，chapterId:",
+    chapterId,
+    "sectionId:",
+    sectionId,
+  );
+
   // 如果提供了 chapterId，只在指定章节中查找
   if (chapterId) {
-    const chapter = chapters.find(ch => ch.id === chapterId)
-    if (!chapter) return null
-    return chapter.sections.find(sec => sec.id === sectionId)
+    const chapter = chapters.find((ch) => ch.id === chapterId);
+    if (!chapter) return null;
+    return chapter.sections.find((sec) => sec.id === sectionId);
   }
-  
+
   // 如果没有提供 chapterId，在所有章节中查找
   for (const chapter of chapters) {
-    const section = chapter.sections.find(sec => sec.id === sectionId)
+    const section = chapter.sections.find((sec) => sec.id === sectionId);
     if (section) {
-      console.log('在章节', chapter.title, '中找到子章节:', section.title)
-      return section
+      console.log("在章节", chapter.title, "中找到子章节:", section.title);
+      return section;
     }
   }
-  
-  console.log('未找到子章节:', sectionId)
-  return null
+
+  console.log("未找到子章节:", sectionId);
+  return null;
 }

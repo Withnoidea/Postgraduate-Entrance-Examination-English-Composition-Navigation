@@ -21,7 +21,7 @@ With your exceptional expertise, we hope you can deliver a speech offering inspi
 7，我认为做某事是很有吸引力的/有趣的/有益的。
 I personally find it attractive/interesting/beneficial to do sth.
 
-8，长城体现了中国深邈而多元的古代文化，并让我们得以一窥中国丰富的历史。
+8，长城体现了中国深邊而多元的古代文化，并让我们得以一窥中国丰富的历史。
 The Great Wall embodies China's profound and diverse ancient culture and provides a fascinating glimpse into the country's rich history.
 
 9，故宫在中国人民中很受欢迎/评价很高，它一定能给你带来全新的体验。
@@ -49,10 +49,23 @@ Replacing these old air conditioners with brand-new ones will provide us with a 
 Our library is available from 8 AM to 10 PM on weekdays and from 9 AM to 3 PM on weekends.
 
 17，生活可能是不可预测的，充满着各种意外。昨天，我突然收到通知，必须参加一场强制性的学术会议，这迫使我改变了原定的计划。
-Life can be unpredictable and full of surprises. Yesterday, I received a sudden notification that I must attend a mandatory academic meeting, which forced me to change my plans.
+Life can be unpredictable and full of surprises. Yesterday, I received a sudden notification that I must attend a mandatory academic meeting, which forced me to
+change my plans.
 
 18，为了保持身体健康，建议你每天坚持运动，并将其变为日常习惯。此外，晚上11点前睡觉可以避免熬夜对身体造成的伤害。
 To maintain good health, it is recommended that you engage in daily exercise and make it a part of your daily routine. Additionally, going to bed before 11 PM can help avoid the harm caused by staying up late.
 
 19，出席活动要求着装得体。
 Proper attire is required for attending the event.
+
+20，大学期间我努力学习，这让我对这个领域有了深刻的认知，也为我今后的学术/职业道路打下了坚实的基础。
+During my university years, I devoted myself to diligent studies, which has granted me profound insights into this field. This has also laid a solid foundation for my future academic/professional endeavors.
+
+21，当我打开包装/进入酒店时，我发现产品质量/服务质量与广告上宣传的差距很大，最大的问题是我的手机/设备无法连接Wi-Fi信号，这与你们公司的形象完全不符，让我感到非常难过。
+When I opened the package/entered the hotel, I was disappointed to find a big difference in the quality of the product/service compared to what was advertised. The biggest issue is that I can't connect my phone/device to the Wi-Fi, which is completely inconsistent with your company's image and has made me really upset.
+
+22，由于这份工作的薪资收入、职业目标、工作时长与我的预期完全不符，因此我向您提出辞职申请。
+I am resigning because the salary, career goals, and working hours of this job don't match what I expected.
+
+23，在这段时间里，我度过了充实而富有意义的时光。您和同事们的帮助让我开阔了眼界、增长了知识。
+During this period, I have had a fulfilling and meaningful experience. Your support, along with that of my coworkers, has broadened my horizons and enriched my knowledge.

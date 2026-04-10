@@ -660,34 +660,158 @@
               <div v-if="currentSection.id === 'app-1'">
                 <el-divider content-position="left">应用文写作框架</el-divider>
                 <el-alert type="info" :closable="false" style="margin-bottom: 20px;">
-                  应用文（小作文）主要包括：书信、通知、备忘录等，满分10分，要求100词左右。
+                  应用文（小作文）主要包括：<strong>书信</strong>、<strong>通知/告示</strong>、<strong>备忘录/会议纪要</strong>等，满分10分，要求100词左右。
                 </el-alert>
                 
-                <el-descriptions :column="1" border>
-                  <el-descriptions-item label="第一段">
-                    <strong>开篇点题</strong>：说明写信目的/背景（1-2句）
-                  </el-descriptions-item>
-                  <el-descriptions-item label="第二段">
-                    <strong>主体内容</strong>：展开具体内容，分点论述（3-5句）
-                  </el-descriptions-item>
-                  <el-descriptions-item label="第三段">
-                    <strong>结尾总结</strong>：表达期望/感谢/建议（1-2句）
-                  </el-descriptions-item>
-                </el-descriptions>
+                <!-- 书信格式 -->
+                <el-divider content-position="left">一、书信格式</el-divider>
                 
-                <el-divider content-position="left">常用开头句型</el-divider>
-                <ul>
-                  <li>I am writing to...（我写信是为了...）</li>
-                  <li>I would like to...（我想要...）</li>
-                  <li>I am writing to express my concern about...（我写信是为了表达我对...的关注）</li>
-                </ul>
+                <!-- 称呼 -->
+                <el-card shadow="hover" style="margin-bottom: 15px;">
+                  <template #header>
+                    <strong style="color: #409EFF;">【称呼 Salutation】</strong>
+                  </template>
+                  <el-descriptions :column="1" border>
+                    <el-descriptions-item label="私人信件">
+                      Dear + 名字，<br>
+                      例如：<code>Dear Tom,</code> <code>Dear Mary,</code>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="公务信函">
+                      Dear + 头衔/姓氏，<br>
+                      例如：<code>Dear Professor,</code> <code>Dear Mr. Smith,</code> <code>Dear Sir/Madam,</code>
+                    </el-descriptions-item>
+                  </el-descriptions>
+                  <el-alert type="warning" :closable="false" style="margin-top: 10px;">
+                    注意：称呼后必须加<strong>逗号</strong>，且单独占一行
+                  </el-alert>
+                </el-card>
                 
-                <el-divider content-position="left">常用结尾句型</el-divider>
-                <ul>
-                  <li>I am looking forward to your reply.（期待您的回复）</li>
-                  <li>I would appreciate it if you could...（如果您能...我将不胜感激）</li>
-                  <li>Thank you for your time and consideration.（感谢您的时间和考虑）</li>
-                </ul>
+                <!-- 正文 -->
+                <el-card shadow="hover" style="margin-bottom: 15px;">
+                  <template #header>
+                    <strong style="color: #67C23A;">【正文 Body】</strong>
+                  </template>
+                  
+                  <!-- 第一段 -->
+                  <el-descriptions title="第一段（开篇点题）" :column="1" border style="margin-bottom: 15px;">
+                    <el-descriptions-item label="私人信件">
+                      <strong>问候 + 表明目的</strong>（不要自我介绍）<br>
+                      <el-collapse style="margin-top: 10px;">
+                        <el-collapse-item title="去信句型" name="go">
+                          <ul style="padding-left: 20px; margin: 0;">
+                            <li><code>I hope this letter/email finds you well.</code> 希望你收到此信时一切安好</li>
+                            <li><code>Welcome to ***, and I hope this letter finds you well.</code></li>
+                          </ul>
+                        </el-collapse-item>
+                        <el-collapse-item title="回信句型" name="back">
+                          <ul style="padding-left: 20px; margin: 0;">
+                            <li><code>Thank you for your kind letter, in which you mentioned that...</code></li>
+                            <li><code>I was truly delighted/saddened to hear that...</code> 得知...我感到高兴/难过</li>
+                          </ul>
+                        </el-collapse-item>
+                        <el-collapse-item title="表明目的" name="purpose">
+                          <ul style="padding-left: 20px; margin: 0;">
+                            <li><code>My purpose of this letter is to...</code> 我写这封信的目的是...（改写题干）</li>
+                            <li><code>I am writing to...</code> 我写信是为了...</li>
+                          </ul>
+                        </el-collapse-item>
+                      </el-collapse>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="公务信函">
+                      <strong>问候 + 自我介绍 + 表明目的</strong><br>
+                      <el-alert type="info" :closable="false" style="margin-top: 10px;">
+                        适用对象：同事、师长、领导、客户<br>
+                        需要介绍自己的身份和背景，为后续交流提供明确框架
+                      </el-alert>
+                    </el-descriptions-item>
+                  </el-descriptions>
+                  
+                  <!-- 第二段 -->
+                  <el-descriptions title="第二段（主体内容）" :column="1" border style="margin-bottom: 15px;">
+                    <el-descriptions-item label="写作要求">
+                      展开具体内容，分点论述（3-5句）<br>
+                      使用连接词：First, ... Second, ... Finally, ... 或 To begin with, ... Moreover, ... Last but not least, ...
+                    </el-descriptions-item>
+                  </el-descriptions>
+                  
+                  <!-- 第三段 -->
+                  <el-descriptions title="第三段（结尾总结）" :column="1" border>
+                    <el-descriptions-item label="常用表达">
+                      <el-table :data="closingExpressionsData" border style="width: 100%;" size="small">
+                        <el-table-column prop="type" label="类型" width="100" />
+                        <el-table-column prop="english" label="英文表达" />
+                        <el-table-column prop="chinese" label="中文说明" />
+                      </el-table>
+                    </el-descriptions-item>
+                  </el-descriptions>
+                </el-card>
+                
+                <!-- 落款 -->
+                <el-card shadow="hover" style="margin-bottom: 20px;">
+                  <template #header>
+                    <strong style="color: #E6A23C;">【落款 Signature Block】</strong>
+                  </template>
+                  <el-descriptions :column="1" border>
+                    <el-descriptions-item label="结尾语">
+                      首字母大写 + 逗号，单独占一行<br>
+                      <el-row :gutter="10" style="margin-top: 10px;">
+                        <el-col :span="8"><code>Yours sincerely,</code>（知道姓名）</el-col>
+                        <el-col :span="8"><code>Yours faithfully,</code>（不知姓名）</el-col>
+                        <el-col :span="8"><code>Best wishes,</code>（熟人）</el-col>
+                      </el-row>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="签名">
+                      右对齐，使用题目虚构姓名（如 <code>Li Hua</code>），<strong>不可写真名</strong>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="日期">
+                      右对齐，位于签名下方<br>
+                      格式：<code>May 20, 2025</code>（美式）或 <code>20 May 2025</code>（英式）
+                    </el-descriptions-item>
+                  </el-descriptions>
+                  <el-alert type="success" :closable="false" style="margin-top: 10px;">
+                    <strong>完整示例：</strong><br>
+                    <pre style="margin: 5px 0;">Yours sincerely,
+                    Li Hua</pre>
+                  </el-alert>
+                </el-card>
+                
+                <!-- 通知/告示格式 -->
+                <el-divider content-position="left">二、通知/告示格式</el-divider>
+                <el-card shadow="hover" style="margin-bottom: 20px;">
+                  <el-descriptions :column="1" border>
+                    <el-descriptions-item label="标题">
+                      居中，首字母大写，如 <code>NOTICE</code> 或 <code>Notice</code>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="正文第一段">
+                      <strong>欢迎/问候/活动背景 + 表明目的</strong><br>
+                      <ul style="padding-left: 20px; margin: 5px 0;">
+                        <li><code>Welcome sb. to ***.</code> 欢迎某人来到***</li>
+                        <li><code>I hope this notice finds you well.</code></li>
+                        <li><code>The intention of this notice is to...</code> 这则通知的目的是...</li>
+                      </ul>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="正文第二段">
+                      提供详细信息：日期、时间、地点、参与人员等
+                    </el-descriptions-item>
+                    <el-descriptions-item label="正文第三段">
+                      鼓励参与 + 提供联系方式
+                    </el-descriptions-item>
+                    <el-descriptions-item label="落款">
+                      右对齐，日期 + 签名（如：<code>May 20, 2025</code> 换行 <code>Students' Union</code>）
+                    </el-descriptions-item>
+                  </el-descriptions>
+                </el-card>
+                
+                <!-- 会议纪要格式 -->
+                <el-divider content-position="left">三、会议纪要格式</el-divider>
+                <el-alert type="info" :closable="false" style="margin-bottom: 15px;">
+                  会议纪要不是流水账，应突出<strong>决策、行动、责任人、时间节点</strong>。语言需客观、简洁、准确，多用第三人称。
+                </el-alert>
+                <el-table :data="meetingMinutesData" border style="width: 100%">
+                  <el-table-column prop="field" label="英文字段" width="150" />
+                  <el-table-column prop="chinese" label="中文含义" width="120" />
+                  <el-table-column prop="description" label="填写说明" />
+                </el-table>
               </div>
               
               <!-- 图画作文框架 -->
@@ -902,6 +1026,76 @@ const availableYears = ref([
   '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', 
   '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009',
   '2008', '2007', '2006', '2005'
+])
+
+// 私人信件数据
+const personalLetterData = ref([
+  { 
+    type: '去信', 
+    english: 'I hope this letter/email finds you well.', 
+    chinese: '希望你收到此信/邮件时一切安好' 
+  },
+  { 
+    type: '去信', 
+    english: 'Welcome to ***, and I hope this letter finds you well.', 
+    chinese: '欢迎来到***，希望你收到此信时一切安好' 
+  },
+  { 
+    type: '回信', 
+    english: 'Thank you for your kind letter/email, in which you mentioned that...', 
+    chinese: '感谢您的来信，信中您提到...' 
+  },
+  { 
+    type: '回信', 
+    english: 'I was truly delighted/saddened to hear that...', 
+    chinese: '得知...，我感到非常高兴/难过' 
+  },
+  { 
+    type: '表目的', 
+    english: 'My purpose of this letter/email is to...', 
+    chinese: '我写这封信/邮件的目的是...' 
+  }
+])
+
+// 结尾表达数据
+const closingExpressionsData = ref([
+  { 
+    type: '表感谢', 
+    english: 'Thank you for your kind consideration and time.', 
+    chinese: '感谢您抽时间查看并考虑相关问题' 
+  },
+  { 
+    type: '盼回复', 
+    english: 'Looking forward to hearing from you at your earliest convenience.', 
+    chinese: '期待您的回复' 
+  },
+  { 
+    type: '送祝福', 
+    english: 'Wish you all the best.', 
+    chinese: '祝你一切顺利' 
+  },
+  { 
+    type: '提要求', 
+    english: 'It would be appreciated if the issue could be addressed as soon as possible.', 
+    chinese: '希望问题能尽快解决（投诉信常用）' 
+  },
+  { 
+    type: '表希望', 
+    english: 'Hopefully, the recommendations provided will be helpful to you.', 
+    chinese: '希望建议对您有帮助（建议信常用）' 
+  }
+])
+
+// 会议纪要数据
+const meetingMinutesData = ref([
+  { field: 'Title of Meeting', chinese: '会议标题', description: '简明扼要说明会议主题' },
+  { field: 'Date', chinese: '日期', description: '会议召开的具体日期（年/月/日）' },
+  { field: 'Time', chinese: '时间', description: '会议起始和结束时间，如：14:00-15:30' },
+  { field: 'Location', chinese: '地点', description: '会议举办地点（线上/线下）' },
+  { field: 'Attendees', chinese: '参会人员', description: '列出所有出席者姓名及职务' },
+  { field: 'Presided by', chinese: '主持人', description: '主持会议的负责人姓名与职务' },
+  { field: 'Meeting Record', chinese: '会议记录', description: '按议程顺序简述讨论要点、发言摘要' },
+  { field: 'Decisions', chinese: '决议事项', description: '已达成的决议、责任人、完成时限' }
 ])
 
 // API配置

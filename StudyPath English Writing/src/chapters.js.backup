@@ -38,7 +38,7 @@ export const chapters = [
       },
       {
         id: 'app-2',
-        title: '19个锦囊妙句',
+        title: '23个锦囊妙句',
         type: 'practice',
         templateFile: '/template.txt'
       }
