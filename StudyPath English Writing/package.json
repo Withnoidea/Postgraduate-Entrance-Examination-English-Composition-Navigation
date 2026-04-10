@@ -1,0 +1,1 @@
+{"name": "english-recite", "version": "1.0.0", "description": "英语作文模板句子背诵应用", "type": "module", "scripts": {"dev": "vite", "build": "vite build", "preview": "vite preview"}, "dependencies": {"vue": "^3.4.21", "element-plus": "^2.6.3", "@element-plus/icons-vue": "^2.3.1"}, "devDependencies": {"@vitejs/plugin-vue": "^5.0.4", "vite": "^5.2.8"}}

@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语作文模板句子背诵</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .sentence-pair {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+
+        .sentence-number {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .chinese-text {
+            font-size: 18px;
+            color: #333;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .english-text {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #fff9e6;
+            border-radius: 8px;
+            border: 2px solid #ffd700;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            min-height: 80px;
+            display: none;
+        }
+
+        .english-text.show {
+            display: block;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-top: 10px;
+        }
+
+        #englishInput {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            border: 3px solid #667eea;
+            border-radius: 8px;
+            outline: none;
+            min-height: 120px;
+            resize: vertical;
+            background: #fafafa;
+            transition: border-color 0.3s;
+        }
+
+        #englishInput:focus {
+            border-color: #764ba2;
+            background: white;
+        }
+
+
+        .result-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff9e6;
+            border-radius: 8px;
+            border: 2px solid #ffd700;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            min-height: 80px;
+            display: none;
+        }
+
+        .result-text.show {
+            display: block;
+        }
+
+        .correct-char {
+            color: #28a745;
+            background: transparent;
+            font-weight: 500;
+        }
+
+        .incorrect-char {
+            color: #dc3545;
+            background: rgba(220, 53, 69, 0.2);
+            text-decoration: underline;
+            font-weight: 600;
+            border-radius: 2px;
+            padding: 0 1px;
+        }
+
+        .missing-char {
+            color: #d68f00;
+            background: rgba(255, 193, 7, 0.3);
+            font-weight: 600;
+            border-radius: 2px;
+            padding: 0 1px;
+        }
+
+        .extra-char {
+            color: #dc3545;
+            background: rgba(220, 53, 69, 0.15);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin: 0 2px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s;
+            border-radius: 4px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-next {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-next:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-prev:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-check {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-check:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-upload {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-upload:hover {
+            background: #138496;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(23, 162, 184, 0.4);
+        }
+
+        .current-index {
+            text-align: center;
+            color: #666;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #666;
+            padding: 40px;
+        }
+
+        /* 滚动条样式 */
+        .container::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .container::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .container::-webkit-scrollbar-thumb:hover {
+            background: #5568d3;
+        }
+
+        .upload-area {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px dashed #667eea;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: #f0f0f0;
+        }
+
+        .upload-area.dragover {
+            border-color: #28a745;
+            background: #e8f5e9;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        #fileInput {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .file-input-label:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .file-info {
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .file-info.success {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .upload-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .upload-divider {
+            color: #999;
+            font-size: 14px;
+            margin: 0 10px;
+        }
+
+        .btn-builtin {
+            background: #17a2b8;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .btn-builtin:hover {
+            background: #138496;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(23, 162, 184, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 英语作文模板句子背诵</h1>
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-options">
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" accept=".txt" />
+                    <label for="fileInput" class="file-input-label">📁 上传自己的文件</label>
+                </div>
+                <span class="upload-divider">或</span>
+                <button class="btn-builtin" onclick="loadBuiltinTemplate()">📚 使用内置模板</button>
+            </div>
+            <div class="file-info" id="fileInfo">也可以拖拽文件到此区域</div>
+        </div>
+        <div id="loading" class="loading" style="display: none;">正在加载句子模板...</div>
+        <div id="content" style="display: none;">
+            <div class="current-index">
+                <span id="currentIndex">1</span> / <span id="totalCount">0</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div id="sentenceContainer"></div>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-label">准确率</div>
+                    <div class="stat-value" id="accuracy">0%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">完成度</div>
+                    <div class="stat-value" id="completion">0%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">错误数</div>
+                    <div class="stat-value" id="errors">0</div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn-prev" onclick="previousSentence()">上一个</button>
+                <button class="btn-reset" onclick="resetInput()">清空输入</button>
+                <button class="btn-check" onclick="checkAnswer()">完成</button>
+                <button class="btn-next" onclick="nextSentence()">下一个</button>
+                <button class="btn-upload" onclick="reuploadFile()">重新上传</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let sentences = [];
+        let currentIndex = 0;
+        let inputElement = null;
+        let englishTextElement = null;
+        let resultTextElement = null;
+        let isChecked = false;
+
+        // 加载并显示内容
+        function loadContent(text, sourceName) {
+            try {
+                parseSentences(text);
+                displayCurrentSentence();
+                
+                // 隐藏上传区域，显示内容
+                document.getElementById('uploadArea').style.display = 'none';
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+                
+                const fileInfo = document.getElementById('fileInfo');
+                fileInfo.textContent = `✓ 成功加载: ${sourceName}`;
+                fileInfo.className = 'file-info success';
+            } catch (error) {
+                console.error('解析内容失败:', error);
+                alert('内容解析失败，请检查格式！');
+                const fileInfo = document.getElementById('fileInfo');
+                fileInfo.textContent = '内容解析失败，请重试';
+                fileInfo.className = 'file-info';
+            }
+        }
+
+        // 加载内置模板
+        async function loadBuiltinTemplate() {
+            const fileInfo = document.getElementById('fileInfo');
+            const loading = document.getElementById('loading');
+            
+            fileInfo.textContent = '正在加载内置模板...';
+            fileInfo.className = 'file-info';
+            loading.style.display = 'block';
+            
+            try {
+                // 先尝试从服务器加载 template.txt
+                const response = await fetch('template.txt');
+                if (response.ok) {
+                    const text = await response.text();
+                    loadContent(text, '内置模板 (template.txt)');
+                } else {
+                    throw new Error('文件不存在');
+                }
+            } catch (error) {
+                // 如果服务器文件不存在，使用内置的默认内容
+                console.log('服务器文件不存在，使用内置默认内容');
+                const builtinTemplate = `1，趣味运动会计划于2025年12月26日下午2:00在我们大学的学生活动中心/腾讯会议软件/江苏省江阴市华西村举行，将持续 3小时/天。（此外，本次活动将通过科音进行直播。）
+
+The fun sports day is scheduled to be held on December 26, 2025, at 2 PM in the Students' Recreation Center of our university/via the Tencent Meeting app/in Huaxi Village, Jiangyin City, Jiangsu Province, and it will last for 3 hours/days. (In addition, the event will be live-streamed on TikTok.)
+
+2，活动旨在激发年轻一代做某事的热情/给某人提供机会做某事/帮助某人适应大学生活/帮助某人加深对某物的认识。
+
+This activity is designed to inspire the younger generation to do sth./provide sb. with an opportunity to do sth./help sb. adapt to college life./help sb. foster a deeper understanding of sth.
+
+3，活动将由一系列环节组成，比如才艺展示和与专家互动交流。我们学校的校长将为所有参与者致欢迎辞/为优胜者颁奖。
+The event will consist of a series of activities, such as talent shows and interactive exchanges with experts. Our university president will deliver a welcome address to all participants/will present awards to the winners.、
+
+4，我们需要10名志愿者，有相关经验者优先。此外，合作精神，守时的品质，以及平易近人的性格正是某人所看重/具备的。
+We need 10 volunteers, preferably those with relevant experience. Furthermore, a cooperative spirit, punctuality, and an approachable personality are the most desirable qualities sb. is/are looking for./that sb. possess(es).
+
+5，如果你有时间来参加，这次活动对你来说将会是一次有意义目难忘的经历。
+If you have the time to participate, this event will be a meaningful and unforgettable experience for you.
+
+6，以您非凡的专业知识，我们希望您能发表演讲，给学生提出有启发性的建议。
+With your exceptional expertise, we hope you can deliver a speech offering inspirational advice to the students.
+
+7，我认为做某事是很有吸引力的/有趣的/有益的。
+I personally find it attractive/interesting/beneficial to do sth.
+
+8，长城体现了中国深邈而多元的古代文化，并让我们得以一窥中国丰富的历史。
+The Great Wall embodies China's profound and diverse ancient culture and provides a fascinating glimpse into the country's rich history.
+
+9，故宫在中国人民中很受欢迎/评价很高，它一定能给你带来全新的体验。
+The Palace Museum enjoys widespread popularity/a high reputation among Chinese people. It will definitely bring you a brand-new experience.
+
+10，我们推荐你去参观白塔/图书馆，在其顶层你会欣赏到这座城市/校园令人惊叹的建筑和景观。
+We recommend you to visit the White Pagoda/our library. From the top of it, you can enjoy the stunning views of our city's/school's architecture and landscape.
+
+11，你应该遵守相关的规定，确保安全/保持安静，并且不要乱扔垃圾。
+You are expected to follow the relevant regulations, ensure your own safety/keep silence, and avoid littering.
+
+12，你最好阅读一些关于中国文化的专业书籍并且提前做一个详尽的计划，这样可以帮助你快速度过脆弱的初期。
+It's better to read some professional books about Chinese culture and create a comprehensive plan in advance. This can quickly help you navigate the delicate initial phase.
+
+13，《红楼梦》很有启发性，每次阅读这本节都会有不同的体会。非常适合像你这样的初学者/外国人。
+Dream of the Red Chamber is very inspiring, and each reading of this book brings different insights. It's highly suitable for beginners/foreigners like you.
+
+14，随信附上议程/细节，供您参考。
+The schedule/details is/are attached for your reference.
+
+15，用新空调替换这些旧空调，让我们有一个更加舒服/安静的环境去做某事。
+Replacing these old air conditioners with brand-new ones will provide us with a more comfortable/quiet environment for doing sth.
+
+16，在周内，图书馆早上八点开门，晚上十点关门，周末开门时间是早上九点到下午三点。
+Our library is available from 8 AM to 10 PM on weekdays and from 9 AM to 3 PM on weekends.
+
+17，生活可能是不可预测的，充满着各种意外。昨天，我突然收到通知，必须参加一场强制性的学术会议，这迫使我改变了原定的计划。
+Life can be unpredictable and full of surprises. Yesterday, I received a sudden notification that I must attend a mandatory academic meeting, which forced me to change my plans.
+
+18，为了保持身体健康，建议你每天坚持运动，并将其变为日常习惯。此外，晚上11点前睡觉可以避免熬夜对身体造成的伤害。
+To maintain good health, it is recommended that you engage in daily exercise and make it a part of your daily routine. Additionally, going to bed before 11 PM can help avoid the harm caused by staying up late.
+
+19，出席活动要求着装得体。
+Proper attire is required for attending the event.`;
+                loadContent(builtinTemplate, '内置模板 (默认内容)');
+            }
+            
+            loading.style.display = 'none';
+        }
+
+        // 处理文件上传
+        function handleFileUpload(file) {
+            if (!file) {
+                return;
+            }
+
+            // 检查文件类型
+            if (!file.name.endsWith('.txt')) {
+                alert('请上传 .txt 格式的文件！');
+                return;
+            }
+
+            const reader = new FileReader();
+            const fileInfo = document.getElementById('fileInfo');
+            
+            fileInfo.textContent = `正在读取文件: ${file.name}...`;
+            fileInfo.className = 'file-info';
+
+            reader.onload = function(e) {
+                const text = e.target.result;
+                loadContent(text, file.name);
+            };
+
+            reader.onerror = function() {
+                alert('文件读取失败！');
+                fileInfo.textContent = '文件读取失败，请重试';
+                fileInfo.className = 'file-info';
+            };
+
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        // 初始化文件上传功能
+        function initFileUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const uploadArea = document.getElementById('uploadArea');
+
+            // 点击上传
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                handleFileUpload(file);
+            });
+
+            // 拖拽上传
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('dragover');
+                
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    handleFileUpload(file);
+                }
+            });
+        }
+
+        // 重新上传文件
+        function reuploadFile() {
+            if (confirm('确定要重新上传文件吗？当前进度将被重置。')) {
+                // 重置所有状态
+                sentences = [];
+                currentIndex = 0;
+                isChecked = false;
+                
+                // 清空输入
+                if (inputElement) {
+                    inputElement.value = '';
+                }
+                
+                // 显示上传区域，隐藏内容区域
+                document.getElementById('uploadArea').style.display = 'block';
+                document.getElementById('content').style.display = 'none';
+                document.getElementById('fileInfo').textContent = '或拖拽文件到此区域';
+                document.getElementById('fileInfo').className = 'file-info';
+                
+                // 重置文件输入
+                document.getElementById('fileInput').value = '';
+            }
+        }
+
+        // 解析句子文本
+        function parseSentences(text) {
+            sentences = [];
+            const lines = text.split('\n').map(line => line.trim());
+            
+            let i = 0;
+            while (i < lines.length) {
+                // 查找以数字开头的行（中文句子）
+                if (/^\d+，/.test(lines[i]) || /^\d+\./.test(lines[i])) {
+                    const numberMatch = lines[i].match(/^(\d+)[，.]/);
+                    const number = numberMatch ? numberMatch[1] : '';
+                    const chinese = lines[i].replace(/^\d+[，.]\s*/, '');
+                    i++;
+                    
+                    // 跳过空行
+                    while (i < lines.length && lines[i] === '') {
+                        i++;
+                    }
+                    
+                    // 查找英文句子
+                    if (i < lines.length && lines[i] && !/^\d+[，.]/.test(lines[i])) {
+                        let english = lines[i];
+                        i++;
+                        
+                        // 继续读取可能的后续英文行（处理换行的英文句子）
+                        while (i < lines.length && lines[i] !== '' && !/^\d+[，.]/.test(lines[i])) {
+                            english += ' ' + lines[i];
+                            i++;
+                        }
+                        
+                        sentences.push({
+                            number: number,
+                            chinese: chinese.trim(),
+                            english: english.trim()
+                        });
+                    }
+                } else {
+                    i++;
+                }
+            }
+            
+            document.getElementById('totalCount').textContent = sentences.length;
+        }
+
+        // 显示当前句子
+        function displayCurrentSentence() {
+            if (sentences.length === 0) return;
+            
+            const current = sentences[currentIndex];
+            const container = document.getElementById('sentenceContainer');
+            
+            container.innerHTML = `
+                <div class="sentence-pair">
+                    <div class="sentence-number">句子 ${current.number}</div>
+                    <div class="chinese-text">${current.chinese}</div>
+                    <div class="english-text" id="englishText">${escapeHtml(current.english)}</div>
+                    <div class="input-container">
+                        <div class="input-wrapper">
+                            <textarea id="englishInput" 
+                                placeholder="在此输入英文句子..." 
+                                autocomplete="off"
+                                autocorrect="off"
+                                autocapitalize="off"
+                                spellcheck="false"></textarea>
+                        </div>
+                        <div class="result-text" id="resultText"></div>
+                    </div>
+                </div>
+            `;
+            
+            inputElement = document.getElementById('englishInput');
+            englishTextElement = document.getElementById('englishText');
+            resultTextElement = document.getElementById('resultText');
+            
+            inputElement.addEventListener('keydown', handleKeyDown);
+            inputElement.addEventListener('input', handleInput);
+            
+            // 重置状态
+            isChecked = false;
+            englishTextElement.classList.remove('show');
+            resultTextElement.classList.remove('show');
+            resultTextElement.innerHTML = '';
+            
+            // 重置统计
+            resetStats();
+            updateProgress();
+        }
+
+        // 检查答案
+        function checkAnswer() {
+            if (!inputElement || !inputElement.value.trim()) {
+                alert('请输入内容后再点击完成！');
+                return;
+            }
+            
+            isChecked = true;
+            const userInput = inputElement.value;
+            const correctText = sentences[currentIndex].english;
+            
+            // 显示正确答案
+            englishTextElement.classList.add('show');
+            
+            // 创建高亮文本并显示比对结果（基于正确答案）
+            const highlighted = compareTextsWithAnswer(userInput, correctText);
+            resultTextElement.innerHTML = '<strong>比对结果说明：<span style="color: #28a745;">绿色=正确</span>，<span style="color: #dc3545;">红色=错误</span>，<span style="color: #ffc107;">黄色=缺失</span></strong><br><br>' + highlighted;
+            resultTextElement.classList.add('show');
+            
+            // 更新统计
+            updateStats();
+        }
+
+        // 处理输入事件
+        function handleInput() {
+            // 如果已经检查过，用户继续输入时清除结果状态
+            if (isChecked) {
+                isChecked = false;
+                englishTextElement.classList.remove('show');
+                resultTextElement.classList.remove('show');
+                resultTextElement.innerHTML = '';
+                resetStats();
+            }
+        }
+
+        // 处理按键事件
+        function handleKeyDown(e) {
+            // 阻止Tab键切换焦点
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = inputElement.selectionStart;
+                const end = inputElement.selectionEnd;
+                inputElement.value = inputElement.value.substring(0, start) + '    ' + inputElement.value.substring(end);
+                inputElement.selectionStart = inputElement.selectionEnd = start + 4;
+                handleInput();
+            }
+        }
+
+        // 比较文本并生成高亮HTML（显示正确答案，标记对错）
+        function compareTextsWithAnswer(userInput, correctText) {
+            let result = '';
+            let userIdx = 0;
+            let correctIdx = 0;
+            
+            // 标准化空格处理
+            const normalizeSpaces = (str) => str.replace(/\s+/g, ' ').trim();
+            const userNormalized = normalizeSpaces(userInput);
+            const correctNormalized = normalizeSpaces(correctText);
+            
+            const userChars = userNormalized.split('');
+            const correctChars = correctNormalized.split('');
+            
+            // 如果输入为空，所有字符都标记为红色（错误）
+            const isEmpty = userChars.length === 0;
+            
+            // 构建比对结果，基于正确答案完整文本进行标记
+            while (correctIdx < correctChars.length || userIdx < userChars.length) {
+                if (correctIdx >= correctChars.length) {
+                    // 正确答案已结束，但用户还有输入（多余的字符）
+                    result += `<span class="extra-char">[多余: "${escapeHtml(userChars[userIdx])}"]</span>`;
+                    userIdx++;
+                } else if (userIdx >= userChars.length) {
+                    // 用户输入已结束，但还有正确答案的字符
+                    // 如果输入为空，标记为红色（错误），否则标记为黄色（缺失）
+                    if (isEmpty) {
+                        result += `<span class="incorrect-char">${escapeHtml(correctChars[correctIdx])}</span>`;
+                    } else {
+                        result += `<span class="missing-char">${escapeHtml(correctChars[correctIdx])}</span>`;
+                    }
+                    correctIdx++;
+                } else {
+                    const userChar = userChars[userIdx];
+                    const correctChar = correctChars[correctIdx];
+                    
+                    if (userChar === correctChar) {
+                        // 字符正确
+                        result += `<span class="correct-char">${escapeHtml(correctChar)}</span>`;
+                        userIdx++;
+                        correctIdx++;
+                    } else {
+                        // 字符不匹配
+                        if (userChar === ' ' && correctChar !== ' ') {
+                            // 用户输入了额外的空格，跳过用户输入，继续检查正确答案的字符
+                            result += `<span class="extra-char">[多余空格]</span>`;
+                            userIdx++;
+                        } else if (userChar !== ' ' && correctChar === ' ') {
+                            // 用户缺少空格
+                            result += `<span class="missing-char"> </span>`;
+                            correctIdx++;
+                        } else {
+                            // 字符错误：显示正确答案的字符，但标记为错误
+                            result += `<span class="incorrect-char">${escapeHtml(correctChar)}</span>`;
+                            userIdx++;
+                            correctIdx++;
+                        }
+                    }
+                }
+            }
+            
+            return result;
+        }
+
+        // 转义HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 重置统计信息
+        function resetStats() {
+            document.getElementById('accuracy').textContent = '0%';
+            document.getElementById('completion').textContent = '0%';
+            document.getElementById('errors').textContent = '0';
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            if (!isChecked) {
+                resetStats();
+                return;
+            }
+            
+            const userInput = inputElement.value.trim();
+            const correctText = sentences[currentIndex].english.trim();
+            
+            if (!userInput) {
+                resetStats();
+                return;
+            }
+            
+            // 标准化文本进行比较
+            const normalizeSpaces = (str) => str.replace(/\s+/g, ' ').trim();
+            const userNormalized = normalizeSpaces(userInput);
+            const correctNormalized = normalizeSpaces(correctText);
+            
+            const userChars = userNormalized.split('');
+            const correctChars = correctNormalized.split('');
+            
+            let correctCount = 0;
+            let errorCount = 0;
+            let userIdx = 0;
+            let correctIdx = 0;
+            
+            while (userIdx < userChars.length && correctIdx < correctChars.length) {
+                if (userChars[userIdx] === correctChars[correctIdx]) {
+                    correctCount++;
+                    userIdx++;
+                    correctIdx++;
+                } else {
+                    errorCount++;
+                    if (userChars[userIdx] === ' ') {
+                        userIdx++;
+                    } else if (correctChars[correctIdx] === ' ') {
+                        correctIdx++;
+                    } else {
+                        userIdx++;
+                        correctIdx++;
+                    }
+                }
+            }
+            
+            // 添加剩余的错误
+            errorCount += Math.abs(userChars.length - correctChars.length);
+            
+            const totalChars = Math.max(userChars.length, correctChars.length);
+            const accuracy = totalChars > 0 ? Math.round((correctCount / totalChars) * 100) : 0;
+            const completion = correctChars.length > 0 ? Math.round((userIdx / correctChars.length) * 100) : 0;
+            
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            document.getElementById('completion').textContent = completion + '%';
+            document.getElementById('errors').textContent = errorCount;
+        }
+
+        // 更新进度条
+        function updateProgress() {
+            const progress = sentences.length > 0 ? ((currentIndex + 1) / sentences.length) * 100 : 0;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('currentIndex').textContent = currentIndex + 1;
+        }
+
+        // 下一个句子
+        function nextSentence() {
+            if (currentIndex < sentences.length - 1) {
+                currentIndex++;
+                displayCurrentSentence();
+                if (inputElement) {
+                    inputElement.focus();
+                }
+            }
+        }
+
+        // 上一个句子
+        function previousSentence() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                displayCurrentSentence();
+                if (inputElement) {
+                    inputElement.focus();
+                }
+            }
+        }
+
+        // 重置输入
+        function resetInput() {
+            inputElement.value = '';
+            isChecked = false;
+            englishTextElement.classList.remove('show');
+            resultTextElement.classList.remove('show');
+            resultTextElement.innerHTML = '';
+            resetStats();
+            inputElement.focus();
+        }
+
+        // 页面加载时初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            initFileUpload();
+        });
+
+        // 键盘快捷键
+        document.addEventListener('keydown', (e) => {
+            // 只在输入框未聚焦时响应快捷键
+            if (document.activeElement !== inputElement) {
+                if (e.ctrlKey || e.metaKey) {
+                    if (e.key === 'ArrowRight' || e.key === 'n') {
+                        e.preventDefault();
+                        nextSentence();
+                    } else if (e.key === 'ArrowLeft' || e.key === 'p') {
+                        e.preventDefault();
+                        previousSentence();
+                    } else if (e.key === 'r') {
+                        e.preventDefault();
+                        resetInput();
+                    }
+                }
+            }
+            
+            // Ctrl+Enter 或 Ctrl+E 检查答案
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'Enter' || e.key === 'e')) {
+                if (document.activeElement === inputElement) {
+                    e.preventDefault();
+                    checkAnswer();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

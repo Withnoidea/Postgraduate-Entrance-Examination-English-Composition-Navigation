@@ -1,0 +1,3013 @@
+<template>
+  <div class="app-container">
+    <el-container class="main-container">
+      <!-- 侧边栏导�?-->
+      <el-aside width="280px" class="sidebar" :class="{ 'mobile-visible': sidebarVisible }">
+        <div class="sidebar-header">
+          <h2>📚 考研英语作文背诵</h2>
+        </div>
+        
+        <el-scrollbar class="sidebar-content">
+          <el-menu
+            :default-active="activeMenu"
+            :default-openeds="defaultOpeneds"
+            class="chapter-menu"
+            @select="handleMenuSelect"
+          >
+            <el-sub-menu
+              v-for="chapter in chapters"
+              :key="chapter.id"
+              :index="chapter.id"
+            >
+              <template #title>
+                <el-icon><component :is="getChapterIcon(chapter.icon)" /></el-icon>
+                <span>{{ chapter.title }}</span>
+              </template>
+              
+              <el-menu-item
+                v-for="section in chapter.sections"
+                :key="section.id"
+                :index="section.id"
+              >
+                <span>{{ section.title }}</span>
+                <el-tag
+                  v-if="section.type === 'practice'"
+                  size="small"
+                  type="success"
+                  effect="plain"
+                  class="menu-tag"
+                >
+                  练习
+                </el-tag>
+              </el-menu-item>
+            </el-sub-menu>
+          </el-menu>
+        </el-scrollbar>
+      </el-aside>
+
+      <!-- 主内容区�?-->
+      <el-main class="main-content">
+        <!-- 移动端顶部导航栏 -->
+        <div v-if="isMobile" class="mobile-header">
+          <div class="mobile-logo">📚 考研英语背诵</div>
+          <el-button class="menu-toggle" type="primary" :icon="Menu" circle @click="toggleSidebar" />
+        </div>
+        
+        <!-- 侧边栏遮罩层（移动端�?-->
+        <div v-if="isMobile && sidebarVisible" class="sidebar-overlay" @click="toggleSidebar"></div>
+        
+        <div v-if="!currentSection" class="welcome-section">
+          <el-empty description="请从左侧选择章节开始学�?>
+            <template #image>
+              <el-icon :size="100" color="#4facfe"><Reading /></el-icon>
+            </template>
+          </el-empty>
+        </div>
+
+        <div v-else class="content-section">
+          <!-- 页面标题 -->
+          <div class="page-header">
+            <h1>{{ currentSection.title }}</h1>
+            <el-tag
+              :type="getSectionTypeTag(currentSection.type)"
+              size="large"
+              effect="dark"
+            >
+              {{ getSectionTypeText(currentSection.type) }}
+            </el-tag>
+          </div>
+
+          <!-- 信息展示类型 -->
+          <div v-if="currentSection.type === 'info'" class="info-content">
+            <div v-if="currentSection.content === 'welcome'" class="welcome-content">
+              <el-card class="welcome-card">
+                <template #header>
+                  <div class="card-header">
+                    <h2>🎓 考研英语作文背诵系统</h2>
+                  </div>
+                </template>
+                <div class="welcome-body">
+                  <p class="welcome-text">
+                    欢迎使用考研英语作文背诵系统！这是一个专门为考研学子设计的英语作文学习工具，
+                    帮助你系统性地掌握各类作文的写作技巧和常用句型�?                  </p>
+                  <el-divider />
+                  <h3>�?主要特点</h3>
+                  <ul class="feature-list">
+                    <li>📚 <strong>分类学习</strong>：涵盖应用文、图画作文、图表作文、文字作文、混合型作文五大类型</li>
+                    <li>🎯 <strong>精准练习</strong>：每类作文提供锦囊妙句和真题练习</li>
+                    <li>📊 <strong>实时反馈</strong>：输入即时比对，准确率和错误统计一目了�?/li>
+                    <li>🎨 <strong>现代化界�?/strong>：简洁美观的界面设计，提升学习体�?/li>
+                  </ul>
+                  <el-divider />
+                  <p class="tip-text">
+                    💡 <strong>小贴�?/strong>：从左侧菜单选择你想学习的章节，开始你的英语作文背诵之旅吧�?                  </p>
+                </div>
+              </el-card>
+            </div>
+            
+            <div v-else-if="currentSection.content === 'guide'" class="guide-content">
+              <el-card class="guide-card">
+                <template #header>
+                  <div class="card-header">
+                    <h2>📖 使用指南</h2>
+                  </div>
+                </template>
+                <div class="guide-body">
+                  <el-steps direction="vertical" :active="1">
+                    <el-step title="选择章节" description="从左侧菜单中选择你想学习的作文类型和具体章节" />
+                    <el-step title="自动加载" description="选择练习章节后，系统会自动加载相应的背诵内容" />
+                    <el-step title="开始背�? description="阅读中文句子，在输入框中输入对应的英文翻�? />
+                    <el-step title="检查答�? description="点击'完成'按钮或按 Ctrl+Enter 查看比对结果" />
+                    <el-step title="查看反馈" description="系统会用不同颜色标记正确（绿色）、错误（红色）、缺失（黄色）的字符" />
+                    <el-step title="继续练习" description="使用'上一�?/'下一�?按钮切换句子，完成整个练�? />
+                  </el-steps>
+                  <el-divider />
+                  <h3>⌨️ 键盘快捷�?/h3>
+                  <el-descriptions :column="1" border>
+                    <el-descriptions-item label="检查答�?>Ctrl + Enter �?Ctrl + E</el-descriptions-item>
+                    <el-descriptions-item label="下一个句�?>Ctrl + �?�?Ctrl + N</el-descriptions-item>
+                    <el-descriptions-item label="上一个句�?>Ctrl + �?�?Ctrl + P</el-descriptions-item>
+                    <el-descriptions-item label="重置输入">Ctrl + R</el-descriptions-item>
+                    <el-descriptions-item label="插入空格">Tab</el-descriptions-item>
+                  </el-descriptions>
+                </div>
+              </el-card>
+            </div>
+            
+            <div v-else-if="currentSection.content === 'features'" class="features-content">
+              <el-card class="features-card">
+                <template #header>
+                  <div class="card-header">
+                    <h2>🔧 功能说明</h2>
+                  </div>
+                </template>
+                <div class="features-body">
+                  <el-row :gutter="20">
+                    <el-col :span="12">
+                      <el-card shadow="hover" class="feature-card-item">
+                        <div class="feature-icon">📈</div>
+                        <h3>进度统计</h3>
+                        <p>实时显示准确率、完成度和错误数量，帮助你了解学习进�?/p>
+                      </el-card>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-card shadow="hover" class="feature-card-item">
+                        <div class="feature-icon">🎨</div>
+                        <h3>智能比对</h3>
+                        <p>逐字符比对输入，用颜色标记正确、错误和缺失的部�?/p>
+                      </el-card>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20" style="margin-top: 20px;">
+                    <el-col :span="12">
+                      <el-card shadow="hover" class="feature-card-item">
+                        <div class="feature-icon">📁</div>
+                        <h3>文件上传</h3>
+                        <p>支持上传自定义的 .txt 模板文件，个性化学习内容</p>
+                      </el-card>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-card shadow="hover" class="feature-card-item">
+                        <div class="feature-icon">📱</div>
+                        <h3>响应式设�?/h3>
+                        <p>支持桌面端和移动端，随时随地都能学习</p>
+                      </el-card>
+                    </el-col>
+                  </el-row>
+                  <el-divider />
+                  <h3>📊 统计指标说明</h3>
+                  <el-alert
+                    title="准确�?
+                    type="success"
+                    :closable="false"
+                    style="margin-bottom: 10px;"
+                  >
+                    正确字符数占总字符数的百分比，反映输入的正确程度
+                  </el-alert>
+                  <el-alert
+                    title="完成�?
+                    type="warning"
+                    :closable="false"
+                    style="margin-bottom: 10px;"
+                  >
+                    已输入字符数占总正确答案字符数的百分比，反映输入的完整程度
+                  </el-alert>
+                  <el-alert
+                    title="错误�?
+                    type="error"
+                    :closable="false"
+                  >
+                    错误字符的总数，包括拼写错误、多余字符和缺失字符
+                  </el-alert>
+                </div>
+              </el-card>
+            </div>
+            
+            <div v-else-if="currentSection.id === 'corr-1'" class="correction-standards">
+              <el-card class="standards-card">
+                <template #header>
+                  <div class="card-header">
+                    <h2>📊 考研英语写作评分标准</h2>
+                  </div>
+                </template>
+                <div class="standards-body">
+                  <el-alert
+                    title="评分标准四大要素"
+                    type="success"
+                    :closable="false"
+                    show-icon
+                    style="margin-bottom: 20px;"
+                  >
+                    <template #default>
+                      <strong>美观、内容、结构、语言</strong>
+                    </template>
+                  </el-alert>
+
+                  <h3>1. 美观</h3>
+                  <p>字越漂亮越好，起码不能太丑。本书英文采用衡水体印刷，手写体较差的同学跟着多练，学成不会被扣分�?/p>
+
+                  <h3>2. 内容</h3>
+                  <p>应符合作文考查主题，不能偏题、瞎写乱写。注意审题，不要过度引申�?/p>
+
+                  <h3>3. 结构</h3>
+                  <p>符合应用�?正常文体格式要求；结构层次清晰。本书会给大家写作的标准结构�?/p>
+
+                  <h3>4. 语言</h3>
+                  <ul>
+                    <li><strong>词汇</strong>：拼写正确，单词优美、高级、多�?/li>
+                    <li><strong>句子</strong>：无语法错误、句式多�?/li>
+                    <li><strong>连贯</strong>：利用连接词使段落结构清晰、主旨突�?/li>
+                  </ul>
+
+                  <el-divider />
+
+                  <h3>📋 作文给分标准</h3>
+                  <el-table :data="gradingStandards" border style="width: 100%; margin-top: 15px;">
+                    <el-table-column prop="level" label="档次" width="120" />
+                    <el-table-column prop="small" label="小作文分" width="100" />
+                    <el-table-column prop="big1" label="英语一" width="100" />
+                    <el-table-column prop="big2" label="英语�? width="100" />
+                    <el-table-column prop="description" label="评分要求" />
+                  </el-table>
+                </div>
+              </el-card>
+            </div>
+
+            <div v-else-if="currentSection.id === 'corr-2'" class="correction-past-papers">
+              <el-card class="papers-card">
+                <template #header>
+                  <div class="card-header">
+                    <h2>📚 历年大作文主题一览表</h2>
+                  </div>
+                </template>
+                <div class="papers-body">
+                  <el-tabs v-model="activePaperTab" type="border-card">
+                    <el-tab-pane label="英语一" name="english1">
+                      <el-table :data="english1Papers" border stripe>
+                        <el-table-column prop="year" label="年份" width="100" />
+                        <el-table-column prop="topic" label="话题" />
+                        <el-table-column prop="category" label="分类" width="150" />
+                      </el-table>
+                    </el-tab-pane>
+                    <el-tab-pane label="英语�? name="english2">
+                      <el-table :data="english2Papers" border stripe>
+                        <el-table-column prop="year" label="年份" width="100" />
+                        <el-table-column prop="topic" label="话题" />
+                        <el-table-column prop="category" label="分类" width="150" />
+                      </el-table>
+                    </el-tab-pane>
+                  </el-tabs>
+                </div>
+              </el-card>
+            </div>
+
+            <div v-else-if="currentSection.id === 'corr-3'" class="correction-template">
+              <el-card class="template-card">
+                <template #header>
+                  <div class="card-header">
+                    <h2>📝 写作报告生成样式</h2>
+                  </div>
+                </template>
+                <div class="template-body">
+                  <el-collapse v-model="activeReportSections">
+                    <el-collapse-item title="1. 整体分析" name="1">
+                      <div class="report-section">
+                        <h4>整体打分</h4>
+                        <p>【备注】英语一大作文满�?0分；英语二大作文满分15分�?/p>
+                        <el-input
+                          v-model="reportScore"
+                          placeholder="请输入得�?
+                          type="number"
+                          style="max-width: 200px; margin-bottom: 15px;"
+                        />
+                        <h4>写作初印�?/h4>
+                        <el-input
+                          v-model="reportImpression"
+                          type="textarea"
+                          :rows="3"
+                          placeholder="请输入写作初印象"
+                        />
+                      </div>
+                    </el-collapse-item>
+                    <el-collapse-item title="2. 词汇" name="2">
+                      <div class="report-section">
+                        <h4>亮眼�?/h4>
+                        <el-input
+                          v-model="reportGoodWords"
+                          type="textarea"
+                          :rows="3"
+                          placeholder="请列出作文中的亮眼词�?
+                        />
+                        <h4>拼写错误�?/h4>
+                        <el-input
+                          v-model="reportSpellingErrors"
+                          type="textarea"
+                          :rows="3"
+                          placeholder="请列出拼写错误的单词"
+                        />
+                      </div>
+                    </el-collapse-item>
+                    <el-collapse-item title="3. 句型" name="3">
+                      <div class="report-section">
+                        <h4>亮眼�?/h4>
+                        <el-input
+                          v-model="reportGoodSentences"
+                          type="textarea"
+                          :rows="3"
+                          placeholder="请列出作文中的优秀句型"
+                        />
+                        <h4>语法错误�?/h4>
+                        <el-input
+                          v-model="reportGrammarErrors"
+                          type="textarea"
+                          :rows="3"
+                          placeholder="请列出语法错误的句子"
+                        />
+                      </div>
+                    </el-collapse-item>
+                    <el-collapse-item title="4. 篇章" name="4">
+                      <div class="report-section">
+                        <h4>写作框架</h4>
+                        <el-input
+                          v-model="reportFramework"
+                          type="textarea"
+                          :rows="3"
+                          placeholder="请评价写作框�?
+                        />
+                        <h4>完整�?/h4>
+                        <el-input
+                          v-model="reportCompleteness"
+                          type="textarea"
+                          :rows="3"
+                          placeholder="请评价作文完整�?
+                        />
+                        <h4>段落间的连贯�?/h4>
+                        <el-input
+                          v-model="reportCoherence"
+                          type="textarea"
+                          :rows="3"
+                          placeholder="请评价段落连贯�?
+                        />
+                        <h4>切题�?/h4>
+                        <el-input
+                          v-model="reportRelevance"
+                          type="textarea"
+                          :rows="3"
+                          placeholder="请评价切题度"
+                        />
+                      </div>
+                    </el-collapse-item>
+                  </el-collapse>
+                  <el-button type="primary" @click="exportReport" style="margin-top: 20px;">
+                    导出写作报告
+                  </el-button>
+                </div>
+              </el-card>
+            </div>
+
+            <div v-else-if="currentSection.id === 'corr-4'" class="correction-kimi">
+              <el-card class="kimi-card">
+                <template #header>
+                  <div class="card-header">
+                    <h2>🤖 KIMI写作批改使用指南</h2>
+                  </div>
+                </template>
+                <div class="kimi-body">
+                  <el-alert
+                    title="KIMI AI 作文批改工具"
+                    type="info"
+                    :closable="false"
+                    show-icon
+                    style="margin-bottom: 20px;"
+                  >
+                    使用 KIMI AI 智能批改你的英语作文，获取详细的修改建议和评分�?                  </el-alert>
+
+                  <h3>🚀 快速开�?/h3>
+                  <el-steps direction="vertical" :active="1">
+                    <el-step title="注册 KIMI" description="打开 KIMI 官网：https://kimi.moonshot.cn/ ，注册用户账�? />
+                    <el-step title="添加常用�? description="在对话框中设置批改指令为常用�? />
+                    <el-step title="复制指令" description="复制下方的批改指令到 KIMI 中使�? />
+                    <el-step title="上传作文" description="上传你的作文或复制文字到 KIMI" />
+                    <el-step title="查看结果" description="根据 KIMI 的反馈进行修�? />
+                  </el-steps>
+
+                  <el-divider />
+
+                  <h3>📝 批改指令</h3>
+                  <el-collapse v-model="activeInstructionSections">
+                    <el-collapse-item title="指令1：设置批改标�? name="1">
+                      <div class="instruction-text">
+                        <p>你现在是一位考研英语的判卷考官，请认真学习《晶婷弟子班写作评分源文件》的附件，接下来你将按照这个文档中的标准来批改我的作文�?/p>
+                        <el-button size="small" @click="copyInstruction(1)">复制指令</el-button>
+                      </div>
+                    </el-collapse-item>
+                    <el-collapse-item title="指令2：批改作�? name="2">
+                      <div class="instruction-text">
+                        <p>这是我写的英语一/二的作文。请按照文档中的�?四、写作报告生成样�?帮我仔细批改这篇作文。批改结果需要生成表格。我写的作文�?0xx年的英语一/二的大作文�?/p>
+                        <el-button size="small" @click="copyInstruction(2)">复制指令</el-button>
+                      </div>
+                    </el-collapse-item>
+                    <el-collapse-item title="指令3：拼写和语法错误" name="3">
+                      <div class="instruction-text">
+                        <p>请详细告诉我作文中拼写错误的单词和语法错误的句子。同时，给出我改正后的单词和句子�?/p>
+                        <el-button size="small" @click="copyInstruction(3)">复制指令</el-button>
+                      </div>
+                    </el-collapse-item>
+                    <el-collapse-item title="指令4：润色遣词造句" name="4">
+                      <div class="instruction-text">
+                        <p>在不改动原文意思的情况下，请帮我润色作文句子，让作文更加地道、形象。在改写过程中须注意以下几点�?/p>
+                        <ul>
+                          <li>注重原文的完整性和连贯性，避免过度改写导致内容失真</li>
+                          <li>充分考虑原文的语境和语义，确保改写后的文案忠于原�?/li>
+                          <li>通过替换词汇、调整句式等方式，使文章更加流畅自然</li>
+                          <li>注重语言的精准性和表达的自然�?/li>
+                        </ul>
+                        <el-button size="small" @click="copyInstruction(4)">复制指令</el-button>
+                      </div>
+                    </el-collapse-item>
+                    <el-collapse-item title="指令5：改写点" name="5">
+                      <div class="instruction-text">
+                        <p>请帮我罗列出了具体改写了的点�?/p>
+                        <el-button size="small" @click="copyInstruction(5)">复制指令</el-button>
+                      </div>
+                    </el-collapse-item>
+                  </el-collapse>
+
+                  <el-divider />
+
+                  <h3>⚠️ 注意事项</h3>
+                  <ul class="note-list">
+                    <li>指令的生成如果没有达到预期结果，可以根据你的具体需求再次深度提�?/li>
+                    <li>小作文的批改�?KIMI 无法识别格式问题，但写作格式也是打分因素之一</li>
+                    <li>KIMI 提供的修改意见中如果涉及老师讲的模板句内容上的纠正，可以不必更改，以模板句为�?/li>
+                    <li>KIMI 支持上传文档/图片/复制文字，最好是上传打字文档/复制文字以便更好地批�?/li>
+                    <li>之后每次批改提问可以固定在同一历史会话中进行，不用重新开启新会话</li>
+                    <li>打分结果可能会出现同一个作文分数不同的情况。同一篇文章人工批改两次也可能会出现分数不同的情况</li>
+                  </ul>
+
+                  <el-button type="primary" @click="openKIMI" style="margin-top: 20px; width: 100%;">
+                    🚀 打开 KIMI 官网
+                  </el-button>
+                </div>
+              </el-card>
+            </div>
+
+            <div v-else-if="currentSection.id === 'corr-5'" class="essay-checker">
+              <el-alert
+                title="信息展示"
+                type="info"
+                :closable="false"
+                show-icon
+              >
+                此章节为信息展示内容，暂无背诵练习�?              </el-alert>
+            </div>
+
+          <!-- AI智能批改 -->
+          <div v-if="currentSection.id === 'corr2-1'" class="ai-correction">
+            <el-card shadow="hover">
+              <template #header>
+                <div class="card-header">
+                  <h2>🤖 AI智能批改</h2>
+                </div>
+              </template>
+              <div class="ai-correction-body">
+                <el-alert
+                  title="上传作文（支持图片和文本�?
+                  type="success"
+                  :closable="false"
+                  show-icon
+                  style="margin-bottom: 20px;"
+                >
+                  支持上传作文图片（PNG、JPG）或文本文件（TXT），系统将根据考研英语评分标准进行智能批改�?                </el-alert>
+
+                <!-- 上传区域 -->
+                <div v-if="!aiEssayForm.content" class="ai-upload-section">
+                  <el-upload
+                    ref="aiUploadRef"
+                    class="ai-upload-demo"
+                    drag
+                    :auto-upload="false"
+                    :show-file-list="false"
+                    accept=".txt,.png,.jpg,.jpeg"
+                    @change="handleAIFileChange"
+                  >
+                    <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
+                    <div class="el-upload__text">
+                      将文件拖到此处，�?em>点击上传</em>
+                    </div>
+                    <template #tip>
+                      <div class="el-upload__tip">
+                        支持上传 .txt 文本文件�?.png/.jpg 图片文件
+                      </div>
+                    </template>
+                  </el-upload>
+
+                  <el-divider content-position="center">�?/el-divider>
+
+                  <el-button type="primary" size="large" @click="showTextInput" style="width: 100%;">
+                    <el-icon><Edit /></el-icon>
+                    手动输入作文
+                  </el-button>
+
+                  <div v-if="aiFileInfo" class="file-info" :class="{ success: aiFileSuccess, error: aiFileError }">
+                    {{ aiFileInfo }}
+                  </div>
+                </div>
+
+                <!-- 文本输入区域 -->
+                <div v-else class="ai-text-input">
+                  <el-form :model="aiEssayForm" label-width="100px">
+                    <el-form-item label="作文类型">
+                      <el-select v-model="aiEssayForm.type" placeholder="请选择作文类型">
+                        <el-option label="英语一" value="english1" />
+                        <el-option label="英语�? value="english2" />
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item label="作文类别">
+                      <el-select v-model="aiEssayForm.category" placeholder="请选择作文类别">
+                        <el-option label="应用�? value="application" />
+                        <el-option label="大作�? value="big" />
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item label="作文题目">
+                      <el-input v-model="aiEssayForm.title" placeholder="请输入作文题�? />
+                    </el-form-item>
+                    <el-form-item label="作文内容">
+                      <el-input
+                        v-model="aiEssayForm.content"
+                        type="textarea"
+                        :rows="12"
+                        placeholder="作文内容已自动识别或手动输入..."
+                      />
+                    </el-form-item>
+                  </el-form>
+
+                  <el-button 
+                    type="danger" 
+                    @click="clearAIContent" 
+                    style="margin-right: 10px;"
+                  >
+                    清空重传
+                  </el-button>
+                  <el-button 
+                    type="primary" 
+                    @click="startAICorrection" 
+                    :loading="aiCorrectionLoading"
+                    size="large"
+                    style="width: calc(100% - 120px);"
+                  >
+                    <el-icon v-if="!aiCorrectionLoading"><MagicStick /></el-icon>
+                    {{ aiCorrectionLoading ? '正在批改�?..' : '开始智能批�? }}
+                  </el-button>
+                </div>
+
+                <el-divider v-if="aiCorrectionResult" />
+
+                <div v-if="aiCorrectionResult" class="ai-result">
+                  <h3>📊 批改结果</h3>
+                  <el-card shadow="hover" style="margin-bottom: 15px;">
+                    <div class="result-content" v-html="aiCorrectionResult"></div>
+                  </el-card>
+                  <el-button type="success" @click="exportAIResult">
+                    导出批改结果
+                  </el-button>
+                </div>
+              </div>
+            </el-card>
+          </div>
+
+          <!-- API设置 -->
+          <div v-if="currentSection.id === 'corr2-2'" class="api-settings">
+            <el-card shadow="hover">
+              <template #header>
+                <div class="card-header">
+                  <h2>⚙️ API设置</h2>
+                </div>
+              </template>
+              <div class="api-settings-body">
+                <el-alert
+                  title="API Key配置"
+                  type="info"
+                  :closable="false"
+                  show-icon
+                  style="margin-bottom: 20px;"
+                >
+                  请配置通义千问API Key以使用智能批改功能。API Key将保存在本地浏览器中，不会上传到服务器�?                </el-alert>
+
+                <el-form :model="apiSettings" label-width="120px">
+                  <el-form-item label="API提供�?>
+                    <el-select v-model="apiSettings.provider" placeholder="请选择API提供�?>
+                      <el-option label="通义千问" value="qwen" />
+                      <el-option label="OpenAI" value="openai" />
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="API Key">
+                    <el-input 
+                      v-model="apiSettings.apiKey" 
+                      type="password" 
+                      placeholder="请输入你的API Key"
+                      show-password
+                    />
+                  </el-form-item>
+                  <el-form-item label="API Endpoint">
+                    <el-input 
+                      v-model="apiSettings.endpoint" 
+                      placeholder="API端点地址（可选）"
+                    />
+                  </el-form-item>
+                  <el-form-item label="模型名称">
+                    <el-input 
+                      v-model="apiSettings.model" 
+                      placeholder="模型名称（可选）"
+                    />
+                  </el-form-item>
+                </el-form>
+
+                <el-button type="primary" @click="saveAPISettings" style="margin-right: 10px;">
+                  保存设置
+                </el-button>
+                <el-button @click="testAPIConnection" :loading="apiTestLoading">
+                  测试连接
+                </el-button>
+
+                <el-divider />
+
+                <h3>📖 如何获取API Key</h3>
+                <el-collapse>
+                  <el-collapse-item title="通义千问" name="qwen">
+                    <div class="api-guide">
+                      <p>1. 访问阿里云官网：<a href="https://dashscope.aliyun.com/" target="_blank">https://dashscope.aliyun.com/</a></p>
+                      <p>2. 注册或登录账�?/p>
+                      <p>3. 进入控制台，创建API Key</p>
+                      <p>4. 复制API Key并粘贴到上方输入�?/p>
+                      <p>5. 新用户通常有免费额度可以使�?/p>
+                    </div>
+                  </el-collapse-item>
+                  <el-collapse-item title="OpenAI" name="openai">
+                    <div class="api-guide">
+                      <p>1. 访问OpenAI官网�?a href="https://platform.openai.com/" target="_blank">https://platform.openai.com/</a></p>
+                      <p>2. 注册或登录账�?/p>
+                      <p>3. 进入API Keys页面，创建新的API Key</p>
+                      <p>4. 复制API Key并粘贴到上方输入�?/p>
+                      <p>5. 注意：OpenAI API需要付费使�?/p>
+                    </div>
+                  </el-collapse-item>
+                </el-collapse>
+              </div>
+            </el-card>
+          </div>
+
+          <!-- 框架构建类型 -->
+          <div v-if="currentSection.type === 'framework'" class="framework-content">
+            <el-alert
+              title="写作框架构建"
+              type="warning"
+              :closable="false"
+              show-icon
+            >
+              此章节为写作框架构建内容，暂无背诵练习�?            </el-alert>
+          </div>
+
+          <!-- 练习模式 -->
+          <div v-if="currentSection.type === 'practice' && currentSection.id !== 'corr2-1'" class="practice-content">
+            <!-- 上传区域 -->
+            <div v-if="!hasLoadedContent" class="upload-section">
+              <el-card shadow="hover">
+                <el-upload
+                  ref="uploadRef"
+                  class="upload-demo"
+                  drag
+                  :auto-upload="false"
+                  :show-file-list="false"
+                  accept=".txt"
+                  @change="handleFileChange"
+                >
+                  <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+                  <div class="el-upload__text">
+                    将文件拖到此处，�?em>点击上传</em>
+                  </div>
+                  <template #tip>
+                    <div class="el-upload__tip">
+                      只能上传 .txt 格式的文�?                    </div>
+                  </template>
+                </el-upload>
+
+                <el-divider content-position="center">�?/el-divider>
+
+                <el-button type="primary" size="large" @click="loadBuiltinTemplate" :loading="loading">
+                  <el-icon><Reading /></el-icon>
+                  使用内置模板
+                </el-button>
+
+                <div v-if="fileInfo" class="file-info" :class="{ success: fileSuccess, error: fileError }">
+                  {{ fileInfo }}
+                </div>
+              </el-card>
+            </div>
+
+            <!-- 练习内容区域 -->
+            <div v-else-if="currentSection.id !== 'corr2-1'" class="practice-area">
+              <!-- 进度信息 -->
+              <div class="progress-info">
+                <el-tag type="info" size="large">{{ currentIndex + 1 }} / {{ sentences.length }}</el-tag>
+              </div>
+
+              <!-- 进度�?-->
+              <el-progress
+                :percentage="progressPercentage"
+                :stroke-width="8"
+                :color="progressColor"
+                class="progress-bar"
+              />
+
+              <!-- 句子显示区域 -->
+              <div class="sentence-container">
+                <el-card class="sentence-card">
+                  <div class="sentence-number">句子 {{ currentSentence.number }}</div>
+                  <div class="chinese-text">{{ currentSentence.chinese }}</div>
+                  
+                  <!-- 英文答案 -->
+                  <div v-if="showAnswer" class="english-answer">
+                    <el-alert
+                      title="正确答案"
+                      type="success"
+                      :closable="false"
+                      class="answer-alert"
+                    >
+                      <div class="answer-text">{{ currentSentence.english }}</div>
+                    </el-alert>
+                  </div>
+
+                  <!-- 输入区域 -->
+                  <el-input
+                    v-model="userInput"
+                    type="textarea"
+                    :rows="6"
+                    placeholder="在此输入英文句子..."
+                    class="input-textarea"
+                    @input="handleInput"
+                    @keydown="handleKeyDown"
+                    ref="inputRef"
+                  />
+
+                  <!-- 比对结果 -->
+                  <div v-if="showResult" class="result-section">
+                    <el-alert
+                      title="比对结果"
+                      type="info"
+                      :closable="false"
+                      class="result-alert"
+                    >
+                      <div class="result-legend">
+                        <span class="legend-item correct">�?绿色 = 正确</span>
+                        <span class="legend-item incorrect">�?红色 = 错误</span>
+                        <span class="legend-item missing">�?黄色 = 缺失</span>
+                      </div>
+                      <div class="result-text" v-html="highlightedResult"></div>
+                    </el-alert>
+                  </div>
+                </el-card>
+              </div>
+
+              <!-- 统计信息 -->
+              <div v-if="currentSection.id !== 'corr2-1'" class="stats-container">
+                <el-row :gutter="20">
+                  <el-col :span="8">
+                    <el-statistic title="准确�? :value="accuracy">
+                      <template #suffix>%</template>
+                    </el-statistic>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-statistic title="完成�? :value="completion">
+                      <template #suffix>%</template>
+                    </el-statistic>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-statistic title="错误�? :value="errors" />
+                  </el-col>
+                </el-row>
+              </div>
+
+              <!-- 控制按钮 -->
+              <div v-if="currentSection.id !== 'corr2-1'" class="controls">
+                <el-button type="info" @click="previousSentence" :disabled="currentIndex === 0">
+                  <el-icon><ArrowLeft /></el-icon>
+                  上一�?                </el-button>
+                <el-button type="danger" @click="resetInput">
+                  <el-icon><RefreshLeft /></el-icon>
+                  清空输入
+                </el-button>
+                <el-button type="success" @click="checkAnswer">
+                  <el-icon><Check /></el-icon>
+                  完成
+                </el-button>
+                <el-button type="primary" @click="nextSentence" :disabled="currentIndex === sentences.length - 1">
+                  下一�?                  <el-icon><ArrowRight /></el-icon>
+                </el-button>
+                <el-button type="warning" @click="reuploadFile">
+                  <el-icon><Upload /></el-icon>
+                  重新上传
+                </el-button>
+                              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-main>
+  </el-container>
+</div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import {
+  UploadFilled,
+  Reading,
+  ArrowLeft,
+  ArrowRight,
+  RefreshLeft,
+  Check,
+  Upload,
+  Document,
+  Picture,
+  DataAnalysis,
+  Edit,
+  Connection,
+  Menu,
+  Setting,
+  MagicStick
+} from '@element-plus/icons-vue'
+import { chapters, findSection } from './chapters.js'
+
+// 章节导航
+const activeMenu = ref('')
+const defaultOpeneds = ref(['chapter-start']) // 默认展开"开始使�?章节
+const currentSection = ref(null)
+
+// 移动端侧边栏控制
+const sidebarVisible = ref(false)
+const isMobile = ref(false)
+
+// 检测是否是移动设备
+const checkMobile = () => {
+  isMobile.value = window.innerWidth <= 768
+}
+
+// 切换侧边�?const toggleSidebar = () => {
+  sidebarVisible.value = !sidebarVisible.value
+}
+
+// 监听窗口大小变化
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+  document.addEventListener('keydown', handleGlobalKeyDown)
+  
+  // 默认显示"开始使�?章节中的"欢迎使用"
+  nextTick(() => {
+    const startSection = chapters[0].sections.find(sec => sec.id === 'start-1')
+    if (startSection) {
+      activeMenu.value = startSection.id
+      currentSection.value = startSection
+    }
+  })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+  document.removeEventListener('keydown', handleGlobalKeyDown)
+})
+
+// 练习数据
+const sentences = ref([])
+const currentIndex = ref(0)
+const userInput = ref('')
+const showAnswer = ref(false)
+const showResult = ref(false)
+const highlightedResult = ref('')
+const hasLoadedContent = ref(false)
+const loading = ref(false)
+const fileInfo = ref('')
+const fileSuccess = ref(false)
+const fileError = ref(false)
+const currentTemplateFile = ref('')
+
+// 统计数据
+const accuracy = ref(0)
+const completion = ref(0)
+const errors = ref(0)
+
+// Refs
+const inputRef = ref(null)
+
+// 作文批改相关
+const activePaperTab = ref('english1')
+const activeReportSections = ref(['1'])
+const activeInstructionSections = ref(['1'])
+
+// 写作报告相关
+const reportScore = ref('')
+const reportImpression = ref('')
+const reportGoodWords = ref('')
+const reportSpellingErrors = ref('')
+const reportGoodSentences = ref('')
+const reportGrammarErrors = ref('')
+const reportFramework = ref('')
+const reportCompleteness = ref('')
+const reportCoherence = ref('')
+const reportRelevance = ref('')
+
+// 历年真题数据
+const gradingStandards = ref([
+  { level: '第五�?, small: '9-10�?, big1: '17-20�?, big2: '13-15�?, description: '很好地完成了试题任务：包含所有内容要点；使用丰富的语法结构和词汇；语言自然流畅，语法错误极少；有效地采用了多种衔接手法，文字连贯，层次清晰；格式和语域恰当贴切' },
+  { level: '第四�?, small: '7-8�?, big1: '13-16�?, big2: '10-12�?, description: '较好地完成了试题任务：包含所有内容要点，允许漏掉1�?个次重点；使用较丰富的语法结构和词汇；语言基本准确，只有在试图使用较复杂结构或较高级词汇时才有个别语法错误；采用了适当的衔接手法，层次清晰，组织较严密；格式和语域较恰�? },
+  { level: '第三�?, small: '5-6�?, big1: '9-12�?, big2: '7-9�?, description: '基本完成试题任务：虽漏掉一些内容，但包含多数内容要点；应用的语法结构和词汇能满足任务的需求；有一些语法及词汇错误，但不影响理解；采用了简单的衔接手法，内容较连贯，层次较清晰；格式和语域基本合理' },
+  { level: '第二�?, small: '3-4�?, big1: '5-8�?, big2: '4-6�?, description: '未能按要求完成试题规定的任务：漏掉或未能有效阐述一些内容要点，写了一些无关内容；语法结构单调、词汇项目有限；有较多语法结构及词汇方面的错误，影响了对写作内容的理解；未采用恰当的衔接手法，内容缺少连贯性；格式和语域不恰当' },
+  { level: '第一�?, small: '1-2�?, big1: '1-4�?, big2: '1-3�?, description: '未能完成试题规定任务：明显遗漏主要内容，且有许多不相关的内容；语法项目和词汇的使用单调、重复；语言错误多，有碍读者对内容的理解，语言运用能力差；未采用任何衔接手法，内容不连贯，缺少组织、分段；无格式和语域概念' }
+])
+
+const english1Papers = ref([
+  { year: '2005', topic: '不孝�?/ disregard filial piety towards parents', category: '两代关系' },
+  { year: '2006', topic: '偶像崇拜 / idol worship; idolatry', category: '文化�? },
+  { year: '2007', topic: '自信 / self-confidence; boosting/raising confidence', category: '人生哲理�? },
+  { year: '2008', topic: '团队合作 / team spirit; teamwork; cooperating with each other; mutual help', category: '文化�? },
+  { year: '2009', topic: '适度过使用网�?/ using the Internet in a reasonable way', category: '文化�? },
+  { year: '2010', topic: '文化融合 / cultural fusion; cultural exchange', category: '文化�? },
+  { year: '2011', topic: '环境保护 / environmental protection; being environment-friendly', category: '环境�? },
+  { year: '2012', topic: '乐观VS悲观 / being optimistic or being pessimistic', category: '人生哲理�? },
+  { year: '2013', topic: '选择 / choice; making a right choice', category: '青年面对社会�? },
+  { year: '2014', topic: '孝顺/陪伴 / taking care of the elderly; filial piety', category: '两代关系�? },
+  { year: '2015', topic: '适度过使用手�?/ phubbing; using mobile phones rationally/reasonably', category: '文化�? },
+  { year: '2016', topic: '榜样 / family education; the role of example', category: '两代关系�? },
+  { year: '2017', topic: '行动；读�?/ taking actions; reading books; properly treating books', category: '人生哲理�? },
+  { year: '2018', topic: '勇于面对困难 / bravely facing challenges', category: '人生哲理�? },
+  { year: '2019', topic: '坚持；鼓�?/ persistence; perseverance', category: '人生哲理�? },
+  { year: '2020', topic: '培养良好的习�?/ developing a good habit', category: '青年面对社会�? },
+  { year: '2021', topic: '追求兴趣 / pursuing hobby/interest', category: '人生哲理�? },
+  { year: '2022', topic: '全面学习/求知 / comprehensive learning; seeking knowledge', category: '青年面对社会�? },
+  { year: '2023', topic: '传统文化 / traditional culture', category: '文化�? },
+  { year: '2024', topic: '注重身体健康、公园的重要�?/ focusing on physical fitness the importance of parks', category: '健康�? }
+])
+
+const english2Papers = ref([
+  { year: '2011', topic: '汽车；品牌形�?/ automobile/motor vehicle; brand image', category: '热点类；经济�? },
+  { year: '2012', topic: '工作满意�?/ job satisfaction; life pressure', category: '社会�? },
+  { year: '2013', topic: '兼职、积累工作经�?/ part-time job; accumulating working experience', category: '教育文化�? },
+  { year: '2014', topic: '人口变化 / demographic change; countryside; town', category: '热点类；经济�? },
+  { year: '2015', topic: '消费 / reasonable consumption', category: '热点类；经济�? },
+  { year: '2016', topic: '旅行目的 / purpose of the trip; admiring the scenery', category: '社会�? },
+  { year: '2017', topic: '提高文化水平 / improving cultural standards', category: '教育文化�? },
+  { year: '2018', topic: '追求精神享受 / pursuing spiritual enjoyment', category: '热点类；经济�? },
+  { year: '2019', topic: '注重高等教育 / paying more attention to higher education', category: '教育文化�? },
+  { year: '2020', topic: '适当地使用手�?/ using mobiles properly', category: '教育文化�? },
+  { year: '2021', topic: '体育锻炼 / physical exercise', category: '社会�? },
+  { year: '2022', topic: '快递；网上购物 / express delivery; online shopping', category: '热点类；经济�? },
+  { year: '2023', topic: '健康素养水平 / the level of residents\' health literacy', category: '社会�? },
+  { year: '2024', topic: '实践课上的收�?/ the harvest of practice class', category: '教育文化�? }
+])
+
+// KIMI指令
+const kimiInstructions = {
+  1: '你现在是一位考研英语的判卷考官，请认真学习《晶婷弟子班写作评分源文件》的附件，接下来你将按照这个文档中的标准来批改我的作文�?,
+  2: '这是我写的英语一/二的作文。请按照文档中的�?四、写作报告生成样�?帮我仔细批改这篇作文。批改结果需要生成表格。我写的作文�?0xx年的英语一/二的大作文�?,
+  3: '请详细告诉我作文中拼写错误的单词和语法错误的句子。同时，给出我改正后的单词和句子�?,
+  4: '在不改动原文意思的情况下，请帮我润色作文句子，让作文更加地道、形象。在改写过程中须注意以下几点：①注重原文的完整性和连贯性，避免过度改写导致内容失真。②充分考虑原文的语境和语义，确保改写后的文案忠于原文。③通过替换词汇、调整句式等方式，使文章更加流畅自然。④注重语言的精准性和表达的自然性�?,
+  5: '请帮我罗列出了具体改写了的点�?
+}
+
+// 函数
+const copyInstruction = (instructionNum) => {
+  const text = kimiInstructions[instructionNum]
+  navigator.clipboard.writeText(text).then(() => {
+    ElMessage.success(`指令${instructionNum}已复制到剪贴板`)
+  }).catch(() => {
+    ElMessage.error('复制失败，请手动复制')
+  })
+}
+
+const openKIMI = () => {
+  window.open('https://kimi.moonshot.cn/', '_blank')
+}
+
+const exportReport = () => {
+  const report = `
+写作报告生成样式
+=====================
+
+1. 整体分析
+---------------------
+整体打分�?{reportScore.value}�?写作初印象：${reportImpression.value}
+
+2. 词汇
+---------------------
+亮眼词：${reportGoodWords.value}
+拼写错误词：${reportSpellingErrors.value}
+
+3. 句型
+---------------------
+亮眼句：${reportGoodSentences.value}
+语法错误句：${reportGrammarErrors.value}
+
+4. 篇章
+---------------------
+写作框架�?{reportFramework.value}
+完整性：${reportCompleteness.value}
+段落间的连贯性：${reportCoherence.value}
+切题度：${reportRelevance.value}
+  `.trim()
+
+  const blob = new Blob([report], { type: 'text/plain;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = '写作报告.txt'
+  link.click()
+  URL.revokeObjectURL(url)
+  
+  ElMessage.success('写作报告已导�?)
+}
+
+// 作文自检工具相关
+const essayForm = ref({
+  type: 'english1',
+  category: 'big',
+  title: '',
+  content: ''
+})
+
+const essayStats = ref({
+  wordCount: 0,
+  sentenceCount: 0,
+  avgSentenceLength: 0,
+  wordCountSuggestion: '',
+  wordCountValid: true,
+  commonWords: [],
+  connectors: [],
+  spellingErrors: []
+})
+
+const commonWordList = ['good', 'bad', 'very', 'many', 'much', 'think', 'know', 'want', 'need', 'like']
+const connectorList = ['however', 'therefore', 'moreover', 'furthermore', 'consequently', 'thus', 'hence', 'nevertheless', 'meanwhile', 'in addition']
+
+const analyzeEssay = () => {
+  const content = essayForm.value.content.trim()
+  
+  if (!content) {
+    essayStats.value = {
+      wordCount: 0,
+      sentenceCount: 0,
+      avgSentenceLength: 0,
+      wordCountSuggestion: '请输入作文内�?,
+      wordCountValid: false,
+      commonWords: [],
+      connectors: [],
+      spellingErrors: []
+    }
+    return
+  }
+
+  // 计算字数
+  const words = content.split(/\s+/).filter(word => word.length > 0)
+  const wordCount = words.length
+  
+  // 计算句子�?  const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 0)
+  const sentenceCount = sentences.length
+  
+  // 平均句长
+  const avgSentenceLength = sentenceCount > 0 ? (wordCount / sentenceCount).toFixed(1) : 0
+  
+  // 检查常用词�?  const lowerContent = content.toLowerCase()
+  const commonWords = words.filter(word => 
+    commonWordList.includes(word.toLowerCase())
+  )
+  
+  // 检查连接词
+  const connectors = words.filter(word => 
+    connectorList.includes(word.toLowerCase().replace(/[.,;!?]$/, ''))
+  )
+  
+  // 字数建议
+  let wordCountSuggestion = ''
+  let wordCountValid = true
+  
+  if (essayForm.value.category === 'application') {
+    if (essayForm.value.type === 'english1') {
+      if (wordCount >= 80 && wordCount <= 100) {
+        wordCountSuggestion = '字数合�?
+      } else if (wordCount < 80) {
+        wordCountSuggestion = '字数偏少，建议补充内�?
+        wordCountValid = false
+      } else {
+        wordCountSuggestion = '字数偏多，建议精简内容'
+        wordCountValid = false
+      }
+    } else {
+      if (wordCount >= 100) {
+        wordCountSuggestion = '字数合�?
+      } else {
+        wordCountSuggestion = '字数偏少，建议补充内�?
+        wordCountValid = false
+      }
+    }
+  } else {
+    if (essayForm.value.type === 'english1') {
+      if (wordCount >= 160 && wordCount <= 200) {
+        wordCountSuggestion = '字数合�?
+      } else if (wordCount < 160) {
+        wordCountSuggestion = '字数偏少，建议补充内�?
+        wordCountValid = false
+      } else {
+        wordCountSuggestion = '字数偏多，建议精简内容'
+        wordCountValid = false
+      }
+    } else {
+      if (wordCount >= 150) {
+        wordCountSuggestion = '字数合�?
+      } else {
+        wordCountSuggestion = '字数偏少，建议补充内�?
+        wordCountValid = false
+      }
+    }
+  }
+  
+  essayStats.value = {
+    wordCount,
+    sentenceCount,
+    avgSentenceLength,
+    wordCountSuggestion,
+    wordCountValid,
+    commonWords,
+    connectors,
+    spellingErrors: [] // 简化版暂不实现拼写检�?  }
+}
+
+const exportEssay = () => {
+  const essay = `
+作文信息
+=====================
+类型�?{essayForm.value.type === 'english1' ? '英语一' : '英语�?}
+类别�?{essayForm.value.category === 'application' ? '应用�? : '大作�?}
+题目�?{essayForm.value.title}
+
+作文内容
+=====================
+${essayForm.value.content}
+
+分析结果
+=====================
+字数�?{essayStats.value.wordCount}
+句子数：${essayStats.value.sentenceCount}
+平均句长�?{essayStats.value.avgSentenceLength}�?字数建议�?{essayStats.value.wordCountSuggestion}
+常用词汇�?{essayStats.value.commonWords.join(', ') || '�?}
+连接词：${essayStats.value.connectors.join(', ') || '�?}
+  `.trim()
+
+  const blob = new Blob([essay], { type: 'text/plain;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `作文_${essayForm.value.title || '未命�?}.txt`
+  link.click()
+  URL.revokeObjectURL(url)
+  
+  ElMessage.success('作文已导�?)
+}
+
+// AI批改相关
+const aiEssayForm = ref({
+  type: 'english1',
+  category: 'big',
+  title: '',
+  content: ''
+})
+
+const aiCorrectionLoading = ref(false)
+const aiCorrectionResult = ref('')
+
+const apiSettings = ref({
+  provider: 'qwen',
+  apiKey: '',
+  endpoint: '',
+  model: ''
+})
+
+const apiTestLoading = ref(false)
+const aiFileInfo = ref('')
+const aiFileSuccess = ref(false)
+const aiFileError = ref(false)
+
+// 从localStorage加载API设置
+const loadAPISettings = () => {
+  const saved = localStorage.getItem('apiSettings')
+  if (saved) {
+    apiSettings.value = JSON.parse(saved)
+  }
+}
+
+// 保存API设置
+const saveAPISettings = () => {
+  if (!apiSettings.value.apiKey) {
+    ElMessage.warning('请输入API Key')
+    return
+  }
+  
+  localStorage.setItem('apiSettings', JSON.stringify(apiSettings.value))
+  ElMessage.success('API设置已保�?)
+}
+
+// 测试API连接
+const testAPIConnection = async () => {
+  if (!apiSettings.value.apiKey) {
+    ElMessage.warning('请先输入API Key')
+    return
+  }
+  
+  apiTestLoading.value = true
+  
+  try {
+    const endpoint = getAPIEndpoint()
+    const headers = getAPIHeaders()
+    
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        model: apiSettings.value.model || getAPIModel(),
+        messages: [
+          { role: 'user', content: 'Hello' }
+        ],
+        max_tokens: 10
+      })
+    })
+    
+    if (response.ok) {
+      ElMessage.success('API连接测试成功')
+    } else {
+      ElMessage.error('API连接测试失败')
+    }
+  } catch (error) {
+    ElMessage.error('API连接测试失败�? + error.message)
+  } finally {
+    apiTestLoading.value = false
+  }
+}
+
+// 获取API端点
+const getAPIEndpoint = () => {
+  if (apiSettings.value.endpoint) {
+    return apiSettings.value.endpoint
+  }
+  
+  if (apiSettings.value.provider === 'qwen') {
+    return 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions'
+  } else {
+    return 'https://api.openai.com/v1/chat/completions'
+  }
+}
+
+// 获取API Headers
+const getAPIHeaders = () => {
+  if (apiSettings.value.provider === 'qwen') {
+    return {
+      'Authorization': `Bearer ${apiSettings.value.apiKey}`,
+      'Content-Type': 'application/json'
+    }
+  } else {
+    return {
+      'Authorization': `Bearer ${apiSettings.value.apiKey}`,
+      'Content-Type': 'application/json'
+    }
+  }
+}
+
+// 获取API模型
+const getAPIModel = () => {
+  if (apiSettings.value.model) {
+    return apiSettings.value.model
+  }
+  
+  if (apiSettings.value.provider === 'qwen') {
+    return 'qwen-turbo'
+  } else {
+    return 'gpt-3.5-turbo'
+  }
+}
+
+// 开始AI批改
+const startAICorrection = async () => {
+  if (!aiEssayForm.value.content) {
+    ElMessage.warning('请输入作文内�?)
+    return
+  }
+  
+  if (!apiSettings.value.apiKey) {
+    ElMessage.warning('请先配置API Key')
+    return
+  }
+  
+  aiCorrectionLoading.value = true
+  aiCorrectionResult.value = ''
+  
+  try {
+    const prompt = `你是一位考研英语的判卷考官，请按照以下标准批改这篇作文�?
+评分标准�?1. 美观：字迹工�?2. 内容：符合作文考查主题，不偏题
+3. 结构：符合文体格式要求，结构层次清晰
+4. 语言：拼写正确，词汇优美高级，无语法错误，句式多样，使用连接�?
+作文信息�?- 类型�?{aiEssayForm.value.type === 'english1' ? '英语一' : '英语�?}
+- 类别�?{aiEssayForm.value.category === 'application' ? '应用�? : '大作�?}
+- 题目�?{aiEssayForm.value.title || '未指�?}
+- 内容�?${aiEssayForm.value.content}
+
+请按照以下格式输出批改结果：
+
+## 整体分析
+**整体打分**：请给出具体分数�?{aiEssayForm.value.type === 'english1' ? '英语一大作文满�?0分，小作文满�?0�? : '英语二大作文满分15分，小作文满�?0�?}�?**写作初印�?*：简要评�?
+## 词汇分析
+**亮眼�?*：列出作文中的高级词�?**拼写错误�?*：列出拼写错误的单词
+
+## 句型分析
+**亮眼�?*：列出优秀的句�?**语法错误�?*：列出语法错误的句子及改正建�?
+## 篇章分析
+**写作框架**：评价文章结�?**完整�?*：评价内容完整�?**段落连贯�?*：评价段落衔�?**切题�?*：评价切题程�?
+## 改进建议
+给出具体的改进建议和润色后的句子示例`
+
+    const endpoint = getAPIEndpoint()
+    const headers = getAPIHeaders()
+    
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        model: apiSettings.value.model || getAPIModel(),
+        messages: [
+          { role: 'user', content: prompt }
+        ],
+        max_tokens: 2000
+      })
+    })
+    
+    if (response.ok) {
+      const data = await response.json()
+      aiCorrectionResult.value = formatAIResponse(data.choices[0].message.content)
+      ElMessage.success('批改完成')
+    } else {
+      const error = await response.json()
+      ElMessage.error('批改失败�? + (error.error?.message || '未知错误'))
+    }
+  } catch (error) {
+    ElMessage.error('批改失败�? + error.message)
+  } finally {
+    aiCorrectionLoading.value = false
+  }
+}
+
+// 格式化AI响应
+const formatAIResponse = (text) => {
+  // 将Markdown格式转换为HTML
+  let html = text
+    .replace(/## (.*)/g, '<h3>$1</h3>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/- (.*)/g, '<li>$1</li>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+  
+  return `<p>${html}</p>`
+}
+
+// 导出AI批改结果
+const exportAIResult = () => {
+  const html = aiCorrectionResult.value
+  const text = html.replace(/<[^>]*>/g, '\n').replace(/\n+/g, '\n').trim()
+  
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `AI批改结果_${aiEssayForm.value.title || '未命�?}.txt`
+  link.click()
+  URL.revokeObjectURL(url)
+  
+  ElMessage.success('批改结果已导�?)
+}
+
+// 处理AI文件上传
+const handleAIFileChange = async (uploadFile) => {
+  const file = uploadFile.raw
+  
+  if (!file) return
+  
+  aiFileInfo.value = '正在处理文件...'
+  aiFileSuccess.value = false
+  aiFileError.value = false
+  
+  const fileType = file.type
+  const fileName = file.name.toLowerCase()
+  
+  try {
+    if (fileType === 'text/plain' || fileName.endsWith('.txt')) {
+      // 处理文本文件
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        aiEssayForm.value.content = e.target.result
+        aiFileInfo.value = `�?文件上传成功�?{file.name}`
+        aiFileSuccess.value = true
+      }
+      reader.onerror = () => {
+        aiFileInfo.value = `�?文件读取失败`
+        aiFileError.value = true
+      }
+      reader.readAsText(file)
+    } else if (fileType.startsWith('image/') || fileName.match(/\.(png|jpg|jpeg)$/i)) {
+      // 处理图片文件
+      aiFileInfo.value = '⚠️ 图片文件识别受限，建议使用文本文�?
+      aiFileError.value = true
+      
+      ElMessageBox.confirm(
+        '图片识别功能有限，建议使用文本文件以获得更准确的批改结果。是否继续？',
+        '提示',
+        {
+          confirmButtonText: '继续',
+          cancelButtonText: '使用文本文件',
+          type: 'warning'
+        }
+      ).then(() => {
+        // 用户选择继续，显示提示信�?        aiFileInfo.value = '⚠️ 图片识别功能受限，请手动输入或使用文本文�?
+        aiFileError.value = true
+      }).catch(() => {
+        // 用户选择使用文本文件，清空状�?        aiFileInfo.value = ''
+      })
+    } else {
+      aiFileInfo.value = `�?不支持的文件类型�?{file.name}`
+      aiFileError.value = true
+    }
+  } catch (error) {
+    aiFileInfo.value = `�?文件处理失败�?{error.message}`
+    aiFileError.value = true
+  }
+}
+
+// 显示文本输入区域
+const showTextInput = () => {
+  aiEssayForm.value.content = ''
+  aiFileInfo.value = ''
+  aiFileSuccess.value = false
+  aiFileError.value = false
+}
+
+// 清空AI内容
+const clearAIContent = () => {
+  aiEssayForm.value.content = ''
+  aiFileInfo.value = ''
+  aiFileSuccess.value = false
+  aiFileError.value = false
+}
+
+// 页面加载时加载API设置
+onMounted(() => {
+  loadAPISettings()
+  document.addEventListener('keydown', handleGlobalKeyDown)
+  
+  // 默认显示"开始使�?章节中的"欢迎使用"
+  nextTick(() => {
+    const startSection = chapters[0].sections.find(sec => sec.id === 'start-1')
+    if (startSection) {
+      activeMenu.value = startSection.id
+      currentSection.value = startSection
+    }
+  })
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleGlobalKeyDown)
+})
+
+// 计算属�?const currentSentence = computed(() => {
+  return sentences.value[currentIndex.value] || { number: '', chinese: '', english: '' }
+})
+
+const progressPercentage = computed(() => {
+  if (sentences.value.length === 0) return 0
+  return Math.round(((currentIndex.value + 1) / sentences.value.length) * 100)
+})
+
+const progressColor = computed(() => {
+  return [
+    { color: '#ff6b6b', percentage: 20 },
+    { color: '#ffd93d', percentage: 40 },
+    { color: '#6bcb77', percentage: 60 },
+    { color: '#4d96ff', percentage: 80 },
+    { color: '#4facfe', percentage: 100 }
+  ]
+})
+
+// 获取章节图标
+const getChapterIcon = (iconName) => {
+  const iconMap = {
+    Reading,
+    Document,
+    Picture,
+    DataAnalysis,
+    Edit,
+    Connection,
+    Menu,
+    Setting
+  }
+  return iconMap[iconName] || Reading
+}
+
+// 获取章节类型标签类型
+const getSectionTypeTag = (type) => {
+  const tagMap = {
+    info: 'info',
+    framework: 'warning',
+    practice: 'success'
+  }
+  return tagMap[type] || 'info'
+}
+
+// 获取章节类型文本
+const getSectionTypeText = (type) => {
+  const textMap = {
+    info: '信息展示',
+    framework: '框架构建',
+    practice: '练习模式'
+  }
+  return textMap[type] || '未知类型'
+}
+
+// 处理菜单选择
+const handleMenuSelect = (sectionId) => {
+  console.log('选择章节:', sectionId)
+  
+  // 重置状�?  hasLoadedContent.value = false
+  resetPracticeData()
+  
+  // 查找并设置当前章�?  const section = findSection('', sectionId)
+  console.log('查找到的章节:', section)
+  
+  if (!section) {
+    console.error('未找到章�?', sectionId)
+    ElMessage.error('未找到该章节')
+    return
+  }
+  
+  currentSection.value = section
+  console.log('当前章节已设�?', currentSection.value)
+  
+  // 使用 nextTick 确保 currentSection 已设置后再加载模�?  nextTick(() => {
+    console.log('nextTick 执行，当前章�?', currentSection.value)
+    if (currentSection.value?.type === 'practice' && currentSection.value?.templateFile) {
+      console.log('准备加载模板:', currentSection.value.templateFile)
+      loadBuiltinTemplate()
+    } else {
+      console.log('不加载模板，类型:', currentSection.value?.type, '模板文件:', currentSection.value?.templateFile)
+    }
+  })
+}
+
+// 重置练习数据
+const resetPracticeData = () => {
+  sentences.value = []
+  currentIndex.value = 0
+  userInput.value = ''
+  showAnswer.value = false
+  showResult.value = false
+  highlightedResult.value = ''
+  accuracy.value = 0
+  completion.value = 0
+  errors.value = 0
+  fileInfo.value = ''
+  fileSuccess.value = false
+  fileError.value = false
+}
+
+// 加载内置模板
+const loadBuiltinTemplate = async () => {
+  console.log('开始加载模�?..', currentSection.value)
+  
+  if (!currentSection.value?.templateFile) {
+    console.error('没有模板文件配置')
+    ElMessage.error('该章节没有内置模板！')
+    return
+  }
+
+  loading.value = true
+  fileInfo.value = '正在加载内置模板...'
+  fileSuccess.value = false
+  fileError.value = false
+
+  try {
+    console.log('正在获取文件:', currentSection.value.templateFile)
+    const response = await fetch(currentSection.value.templateFile)
+    console.log('响应状�?', response.status)
+    
+    if (response.ok) {
+      const text = await response.text()
+      console.log('文件内容长度:', text.length)
+      loadContent(text, '内置模板')
+    } else {
+      console.error('文件获取失败，状态码:', response.status)
+      throw new Error('文件不存�?)
+    }
+  } catch (error) {
+    console.error('加载模板失败:', error)
+    ElMessage.error('模板文件加载失败�?)
+    fileInfo.value = '模板文件加载失败，请重试'
+    fileError.value = true
+  }
+
+  loading.value = false
+}
+
+// 处理文件上传
+const handleFileChange = (uploadFile) => {
+  const file = uploadFile.raw
+  if (!file) return
+
+  if (!file.name.endsWith('.txt')) {
+    ElMessage.error('请上�?.txt 格式的文件！')
+    return
+  }
+
+  fileInfo.value = `正在读取文件: ${file.name}...`
+  fileSuccess.value = false
+  fileError.value = false
+
+  const reader = new FileReader()
+
+  reader.onload = (e) => {
+    try {
+      const text = e.target.result
+      loadContent(text, file.name)
+    } catch (error) {
+      ElMessage.error('文件解析失败，请检查格式！')
+      fileInfo.value = '文件解析失败，请重试'
+      fileError.value = true
+    }
+  }
+
+  reader.onerror = () => {
+    ElMessage.error('文件读取失败�?)
+    fileInfo.value = '文件读取失败，请重试'
+    fileError.value = true
+  }
+
+  reader.readAsText(file, 'UTF-8')
+}
+
+// 加载内容
+const loadContent = (text, sourceName) => {
+  try {
+    parseSentences(text)
+    hasLoadedContent.value = true
+    fileInfo.value = `�?成功加载: ${sourceName}`
+    fileSuccess.value = true
+    fileError.value = false
+
+    nextTick(() => {
+      focusInput()
+    })
+  } catch (error) {
+    console.error('解析内容失败:', error)
+    ElMessage.error('内容解析失败，请检查格式！')
+    fileInfo.value = '内容解析失败，请重试'
+    fileError.value = true
+  }
+}
+
+// 解析句子
+const parseSentences = (text) => {
+  sentences.value = []
+  const lines = text.split('\n').map(line => line.trim())
+
+  let i = 0
+  while (i < lines.length) {
+    if (/^\d+�?.test(lines[i]) || /^\d+\./.test(lines[i])) {
+      const numberMatch = lines[i].match(/^(\d+)[�?]/)
+      const number = numberMatch ? numberMatch[1] : ''
+      const chinese = lines[i].replace(/^\d+[�?]\s*/, '')
+      i++
+
+      while (i < lines.length && lines[i] === '') {
+        i++
+      }
+
+      if (i < lines.length && lines[i] && !/^\d+[�?]/.test(lines[i])) {
+        let english = lines[i]
+        i++
+
+        while (i < lines.length && lines[i] !== '' && !/^\d+[�?]/.test(lines[i])) {
+          english += ' ' + lines[i]
+          i++
+        }
+
+        sentences.value.push({
+          number: number,
+          chinese: chinese.trim(),
+          english: english.trim()
+        })
+      }
+    } else {
+      i++
+    }
+  }
+}
+
+// 检查答�?const checkAnswer = () => {
+  if (!userInput.value.trim()) {
+    ElMessage.warning('请输入内容后再点击完成！')
+    return
+  }
+
+  showAnswer.value = true
+  showResult.value = true
+
+  const correctText = currentSentence.value.english
+  highlightedResult.value = compareTextsWithAnswer(userInput.value, correctText)
+
+  updateStats()
+}
+
+// 比较文本
+const compareTextsWithAnswer = (userInput, correctText) => {
+  let result = ''
+  let userIdx = 0
+  let correctIdx = 0
+
+  const normalizeSpaces = (str) => str.replace(/\s+/g, ' ').trim()
+  const userNormalized = normalizeSpaces(userInput)
+  const correctNormalized = normalizeSpaces(correctText)
+
+  const userChars = userNormalized.split('')
+  const correctChars = correctNormalized.split('')
+
+  const isEmpty = userChars.length === 0
+
+  while (correctIdx < correctChars.length || userIdx < userChars.length) {
+    if (correctIdx >= correctChars.length) {
+      result += `<span class="extra-char">[多余: "${escapeHtml(userChars[userIdx])}"]</span>`
+      userIdx++
+    } else if (userIdx >= userChars.length) {
+      if (isEmpty) {
+        result += `<span class="incorrect-char">${escapeHtml(correctChars[correctIdx])}</span>`
+      } else {
+        result += `<span class="missing-char">${escapeHtml(correctChars[correctIdx])}</span>`
+      }
+      correctIdx++
+    } else {
+      const userChar = userChars[userIdx]
+      const correctChar = correctChars[correctIdx]
+
+      if (userChar === correctChar) {
+        result += `<span class="correct-char">${escapeHtml(correctChar)}</span>`
+        userIdx++
+        correctIdx++
+      } else {
+        if (userChar === ' ' && correctChar !== ' ') {
+          result += `<span class="extra-char">[多余空格]</span>`
+          userIdx++
+        } else if (userChar !== ' ' && correctChar === ' ') {
+          result += `<span class="missing-char"> </span>`
+          correctIdx++
+        } else {
+          result += `<span class="incorrect-char">${escapeHtml(correctChar)}</span>`
+          userIdx++
+          correctIdx++
+        }
+      }
+    }
+  }
+
+  return result
+}
+
+// 转义 HTML
+const escapeHtml = (text) => {
+  const div = document.createElement('div')
+  div.textContent = text
+  return div.innerHTML
+}
+
+// 更新统计
+const updateStats = () => {
+  if (!showResult.value) {
+    resetStats()
+    return
+  }
+
+  const userText = userInput.value.trim()
+  const correctText = currentSentence.value.english.trim()
+
+  if (!userText) {
+    resetStats()
+    return
+  }
+
+  const normalizeSpaces = (str) => str.replace(/\s+/g, ' ').trim()
+  const userNormalized = normalizeSpaces(userText)
+  const correctNormalized = normalizeSpaces(correctText)
+
+  const userChars = userNormalized.split('')
+  const correctChars = correctNormalized.split('')
+
+  let correctCount = 0
+  let errorCount = 0
+  let userIdx = 0
+  let correctIdx = 0
+
+  while (userIdx < userChars.length && correctIdx < correctChars.length) {
+    if (userChars[userIdx] === correctChars[correctIdx]) {
+      correctCount++
+      userIdx++
+      correctIdx++
+    } else {
+      errorCount++
+      if (userChars[userIdx] === ' ') {
+        userIdx++
+      } else if (correctChars[correctIdx] === ' ') {
+        correctIdx++
+      } else {
+        userIdx++
+        correctIdx++
+      }
+    }
+  }
+
+  errorCount += Math.abs(userChars.length - correctChars.length)
+
+  const totalChars = Math.max(userChars.length, correctChars.length)
+  accuracy.value = totalChars > 0 ? Math.round((correctCount / totalChars) * 100) : 0
+  completion.value = correctChars.length > 0 ? Math.round((userIdx / correctChars.length) * 100) : 0
+  errors.value = errorCount
+}
+
+// 重置统计
+const resetStats = () => {
+  accuracy.value = 0
+  completion.value = 0
+  errors.value = 0
+}
+
+// 处理输入
+const handleInput = () => {
+  if (showResult.value) {
+    showAnswer.value = false
+    showResult.value = false
+    highlightedResult.value = ''
+    resetStats()
+  }
+}
+
+// 处理键盘事件
+const handleKeyDown = (e) => {
+  if (e.key === 'Tab') {
+    e.preventDefault()
+    const start = inputRef.value.selectionStart
+    const end = inputRef.value.selectionEnd
+    userInput.value = userInput.value.substring(0, start) + '    ' + userInput.value.substring(end)
+    nextTick(() => {
+      inputRef.value.selectionStart = inputRef.value.selectionEnd = start + 4
+    })
+    handleInput()
+  }
+
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'Enter' || e.key === 'e')) {
+    e.preventDefault()
+    checkAnswer()
+  }
+}
+
+// 聚焦输入�?const focusInput = () => {
+  nextTick(() => {
+    if (inputRef.value) {
+      inputRef.value.focus()
+    }
+  })
+}
+
+// 下一个句�?const nextSentence = () => {
+  if (currentIndex.value < sentences.value.length - 1) {
+    currentIndex.value++
+    resetInput()
+    focusInput()
+  }
+}
+
+// 上一个句�?const previousSentence = () => {
+  if (currentIndex.value > 0) {
+    currentIndex.value--
+    resetInput()
+    focusInput()
+  }
+}
+
+// 重置输入
+const resetInput = () => {
+  userInput.value = ''
+  showAnswer.value = false
+  showResult.value = false
+  highlightedResult.value = ''
+  resetStats()
+  focusInput()
+}
+
+// 重新上传
+const reuploadFile = async () => {
+  try {
+    await ElMessageBox.confirm('确定要重新上传文件吗？当前进度将被重置�?, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+
+    hasLoadedContent.value = false
+    resetPracticeData()
+  } catch {
+    // 用户取消
+  }
+}
+
+// 全局键盘快捷�?const handleGlobalKeyDown = (e) => {
+  if (document.activeElement === inputRef.value) return
+
+  if (e.ctrlKey || e.metaKey) {
+    if (e.key === 'ArrowRight' || e.key === 'n') {
+      e.preventDefault()
+      nextSentence()
+    } else if (e.key === 'ArrowLeft' || e.key === 'p') {
+      e.preventDefault()
+      previousSentence()
+    } else if (e.key === 'r') {
+      e.preventDefault()
+      resetInput()
+    }
+  }
+}
+
+
+</script>
+
+<style scoped>
+/* 全局样式，防止页面滚�?*/
+:deep(body),
+:deep(html) {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.app-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8eaf6 100%);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.main-container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 1600px;
+  height: calc(100vh - 40px);
+  display: flex;
+  overflow: hidden;
+}
+
+/* 侧边栏样�?*/
+.sidebar {
+  background: #fafbfc;
+  border-right: 1px solid #e8eaed;
+  border-radius: 16px 0 0 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  z-index: 1001;
+}
+
+/* 移动端侧边栏抽屉样式 */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px !important;
+    max-width: 80vw;
+    z-index: 1001;
+    transform: translateX(-100%);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+  }
+  
+  .sidebar.mobile-visible {
+    transform: translateX(0);
+  }
+  
+  /* 遮罩�?*/
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  
+  /* 移动端导航栏 */
+  .mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: white;
+    border-bottom: 1px solid #e8eaed;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .mobile-logo {
+    font-size: 16px;
+    font-weight: 600;
+    color: #4facfe;
+  }
+  
+  .menu-toggle {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.sidebar-header {
+  padding: 24px 20px;
+  background: #4facfe;
+  color: white;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(79, 172, 254, 0.2);
+  flex-shrink: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100% - 60px);
+  -webkit-overflow-scrolling: touch;
+}
+
+.chapter-menu {
+  border: none;
+  background: transparent;
+}
+
+.menu-tag {
+  margin-left: 8px;
+}
+
+/* 主内容区�?*/
+.main-content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 优化滚动条样�?*/
+.main-content::-webkit-scrollbar,
+.sidebar-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.main-content::-webkit-scrollbar-track,
+.sidebar-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.main-content::-webkit-scrollbar-thumb,
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover,
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.welcome-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.page-header {
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.info-content,
+.framework-content {
+  padding: 20px;
+}
+
+/* 开始使用章节样�?*/
+.welcome-card,
+.guide-card,
+.features-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8eaed;
+}
+
+.card-header h2 {
+  margin: 0;
+  color: #4facfe;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.welcome-body,
+.guide-body,
+.features-body {
+  padding: 10px 0;
+}
+
+.welcome-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.feature-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.feature-list li:last-child {
+  border-bottom: none;
+}
+
+.tip-text {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.6;
+  padding: 15px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e8eaf6 100%);
+  border-radius: 8px;
+  border-left: 4px solid #4facfe;
+}
+
+/* 步骤显示样式 */
+:deep(.el-step__title) {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+:deep(.el-step__description) {
+  color: #666;
+  margin-top: 8px;
+}
+
+/* 说明文档样式 */
+:deep(.el-descriptions__label) {
+  font-weight: 600;
+  color: #4facfe;
+  width: 120px;
+}
+
+:deep(.el-alert__description) {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666;
+}
+
+/* 标题样式 */
+.features-body h3,
+.guide-body h3 {
+  color: #2c3e50;
+  margin: 20px 0 15px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.feature-card-item {
+  text-align: center;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.feature-card-item:hover {
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.feature-card-item h3 {
+  margin: 15px 0 10px;
+  color: #333;
+}
+
+.feature-card-item p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 练习区域 */
+.practice-content {
+  padding: 0;
+}
+
+/* 练习区域 */
+.practice-content {
+  padding: 0;
+}
+
+.upload-section {
+  margin-bottom: 20px;
+}
+
+.upload-demo {
+  margin-bottom: 20px;
+}
+
+.file-info {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.file-info.success {
+  background-color: #f0f9ff;
+  color: #67c23a;
+  border: 1px solid #67c23a;
+}
+
+.file-info.error {
+  background-color: #fef0f0;
+  color: #f56c6c;
+  border: 1px solid #f56c6c;
+}
+
+.practice-area {
+  padding: 0;
+}
+
+.progress-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  margin-bottom: 30px;
+}
+
+.sentence-container {
+  margin-bottom: 30px;
+}
+
+.sentence-card {
+  border-left: 4px solid #4facfe;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.sentence-number {
+  font-weight: 600;
+  color: #4facfe;
+  font-size: 14px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sentence-number {
+  font-weight: 600;
+  color: #4facfe;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chinese-text {
+  font-size: 18px;
+  color: #2c3e50;
+  line-height: 1.8;
+  margin-bottom: 25px;
+  padding: 15px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e8eaf6 100%);
+  border-radius: 8px;
+  border: 1px solid #e8eaed;
+}
+
+.english-answer {
+  margin-bottom: 15px;
+}
+
+.answer-alert {
+  margin-bottom: 15px;
+}
+
+.answer-text {
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 15px;
+  background: #fff9e6;
+  border-radius: 8px;
+  border: 2px solid #ffd700;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.input-textarea {
+  margin-bottom: 15px;
+}
+
+.input-textarea :deep(textarea) {
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  border: 2px solid #e8eaed;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.input-textarea :deep(textarea):focus {
+  border-color: #4facfe;
+  box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.1);
+}
+
+.result-section {
+  margin-top: 15px;
+}
+
+.result-alert {
+  margin-top: 15px;
+}
+
+.result-legend {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.legend-item.correct {
+  color: #28a745;
+  background: rgba(40, 167, 69, 0.1);
+}
+
+.legend-item.incorrect {
+  color: #dc3545;
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.legend-item.missing {
+  color: #ffc107;
+  background: rgba(255, 193, 7, 0.2);
+}
+
+.result-text {
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 15px;
+  background: linear-gradient(135deg, #fff9e6 0%, #fff4e6 100%);
+  border-radius: 8px;
+  border: 1px solid #ffd700;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.result-text :deep(.correct-char) {
+  color: #28a745;
+  background: transparent;
+  font-weight: 500;
+}
+
+.result-text :deep(.incorrect-char) {
+  color: #dc3545;
+  background: rgba(220, 53, 69, 0.2);
+  text-decoration: underline;
+  font-weight: 600;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.result-text :deep(.missing-char) {
+  color: #d68f00;
+  background: rgba(255, 193, 7, 0.3);
+  font-weight: 600;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.result-text :deep(.extra-char) {
+  color: #dc3545;
+  background: rgba(220, 53, 69, 0.15);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 3px;
+  margin: 0 2px;
+}
+
+.stats-container {
+  margin-bottom: 30px;
+  padding: 24px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e8eaf6 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* 滚动条样�?*/
+.sidebar-content::-webkit-scrollbar,
+.main-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-content::-webkit-scrollbar-track,
+.main-content::-webkit-scrollbar-track {
+  background: #f1f3f4;
+  border-radius: 3px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb,
+.main-content::-webkit-scrollbar-thumb {
+  background: #c1c8cd;
+  border-radius: 3px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover,
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: #a8b0b5;
+}
+
+/* 响应式设�?*/
+@media (max-width: 1440px) {
+  .sidebar {
+    width: 260px !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .sidebar {
+    width: 240px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .main-container {
+    flex-direction: row;
+    height: calc(100vh - 40px);
+  }
+  
+  .sidebar {
+    width: 220px !important;
+    min-width: 220px;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+  
+  .sidebar-header h2 {
+    font-size: 15px;
+  }
+  
+  .sidebar-header {
+    padding: 0 12px;
+    height: 60px;
+  }
+  
+  /* iPad菜单项优�?*/
+  :deep(.el-menu-item),
+  :deep(.el-sub-menu__title) {
+    font-size: 14px;
+    padding: 0 12px;
+    height: 48px;
+    line-height: 48px;
+  }
+  
+  :deep(.el-sub-menu .el-menu-item) {
+    font-size: 13px;
+    padding: 0 12px 0 24px;
+  }
+  
+  .menu-tag {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  .page-header h1 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0;
+    background: #f8f9fa;
+    height: 100vh;
+  }
+  
+  .main-container {
+    border-radius: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: none;
+  }
+  
+  .sidebar {
+    width: 280px !important;
+    max-width: 80vw;
+    border-radius: 0;
+    flex-shrink: 0;
+    display: none;
+  }
+  
+  .sidebar.mobile-visible {
+    display: flex;
+  }
+  
+  .sidebar-content {
+    height: calc(100vh - 60px);
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .main-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100vh;
+    padding: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .sidebar-header {
+    padding: 0 12px;
+    height: 60px;
+  }
+  
+  .sidebar-header h2 {
+    font-size: 13px;
+  }
+  
+  /* 菜单项样式优�?*/
+  :deep(.el-menu-item),
+  :deep(.el-sub-menu__title) {
+    font-size: 13px;
+    padding: 0 12px;
+    height: 44px;
+    line-height: 44px;
+  }
+  
+  .menu-tag {
+    display: none;
+  }
+  
+  :deep(.el-sub-menu .el-menu-item) {
+    font-size: 12px;
+    padding: 0 12px 0 24px;
+  }
+  
+  .page-header h1 {
+    font-size: 20px;
+  }
+  
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .chinese-text {
+    font-size: 15px;
+    padding: 12px;
+  }
+  
+  .stats-container {
+    padding: 12px;
+  }
+  
+  .controls {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .controls .el-button {
+    width: 100%;
+    font-size: 14px;
+  }
+  
+  .sentence-card {
+    padding: 15px;
+  }
+  
+  .input-textarea :deep(textarea) {
+    font-size: 14px;
+  }
+  
+  .result-text {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 0;
+    background: #f8f9fa;
+  }
+  
+  .main-container {
+    border-radius: 0;
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    box-shadow: none;
+  }
+  
+  .sidebar {
+    width: 160px !important;
+    min-width: 160px;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+  
+  .sidebar-header {
+    padding: 0 8px;
+    height: 60px;
+  }
+  
+  .sidebar-header h2 {
+    font-size: 11px;
+  }
+  
+  /* 菜单项进一步优�?*/
+  :deep(.el-menu-item),
+  :deep(.el-sub-menu__title) {
+    font-size: 11px;
+    padding: 0 8px;
+    height: 40px;
+    line-height: 40px;
+  }
+  
+  .menu-tag {
+    display: none;
+  }
+  
+  :deep(.el-sub-menu .el-menu-item) {
+    font-size: 10px;
+    padding: 0 8px 0 20px;
+  }
+  
+  :deep(.el-icon) {
+    font-size: 14px;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    height: 100vh;
+  }
+  
+  .page-header h1 {
+    font-size: 16px;
+  }
+  
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .sentence-number {
+    font-size: 11px;
+  }
+  
+  .chinese-text {
+    font-size: 13px;
+    padding: 10px;
+    line-height: 1.6;
+  }
+  
+  .sentence-card {
+    padding: 10px;
+  }
+  
+  .input-textarea :deep(textarea) {
+    font-size: 13px;
+    min-height: 100px;
+  }
+  
+  .result-text {
+    font-size: 13px;
+    padding: 10px;
+  }
+  
+  .stats-container {
+    padding: 10px;
+  }
+  
+  :deep(.el-statistic__number) {
+    font-size: 18px;
+  }
+  
+  .controls .el-button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+/* 作文批改相关样式 */
+.correction-standards,
+.correction-past-papers,
+.correction-template,
+.correction-kimi,
+.essay-checker,
+.ai-correction,
+.api-settings {
+  margin-bottom: 20px;
+}
+
+.standards-card,
+.papers-card,
+.template-card,
+.kimi-card,
+.checker-card,
+.api-settings-body {
+  border-left: 5px solid #4facfe;
+}
+
+.standards-body,
+.papers-body,
+.template-body,
+.kimi-body,
+.checker-body,
+.ai-correction-body {
+  padding: 15px;
+}
+
+.standards-body h3,
+.papers-body h3,
+.template-body h3,
+.kimi-body h3,
+.checker-body h3,
+.api-guide h3 {
+  color: #2c3e50;
+  margin: 20px 0 10px;
+  font-size: 16px;
+}
+
+.standards-body p,
+.papers-body p,
+.template-body p,
+.kimi-body p,
+.checker-body p {
+  line-height: 1.8;
+  color: #555;
+  margin: 10px 0;
+}
+
+.standards-body ul,
+.papers-body ul,
+.template-body ul,
+.kimi-body ul,
+.checker-body ul {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.standards-body li,
+.papers-body li,
+.template-body li,
+.kimi-body li,
+.checker-body li {
+  line-height: 1.8;
+  color: #555;
+  margin: 8px 0;
+}
+
+.instruction-text {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+.instruction-text p {
+  margin: 0 0 10px;
+  line-height: 1.8;
+}
+
+.note-list {
+  list-style: none;
+  padding: 0;
+}
+
+.note-list li {
+  background: #fff9e6;
+  padding: 10px 15px;
+  margin: 8px 0;
+  border-left: 3px solid #ffd700;
+  border-radius: 4px;
+  line-height: 1.8;
+}
+
+.analysis-results {
+  margin-top: 20px;
+}
+
+.result-content {
+  line-height: 1.8;
+  color: #333;
+}
+
+.result-content h3 {
+  color: #2c3e50;
+  margin: 15px 0 10px;
+  font-size: 16px;
+}
+
+.result-content strong {
+  color: #4facfe;
+}
+
+.result-content em {
+  color: #666;
+}
+
+.result-content li {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.api-guide p {
+  line-height: 1.8;
+  margin: 10px 0;
+}
+
+.api-guide a {
+  color: #4facfe;
+  text-decoration: none;
+}
+
+.api-guide a:hover {
+  text-decoration: underline;
+}
+
+.ai-result {
+  margin-top: 20px;
+}
+
+.ai-result h3 {
+  color: #2c3e50;
+  margin: 15px 0;
+  font-size: 18px;
+}
+
+.ai-upload-section {
+  margin-bottom: 20px;
+}
+
+.ai-upload-demo {
+  margin-bottom: 20px;
+}
+
+.ai-upload-demo :deep(.el-upload-dragger) {
+  padding: 40px 20px;
+  border: 2px dashed #4facfe;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.ai-upload-demo :deep(.el-upload-dragger:hover) {
+  border-color: #4facfe;
+  background: #f0f7ff;
+}
+
+.ai-upload-demo :deep(.el-icon--upload) {
+  font-size: 48px;
+  color: #4facfe;
+  margin-bottom: 15px;
+}
+
+.ai-text-input {
+  margin-top: 20px;
+}
+
+.file-info {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.file-info.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.file-info.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+</style>
