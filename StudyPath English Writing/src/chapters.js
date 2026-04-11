@@ -57,9 +57,9 @@ export const chapters = [
       },
       {
         id: "pic-2",
-        title: "10个锦囊妙句",
+        title: "9个锦囊妙句",
         type: "practice",
-        templateFile: "/templates/picture-10.txt",
+        templateFile: "/template2.txt",
       },
     ],
   },
