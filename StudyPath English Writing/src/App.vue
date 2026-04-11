@@ -119,42 +119,66 @@
                 class="progress-bar"
               />
 
+              <!-- 模式切换 -->
+              <div class="mode-switch">
+                <el-radio-group v-model="practiceMode" size="large" @change="handleModeChange">
+                  <el-radio-button value="recite">
+                    <el-icon><Reading /></el-icon>
+                    背诵模式
+                  </el-radio-button>
+                  <el-radio-button value="dictation">
+                    <el-icon><Edit /></el-icon>
+                    默写模式
+                  </el-radio-button>
+                </el-radio-group>
+              </div>
+
               <!-- 句子显示 -->
               <div class="sentence-container">
                 <el-card class="sentence-card">
                   <div class="sentence-number">句子 {{ currentSentence.number }}</div>
                   <div class="chinese-text">{{ currentSentence.chinese }}</div>
                   
-                  <!-- 英文答案 -->
-                  <div v-if="showAnswer" class="english-answer">
-                    <el-alert title="正确答案" type="success" :closable="false">
+                  <!-- 背诵模式：直接显示英文 -->
+                  <div v-if="practiceMode === 'recite'" class="english-answer">
+                    <el-alert title="英文句子" type="success" :closable="false">
                       <div class="answer-text">{{ currentSentence.english }}</div>
                     </el-alert>
                   </div>
 
-                  <!-- 输入区域 -->
-                  <el-input
-                    v-model="userInput"
-                    type="textarea"
-                    :rows="6"
-                    placeholder="在此输入英文句子..."
-                    class="input-textarea"
-                    @input="handleInput"
-                    @keydown="handleKeyDown"
-                    ref="inputRef"
-                  />
+                  <!-- 默写模式：输入区域 -->
+                  <template v-if="practiceMode === 'dictation'">
+                    <!-- 英文答案（完成后显示） -->
+                    <div v-if="showAnswer" class="english-answer">
+                      <el-alert title="正确答案" type="success" :closable="false">
+                        <div class="answer-text">{{ currentSentence.english }}</div>
+                      </el-alert>
+                    </div>
 
-                  <!-- 比对结果 -->
-                  <div v-if="showResult" class="result-section">
-                    <el-alert title="比对结果" type="info" :closable="false">
-                      <div class="result-legend">
-                        <span class="legend-item correct">✓ 绿色 = 正确</span>
-                        <span class="legend-item incorrect">✗ 红色 = 错误</span>
-                        <span class="legend-item missing">○ 黄色 = 缺失</span>
-                      </div>
-                      <div class="result-text" v-html="highlightedResult"></div>
-                    </el-alert>
-                  </div>
+                    <!-- 输入区域 -->
+                    <el-input
+                      v-model="userInput"
+                      type="textarea"
+                      :rows="6"
+                      placeholder="在此输入英文句子..."
+                      class="input-textarea"
+                      @input="handleInput"
+                      @keydown="handleKeyDown"
+                      ref="inputRef"
+                    />
+
+                    <!-- 比对结果 -->
+                    <div v-if="showResult" class="result-section">
+                      <el-alert title="比对结果" type="info" :closable="false">
+                        <div class="result-legend">
+                          <span class="legend-item correct">✓ 绿色 = 正确</span>
+                          <span class="legend-item incorrect">✗ 红色 = 错误</span>
+                          <span class="legend-item missing">○ 黄色 = 缺失</span>
+                        </div>
+                        <div class="result-text" v-html="highlightedResult"></div>
+                      </el-alert>
+                    </div>
+                  </template>
                 </el-card>
               </div>
 
@@ -183,14 +207,17 @@
                   <el-icon><ArrowLeft /></el-icon>
                   上一个
                 </el-button>
-                <el-button type="danger" @click="resetInput">
-                  <el-icon><RefreshLeft /></el-icon>
-                  清空输入
-                </el-button>
-                <el-button type="success" @click="checkAnswer">
-                  <el-icon><Check /></el-icon>
-                  完成
-                </el-button>
+                <!-- 默写模式下显示这些按钮 -->
+                <template v-if="practiceMode === 'dictation'">
+                  <el-button type="danger" @click="resetInput">
+                    <el-icon><RefreshLeft /></el-icon>
+                    清空输入
+                  </el-button>
+                  <el-button type="success" @click="checkAnswer">
+                    <el-icon><Check /></el-icon>
+                    完成
+                  </el-button>
+                </template>
                 <el-button type="primary" @click="nextSentence" :disabled="currentIndex === sentences.length - 1">
                   下一个
                   <el-icon><ArrowRight /></el-icon>
@@ -1089,6 +1116,9 @@ const fileInfo = ref('')
 const fileSuccess = ref(false)
 const fileError = ref(false)
 
+// 背诵/默写模式：背诵模式默认显示中英文，默写模式只显示中文
+const practiceMode = ref('recite') // 'recite' 背诵模式 | 'dictation' 默写模式
+
 // 统计数据
 const accuracy = ref(0)
 const completion = ref(0)
@@ -1326,6 +1356,27 @@ const toggleSidebar = () => {
 // 检查移动端
 const checkMobile = () => {
   isMobile.value = window.innerWidth <= 768
+}
+
+// 模式切换处理
+const handleModeChange = (mode) => {
+  // 切换模式时重置输入和结果
+  userInput.value = ''
+  showAnswer.value = false
+  showResult.value = false
+  highlightedResult.value = ''
+  accuracy.value = 0
+  completion.value = 0
+  errors.value = 0
+  
+  if (mode === 'dictation') {
+    // 切换到默写模式，聚焦输入框
+    nextTick(() => {
+      if (inputRef.value) {
+        inputRef.value.focus()
+      }
+    })
+  }
 }
 
 // 获取章节类型标签
@@ -2496,6 +2547,27 @@ onUnmounted(() => {
 
 .practice-area {
   max-width: 100%;
+}
+
+.mode-switch {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.mode-switch .el-radio-group {
+  gap: 0;
+}
+
+.mode-switch .el-radio-button__inner {
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.mode-switch .el-radio-button__inner .el-icon {
+  margin-right: 6px;
+  vertical-align: middle;
 }
 
 .progress-bar {
