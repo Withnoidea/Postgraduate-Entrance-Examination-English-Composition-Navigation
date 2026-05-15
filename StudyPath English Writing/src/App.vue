@@ -39,6 +39,15 @@
                 >
                   练习
                 </el-tag>
+                <el-tag
+                  v-if="section.type === 'reference'"
+                  size="small"
+                  type="info"
+                  effect="plain"
+                  class="menu-tag"
+                >
+                  参考
+                </el-tag>
               </el-menu-item>
             </el-sub-menu>
           </el-menu>
@@ -227,6 +236,75 @@
                   重新上传
                 </el-button>
               </div>
+            </div>
+          </div>
+
+          <!-- 真题参考模式 -->
+          <div v-if="currentSection.type === 'reference'" class="reference-content">
+            <div v-if="referenceLoading" class="reference-loading">
+              <el-skeleton :rows="10" animated />
+            </div>
+            <div v-else-if="referenceEntries.length > 0" class="reference-area">
+              <!-- 年份/篇目选择器 -->
+              <div class="reference-selector">
+                <el-select
+                  v-model="selectedReferenceIndex"
+                  placeholder="请选择篇目"
+                  size="large"
+                  style="width: 100%; max-width: 500px;"
+                >
+                  <el-option
+                    v-for="(entry, index) in referenceEntries"
+                    :key="index"
+                    :label="'第' + entry.number + '篇' + (entry.year ? ' (' + entry.year + ')' : '') + ' - ' + entry.title.substring(0, 30) + (entry.title.length > 30 ? '...' : '')"
+                    :value="index"
+                  />
+                </el-select>
+              </div>
+
+              <!-- 真题内容展示 -->
+              <el-card class="reference-card" shadow="hover">
+                <template #header>
+                  <div class="reference-card-header">
+                    <span class="reference-title">📝 第{{ referenceEntries[selectedReferenceIndex].number }}篇{{ referenceEntries[selectedReferenceIndex].year ? ' (' + referenceEntries[selectedReferenceIndex].year + ')' : '' }}</span>
+                    <div class="reference-nav">
+                      <el-button size="small" :disabled="selectedReferenceIndex === 0" @click="selectedReferenceIndex--">
+                        <el-icon><ArrowLeft /></el-icon> 上一篇
+                      </el-button>
+                      <el-button size="small" :disabled="selectedReferenceIndex === referenceEntries.length - 1" @click="selectedReferenceIndex++">
+                        下一篇 <el-icon><ArrowRight /></el-icon>
+                      </el-button>
+                    </div>
+                  </div>
+                </template>
+
+                <!-- 题目 -->
+                <div class="reference-question">
+                  <el-tag type="danger" size="large" effect="dark" style="margin-bottom: 12px;">题目</el-tag>
+                  <div class="reference-question-text" v-html="formatReferenceTitle(referenceEntries[selectedReferenceIndex].title)"></div>
+                </div>
+
+                <el-divider />
+
+                <!-- 范文 -->
+                <div class="reference-answer">
+                  <div class="reference-answer-header">
+                    <el-tag type="success" size="large" effect="dark">范文</el-tag>
+                    <el-button
+                      :icon="referenceAnswerExpanded ? ArrowUp : ArrowDown"
+                      size="small"
+                      text
+                      @click="referenceAnswerExpanded = !referenceAnswerExpanded"
+                    >
+                      {{ referenceAnswerExpanded ? '收起' : '展开' }}
+                    </el-button>
+                  </div>
+                  <div v-show="referenceAnswerExpanded" class="reference-answer-text" v-html="formatReferenceContent(referenceEntries[selectedReferenceIndex].content)"></div>
+                </div>
+              </el-card>
+            </div>
+            <div v-else class="reference-empty">
+              <el-empty description="暂无真题数据" />
             </div>
           </div>
 
@@ -1079,6 +1157,8 @@ import {
   Reading,
   ArrowLeft,
   ArrowRight,
+  ArrowUp,
+  ArrowDown,
   RefreshLeft,
   Check,
   Upload,
@@ -1118,6 +1198,12 @@ const fileError = ref(false)
 
 // 背诵/默写模式：背诵模式默认显示中英文，默写模式只显示中文
 const practiceMode = ref('recite') // 'recite' 背诵模式 | 'dictation' 默写模式
+
+// 真题参考模式相关
+const referenceEntries = ref([]) // 所有真题条目
+const selectedReferenceIndex = ref(0) // 当前选中的条目索引
+const referenceLoading = ref(false) // 加载状态
+const referenceAnswerExpanded = ref(true) // 范文是否展开
 
 // 统计数据
 const accuracy = ref(0)
@@ -1337,6 +1423,7 @@ const getChapterIcon = (iconName) => {
 const handleMenuSelect = (sectionId) => {
   hasLoadedContent.value = false
   resetPracticeData()
+  referenceAnswerExpanded.value = true
   
   const section = findSection('', sectionId)
   currentSection.value = section
@@ -1344,6 +1431,9 @@ const handleMenuSelect = (sectionId) => {
   nextTick(() => {
     if (currentSection.value?.type === 'practice' && currentSection.value?.templateFile) {
       loadBuiltinTemplate()
+    }
+    if (currentSection.value?.type === 'reference' && currentSection.value?.templateFile) {
+      loadReferenceContent()
     }
   })
 }
@@ -1384,7 +1474,8 @@ const getSectionTypeTag = (type) => {
   const tagMap = {
     info: '',
     framework: 'warning',
-    practice: 'success'
+    practice: 'success',
+    reference: 'info'
   }
   return tagMap[type] || ''
 }
@@ -1394,7 +1485,8 @@ const getSectionTypeText = (type) => {
   const textMap = {
     info: '信息展示',
     framework: '框架构建',
-    practice: '练习模式'
+    practice: '练习模式',
+    reference: '真题参考'
   }
   return textMap[type] || '未知类型'
 }
@@ -1513,6 +1605,117 @@ const loadBuiltinTemplate = async () => {
   } finally {
     loading.value = false
   }
+}
+
+// 加载真题参考内容
+const loadReferenceContent = async () => {
+  if (!currentSection.value?.templateFile) {
+    return
+  }
+
+  referenceLoading.value = true
+  referenceEntries.value = []
+  selectedReferenceIndex.value = 0
+
+  try {
+    const response = await fetch(currentSection.value.templateFile)
+    if (response.ok) {
+      const text = await response.text()
+      parseReferenceContent(text)
+    } else {
+      throw new Error('文件不存在')
+    }
+  } catch (error) {
+    ElMessage.error('真题文件加载失败！')
+  } finally {
+    referenceLoading.value = false
+  }
+}
+
+// 解析真题参考内容
+const parseReferenceContent = (text) => {
+  const lines = text.split('\n')
+  const entries = []
+  let i = 0
+
+  // 跳过标题行
+  while (i < lines.length && !/^\d+[,，]/.test(lines[i].trim())) {
+    i++
+  }
+
+  while (i < lines.length) {
+    if (/^\d+[,，]/.test(lines[i].trim())) {
+      const titleLine = lines[i].trim()
+      const match = titleLine.match(/^(\d+)[,，]\s*(.*)/)
+      const number = match ? match[1] : entries.length + 1
+      let title = match ? match[2] : titleLine
+
+      // 提取年份信息（如果有）
+      const yearMatch = title.match(/\((\d{4})\)/)
+      const year = yearMatch ? yearMatch[1] : ''
+
+      i++
+
+      // 题目可能是多行的，收集到第一个空行为止作为题目的延续
+      while (i < lines.length && lines[i].trim() !== '' && !/^\d+[,，]/.test(lines[i].trim())) {
+        title += '\n' + lines[i].trim()
+        i++
+      }
+
+      // 收集范文内容（从空行之后开始，直到下一个条目）
+      let content = ''
+      while (i < lines.length && !/^\d+[,，]/.test(lines[i].trim())) {
+        content += lines[i] + '\n'
+        i++
+      }
+
+      entries.push({
+        number,
+        title: title.trim(),
+        year,
+        content: content.trim()
+      })
+    } else {
+      i++
+    }
+  }
+
+  referenceEntries.value = entries
+}
+
+// 格式化真题题目内容（支持多行，每段缩进）
+const formatReferenceTitle = (title) => {
+  if (!title) return ''
+  const lines = title.split('\n')
+  return lines.map(line => {
+    const trimmed = line.trim()
+    if (!trimmed) return ''
+    return `<p class="ref-title-line">${trimmed}</p>`
+  }).join('')
+}
+
+// 格式化真题范文内容（处理缩进和署名靠右）
+const formatReferenceContent = (content) => {
+  if (!content) return ''
+  const lines = content.split('\n')
+  const formattedLines = lines.map(line => {
+    const trimmed = line.trim()
+    // 空行
+    if (!trimmed) {
+      return `<p class="ref-line ref-empty">&nbsp;</p>`
+    }
+    // 署名行（如 Yours sincerely, / Li Ming / Best regards, / Li Hua 等）
+    if (/^(Yours\s+(sincerely|faithfully|truly),?|Best\s+regards,?|Sincerely\s+yours,?|Sincerely,?|Regards,?|Li\s+(Ming|Hua)|Wang\s+\w+|Zhang\s+\w+)$/i.test(trimmed)) {
+      return `<p class="ref-line ref-signature">${trimmed}</p>`
+    }
+    // 称呼行（如 Dear Mr. Wang, / Dear Tom,）
+    if (/^Dear\s+/i.test(trimmed)) {
+      return `<p class="ref-line ref-greeting">${trimmed}</p>`
+    }
+    // 普通段落（添加首行缩进）
+    return `<p class="ref-line ref-paragraph">${trimmed}</p>`
+  })
+  return formattedLines.join('')
 }
 
 // 处理输入
@@ -2985,5 +3188,113 @@ onUnmounted(() => {
 
 .framework-content .el-card {
   width: 100%;
+}
+
+/* 真题参考模式样式 */
+.reference-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.reference-selector {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.reference-card {
+  border-radius: 12px;
+}
+
+.reference-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.reference-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #303133;
+}
+
+.reference-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.reference-question {
+  padding: 16px 0;
+}
+
+.reference-question-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #303133;
+  padding: 16px 20px;
+  background: #fef0f0;
+  border-radius: 8px;
+}
+
+.reference-question-text :deep(.ref-title-line) {
+  margin: 0;
+  text-indent: 2em;
+}
+
+.reference-directions {
+  margin: 0;
+  text-indent: 2em;
+}
+
+.reference-answer {
+  padding: 16px 0;
+}
+
+.reference-answer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.reference-answer-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #303133;
+  padding: 20px 24px;
+  background: #f0f9eb;
+  border-radius: 8px;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.reference-answer-text :deep(.ref-line) {
+  margin: 0;
+}
+
+.reference-answer-text :deep(.ref-paragraph) {
+  text-indent: 2em;
+}
+
+.reference-answer-text :deep(.ref-greeting) {
+  text-indent: 0;
+}
+
+.reference-answer-text :deep(.ref-signature) {
+  text-align: right;
+  text-indent: 0;
+}
+
+.reference-answer-text :deep(.ref-empty) {
+  height: 8px;
+}
+
+.reference-loading {
+  padding: 40px;
+}
+
+.reference-empty {
+  padding: 60px 0;
 }
 </style>
