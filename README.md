@@ -1,4 +1,6 @@
-# 考研英语作文提分助手，模板带背，作文批改，历年真题例文...
+# 📚 考研英语作文提分助手
+
+模板带背，作文批改，历年真题例文...
 
 这是一个专为考研英语作文备考设计的应用系统，帮助用户高效背诵作文模板句子，并提供 AI 智能批改功能。
 
@@ -6,56 +8,35 @@
 
 ## 界面展示
 
-![gyF13M7Z_converted](https://cdn.jsdelivr.net/gh/Withnoidea/images/gyF13M7Z_converted.gif)
+![演示](https://cdn.jsdelivr.net/gh/Withnoidea/images/gyF13M7Z_converted.gif)
 
-## 项目结构
+## 功能模块
 
-```
-E:\document\project\recite\
-├── prototype/                        # 原型版本（纯HTML）
-│   ├── index.html                    # 背诵应用原型
-│   ├── template.txt                  # 模板文件
-│   └── template_copy.txt             # 模板备份
-│
-└── StudyPath English Writing/        # 完整版本（Vue 3）
-    ├── index.html                    # 入口HTML
-    ├── package.json                  # 项目依赖配置
-    ├── vite.config.js                # Vite构建配置
-    ├── public/                       # 静态资源
-    │   ├── template.txt              # 内置模板
-    │   └── templates/                # 各题型模板文件
-    ├── src/                          # 源代码
-    │   ├── main.js                   # Vue入口
-    │   ├── App.vue                   # 主应用组件
-    │   ├── chapters.js               # 章节配置
-    │   └── components/               # Vue组件
-    └── 作文批改/                     # 批改相关文档
-```
+### 背诵与默写
+- **背诵模式**：中英文对照显示，逐句背诵
+- **默写模式**：显示中文提示，输入英文后实时比对（绿色=正确，红色=错误，黄色=缺失）
+- **进度统计**：准确率、完成度、错误数实时追踪
 
-## 功能特性
+### 写作框架
+- 应用文、图画作文、图表作文、文字作文、混合型作文五大题型
+- 每种题型提供写作框架构建指导
+- 配套锦囊妙句模板练习
 
-### 核心功能
-- 句子背诵练习（中文提示，输入英文）
-- 实时比对与高亮显示（正确/错误/缺失）
-- 进度统计（准确率、完成度、错误数）
-- 支持自定义模板文件上传
-- AI 智能批改作文
-- 多种题型支持（应用文、图画作文、图表作文等）
+### 真题参考
+- 历年考研英语一/英语二应用文真题（2005-2013+）
+- 图画作文、图表作文、文字作文、混合型真题
+- 下拉选择年份，直接展示题目与范文
+- 范文格式化显示（段落缩进、署名靠右）
+- 支持折叠/展开范文
 
-### UI 特性
-- 现代化渐变背景设计
-- 响应式布局，支持移动端
-- 直观的颜色标记
-- 丰富的交互动画
-- 键盘快捷键支持
+### AI智能批改
+- 支持上传作文图片（PNG/JPG）或文本文件（TXT）
+- 支持手动输入作文内容
+- 多AI服务商支持：通义千问、OpenAI、DeepSeek、Kimi、Claude等
+- 按考研评分标准（内容、结构、语言）给出批改建议
+- 批改结果可导出
 
 ## 快速开始
-
-### 使用原型版本
-
-直接在浏览器中打开 `prototype/index.html` 即可使用基础背诵功能。
-
-### 使用完整版本
 
 ```bash
 # 进入项目目录
@@ -67,34 +48,39 @@ npm install
 # 启动开发服务器
 npm run dev
 
-# 构建生产版本
+# 生产构建
 npm run build
 ```
 
-## 模板文件格式
-
-上传的自定义模板文件需遵循以下格式：
-
-```
-1，中文句子
-英文句子
-
-2，中文句子
-英文句子
-```
-
-- 文件编码：UTF-8
-- 中文行以数字和逗号开头
-- 中英文之间用空行分隔
+开发服务器默认运行在 `http://localhost:5173`。
 
 ## 技术栈
 
-| 项目 | 技术 |
+| 技术 | 用途 |
 |------|------|
-| 框架 | Vue 3 |
-| UI组件库 | Element Plus |
-| 构建工具 | Vite |
-| API | Vue Composition API |
+| Vue 3 | 前端框架（Composition API） |
+| Element Plus | UI组件库 |
+| Vite | 构建工具 |
+
+## 项目结构
+
+```
+recite/
+├── prototype/                        # 原型版本（纯HTML）
+│   └── index.html
+│
+└── StudyPath English Writing/        # 完整版本（Vue 3）
+    ├── public/
+    │   ├── template.txt              # 应用文23句模板
+    │   ├── template2.txt             # 图画作文9句模板
+    │   └── templates/                # 各题型真题与模板
+    ├── src/
+    │   ├── App.vue                   # 主应用组件
+    │   ├── chapters.js               # 章节配置
+    │   └── components/
+    ├── package.json
+    └── vite.config.js
+```
 
 ## 详细文档
 
@@ -103,7 +89,3 @@ npm run build
 ## 许可证
 
 MIT License
-
----
-
-最后更新：2026年4月10日
