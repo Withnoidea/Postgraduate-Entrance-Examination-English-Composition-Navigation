@@ -1704,9 +1704,17 @@ const formatReferenceContent = (content) => {
     if (!trimmed) {
       return `<p class="ref-line ref-empty">&nbsp;</p>`
     }
-    // 署名行（如 Yours sincerely, / Li Ming / Best regards, / Li Hua 等）
-    if (/^(Yours\s+(sincerely|faithfully|truly),?|Best\s+regards,?|Sincerely\s+yours,?|Sincerely,?|Regards,?|Li\s+(Ming|Hua)|Wang\s+\w+|Zhang\s+\w+)$/i.test(trimmed)) {
+    // 署名行（如 Yours sincerely, / Li Ming / Best regards, / Li Hua / Postgraduates' Association 等）
+    if (/^(Yours\s+(sincerely|faithfully|truly),?|Best\s+regards,?|Sincerely\s+yours,?|Sincerely,?|Regards,?|Li\s+(Ming|Hua)|Wang\s+\w+|Zhang\s+\w+|Postgraduates['']?\s*Association)$/i.test(trimmed)) {
       return `<p class="ref-line ref-signature">${trimmed}</p>`
+    }
+    // 日期行（如 December 10, 2010）
+    if (/^(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d+,\s*\d{4}$/i.test(trimmed)) {
+      return `<p class="ref-line ref-signature">${trimmed}</p>`
+    }
+    // 标题行（如 Notice）
+    if (/^(Notice|NOTICE)$/.test(trimmed)) {
+      return `<p class="ref-line ref-center">${trimmed}</p>`
     }
     // 称呼行（如 Dear Mr. Wang, / Dear Tom,）
     if (/^Dear\s+/i.test(trimmed)) {
@@ -3284,6 +3292,12 @@ onUnmounted(() => {
 .reference-answer-text :deep(.ref-signature) {
   text-align: right;
   text-indent: 0;
+}
+
+.reference-answer-text :deep(.ref-center) {
+  text-align: center;
+  text-indent: 0;
+  font-weight: bold;
 }
 
 .reference-answer-text :deep(.ref-empty) {
