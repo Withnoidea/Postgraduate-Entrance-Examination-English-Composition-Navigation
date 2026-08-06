@@ -4,7 +4,7 @@
       <!-- 侧边栏 -->
       <el-aside width="280px" class="sidebar" :class="{ 'mobile-visible': sidebarVisible }">
         <div class="sidebar-header">
-          <h2>📚 考研英语作文背诵</h2>
+          <h2><el-icon class="brand-icon"><Notebook /></el-icon> 考研英语作文背诵</h2>
         </div>
         
         <el-scrollbar class="sidebar-content">
@@ -58,7 +58,7 @@
       <el-main class="main-content">
         <!-- 移动端顶部导航栏 -->
         <div v-if="isMobile" class="mobile-header">
-          <div class="mobile-logo">📚 考研英语背诵</div>
+          <div class="mobile-logo"><el-icon class="brand-icon"><Notebook /></el-icon> 考研英语背诵</div>
           <el-button class="menu-toggle" type="primary" :icon="Menu" circle @click="toggleSidebar" />
         </div>
         
@@ -78,8 +78,11 @@
         <div v-else class="content-section">
           <!-- 页面标题 -->
           <div class="page-header">
-            <h1>{{ currentSection.title }}</h1>
-            <el-tag :type="getSectionTypeTag(currentSection.type)" size="large" effect="dark">
+            <div class="page-title-wrap">
+              <div class="page-kicker">{{ currentChapterTitle }}</div>
+              <h1>{{ currentSection.title }}</h1>
+            </div>
+            <el-tag :type="getSectionTypeTag(currentSection.type)" size="large" effect="plain" round>
               {{ getSectionTypeText(currentSection.type) }}
             </el-tag>
           </div>
@@ -120,13 +123,33 @@
 
             <!-- 练习内容 -->
             <div v-else class="practice-area">
-              <!-- 进度条 -->
-              <el-progress
-                :percentage="progressPercentage"
-                :stroke-width="8"
-                :color="progressColor"
-                class="progress-bar"
-              />
+              <!-- 练习工具条 -->
+              <div class="practice-toolbar">
+                <div class="practice-toolbar-copy">
+                  <span>练习进度</span>
+                  <strong>{{ currentIndex + 1 }} / {{ sentences.length }}</strong>
+                </div>
+                <el-progress
+                  :percentage="progressPercentage"
+                  :stroke-width="8"
+                  :color="progressColor"
+                  class="progress-bar"
+                />
+                <el-select
+                  :model-value="currentIndex"
+                  size="small"
+                  class="sentence-jump"
+                  placeholder="跳转到句子"
+                  @change="handleSentenceJump"
+                >
+                  <el-option
+                    v-for="(sentence, index) in sentences"
+                    :key="sentence.number + '-' + index"
+                    :label="`${sentence.number}. ${sentence.chinese}`"
+                    :value="index"
+                  />
+                </el-select>
+              </div>
 
               <!-- 模式切换 -->
               <div class="mode-switch">
@@ -140,13 +163,28 @@
                     默写模式
                   </el-radio-button>
                 </el-radio-group>
+                <el-button
+                  v-if="practiceMode === 'recite'"
+                  class="hint-toggle"
+                  plain
+                  round
+                  @click="toggleChineseHint"
+                >
+                  <el-icon><Reading /></el-icon>
+                  {{ showChineseHint ? '隐藏中文' : '显示中文' }}
+                </el-button>
               </div>
 
               <!-- 句子显示 -->
               <div class="sentence-container">
                 <el-card class="sentence-card">
                   <div class="sentence-number">句子 {{ currentSentence.number }}</div>
-                  <div class="chinese-text">{{ currentSentence.chinese }}</div>
+                  <div
+                    v-show="practiceMode === 'recite' ? showChineseHint : true"
+                    class="chinese-text"
+                  >
+                    {{ currentSentence.chinese }}
+                  </div>
                   
                   <!-- 背诵模式：直接显示英文 -->
                   <div v-if="practiceMode === 'recite'" class="english-answer">
@@ -180,9 +218,9 @@
                     <div v-if="showResult" class="result-section">
                       <el-alert title="比对结果" type="info" :closable="false">
                         <div class="result-legend">
-                          <span class="legend-item correct">✓ 绿色 = 正确</span>
-                          <span class="legend-item incorrect">✗ 红色 = 错误</span>
-                          <span class="legend-item missing">○ 黄色 = 缺失</span>
+                          <span class="legend-item correct"><el-icon><CircleCheckFilled /></el-icon> 绿色 = 正确</span>
+                          <span class="legend-item incorrect"><el-icon><CircleCloseFilled /></el-icon> 红色 = 错误</span>
+                          <span class="legend-item missing"><el-icon><WarningFilled /></el-icon> 黄色 = 缺失</span>
                         </div>
                         <div class="result-text" v-html="highlightedResult"></div>
                       </el-alert>
@@ -266,7 +304,7 @@
               <el-card class="reference-card" shadow="hover">
                 <template #header>
                   <div class="reference-card-header">
-                    <span class="reference-title">📝 第{{ referenceEntries[selectedReferenceIndex].number }}篇{{ referenceEntries[selectedReferenceIndex].year ? ' (' + referenceEntries[selectedReferenceIndex].year + ')' : '' }}</span>
+                    <span class="reference-title"><el-icon><Document /></el-icon> 第{{ referenceEntries[selectedReferenceIndex].number }}篇{{ referenceEntries[selectedReferenceIndex].year ? ' (' + referenceEntries[selectedReferenceIndex].year + ')' : '' }}</span>
                     <div class="reference-nav">
                       <el-button size="small" :disabled="selectedReferenceIndex === 0" @click="selectedReferenceIndex--">
                         <el-icon><ArrowLeft /></el-icon> 上一篇
@@ -313,7 +351,7 @@
             <el-card shadow="hover">
               <template #header>
                 <div class="card-header">
-                  <h2>🤖 AI智能批改</h2>
+                  <h2><el-icon class="title-icon"><MagicStick /></el-icon> AI智能批改</h2>
                 </div>
               </template>
               <div class="ai-correction-body">
@@ -411,12 +449,12 @@
                   
                   <el-alert type="info" :closable="false" style="margin-bottom: 15px;">
                     <template #title>
-                      <strong>📋 评分标准说明</strong>
+                      <strong class="inline-icon-title"><el-icon><Memo /></el-icon> 评分标准说明</strong>
                     </template>
-                    <div style="margin-top: 8px;">
-                      <p style="margin: 5px 0;">• <strong>内容</strong>：符合作文考查主题，不能偏题、瞎写乱写</p>
-                      <p style="margin: 5px 0;">• <strong>结构</strong>：符合应用文/正常文体格式要求；结构层次清晰</p>
-                      <p style="margin: 5px 0;">• <strong>语言</strong>：词汇拼写正确、优美高级；句子无语法错误、句式多样</p>
+                    <div class="criteria-list">
+                      <p class="criteria-row"><el-icon><CircleCheckFilled /></el-icon><span><strong>内容</strong>：符合作文考查主题，不能偏题、瞎写乱写</span></p>
+                      <p class="criteria-row"><el-icon><CircleCheckFilled /></el-icon><span><strong>结构</strong>：符合应用文/正常文体格式要求；结构层次清晰</span></p>
+                      <p class="criteria-row"><el-icon><CircleCheckFilled /></el-icon><span><strong>语言</strong>：词汇拼写正确、优美高级；句子无语法错误、句式多样</span></p>
                     </div>
                   </el-alert>
 
@@ -455,7 +493,7 @@
             <el-card shadow="hover">
               <template #header>
                 <div class="card-header">
-                  <h2>⚙️ API设置</h2>
+                  <h2><el-icon class="title-icon"><Setting /></el-icon> API设置</h2>
                 </div>
               </template>
               <div class="api-settings-body">
@@ -497,12 +535,12 @@
                   <el-form-item label="模型名称">
                     <el-select v-model="apiConfig.model" placeholder="请选择模型" filterable allow-create>
                       <!-- 通义千问模型 -->
-                      <el-option-group v-if="apiConfig.provider === 'qwen'" label="Qwen Omni系列（全模态✅）">
-                        <el-option label="qwen-omni-plus（图文✅）" value="qwen-omni-plus" />
-                        <el-option label="qwen-omni-turbo（图文✅）" value="qwen-omni-turbo" />
-                        <el-option label="qwen-omni-lite（图文✅）" value="qwen-omni-lite" />
+                      <el-option-group v-if="apiConfig.provider === 'qwen'" label="Qwen Omni系列（全模态）">
+                        <el-option label="qwen-omni-plus（支持图文）" value="qwen-omni-plus" />
+                        <el-option label="qwen-omni-turbo（支持图文）" value="qwen-omni-turbo" />
+                        <el-option label="qwen-omni-lite（支持图文）" value="qwen-omni-lite" />
                       </el-option-group>
-                      <el-option-group v-if="apiConfig.provider === 'qwen'" label="Qwen VL系列（图文✅）">
+                      <el-option-group v-if="apiConfig.provider === 'qwen'" label="Qwen VL系列（支持图文）">
                         <el-option label="qwen-vl-max（图文）" value="qwen-vl-max" />
                         <el-option label="qwen-vl-plus（图文）" value="qwen-vl-plus" />
                       </el-option-group>
@@ -561,25 +599,40 @@
                 </el-form>
                 
                 <el-collapse style="margin-top: 15px;">
-                  <el-collapse-item title="📊 模型说明与图文支持" name="model-info">
+                  <el-collapse-item name="model-info">
+                    <template #title>
+                      <span class="collapse-title"><el-icon><DataAnalysis /></el-icon> 模型说明与图文支持</span>
+                    </template>
                     <el-descriptions :column="1" border size="small">
-                      <el-descriptions-item label="✅ 支持图文">
+                      <el-descriptions-item>
+                        <template #label>
+                          <span class="description-label"><el-icon><CircleCheckFilled /></el-icon> 支持图文</span>
+                        </template>
                         <strong>OpenAI</strong>：gpt-4o、gpt-4o-mini<br>
                         <strong>Claude</strong>：claude-3/3.5全系列<br>
                         <strong>智增增</strong>：gpt-4o、claude-3、gemini<br>
                         <strong>通义千问</strong>：qwen-omni系列、qwen-vl系列
                       </el-descriptions-item>
-                      <el-descriptions-item label="❌ 仅文本">
+                      <el-descriptions-item>
+                        <template #label>
+                          <span class="description-label"><el-icon><CircleCloseFilled /></el-icon> 仅文本</span>
+                        </template>
                         <strong>DeepSeek</strong>：deepseek-chat/coder<br>
                         <strong>Kimi</strong>：moonshot-v1系列<br>
                         <strong>通义千问</strong>：qwen-turbo/plus/max/long
                       </el-descriptions-item>
-                      <el-descriptions-item label="💰 性价比推荐">
+                      <el-descriptions-item>
+                        <template #label>
+                          <span class="description-label"><el-icon><Aim /></el-icon> 性价比推荐</span>
+                        </template>
                         <strong>通义千问</strong>：omni系列有免费额度<br>
                         <strong>DeepSeek</strong>：极便宜，效果不错<br>
                         <strong>Kimi</strong>：免费额度，长文本强
                       </el-descriptions-item>
-                      <el-descriptions-item label="🎯 批改推荐">
+                      <el-descriptions-item>
+                        <template #label>
+                          <span class="description-label"><el-icon><TrendCharts /></el-icon> 批改推荐</span>
+                        </template>
                         <strong>文本批改</strong>：qwen-turbo、DeepSeek<br>
                         <strong>图文批改</strong>：qwen-omni-plus、gpt-4o-mini
                       </el-descriptions-item>
@@ -598,12 +651,12 @@
             <!-- 欢迎使用 -->
             <div v-if="currentSection.id === 'start-1'" class="info-card">
               <el-card shadow="hover">
-                <h2>🎉 欢迎使用考研英语作文背诵系统</h2>
+                <h2><el-icon class="title-icon"><Trophy /></el-icon> 欢迎使用考研英语作文背诵系统</h2>
                 <p>本系统专为考研英语作文备考设计，帮助您高效背诵和练习作文模板句型。</p>
                 
                 <el-divider />
                 
-                <h3>📚 系统特色</h3>
+                <h3><el-icon class="title-icon"><Notebook /></el-icon> 系统特色</h3>
                 <ul>
                   <li><strong>句子背诵</strong>：中英文对照，实时比对输入结果</li>
                   <li><strong>多种题型</strong>：涵盖应用文、图画作文、图表作文等</li>
@@ -613,7 +666,7 @@
                 
                 <el-divider />
                 
-                <h3>🚀 快速开始</h3>
+                <h3><el-icon class="title-icon"><Aim /></el-icon> 快速开始</h3>
                 <ol>
                   <li>从左侧菜单选择章节</li>
                   <li>上传自定义模板或使用内置模板</li>
@@ -626,10 +679,13 @@
             <!-- 使用指南 -->
             <div v-if="currentSection.id === 'start-2'" class="info-card">
               <el-card shadow="hover">
-                <h2>📖 使用指南</h2>
+                <h2><el-icon class="title-icon"><Reading /></el-icon> 使用指南</h2>
                 
                 <el-collapse>
-                  <el-collapse-item title="1️⃣ 如何开始背诵练习？" name="1">
+                  <el-collapse-item name="1">
+                    <template #title>
+                      <span class="collapse-title"><span class="collapse-index">01</span> 如何开始背诵练习？</span>
+                    </template>
                     <p>选择左侧菜单中的任意练习章节（带有"练习"标签），然后：</p>
                     <ol>
                       <li>点击"使用内置模板"加载预设句子</li>
@@ -639,7 +695,10 @@
                     </ol>
                   </el-collapse-item>
                   
-                  <el-collapse-item title="2️⃣ 模板文件格式要求" name="2">
+                  <el-collapse-item name="2">
+                    <template #title>
+                      <span class="collapse-title"><span class="collapse-index">02</span> 模板文件格式要求</span>
+                    </template>
                     <p>模板文件应为 .txt 格式，每句格式如下：</p>
                     <pre>1,中文翻译
 英文原句
@@ -649,9 +708,12 @@
                     <p>注意：中文行以数字和逗号开头，英文可以跨多行。</p>
                   </el-collapse-item>
                   
-                  <el-collapse-item title="3️⃣ 如何使用AI智能批改？" name="3">
+                  <el-collapse-item name="3">
+                    <template #title>
+                      <span class="collapse-title"><span class="collapse-index">03</span> 如何使用AI智能批改？</span>
+                    </template>
                     <ol>
-                      <li>选择"作文批改2" → "智能批改"</li>
+                      <li>选择"作文批改2" <el-icon class="guide-arrow"><ArrowRight /></el-icon> "智能批改"</li>
                       <li>上传作文文件（支持 .txt、.png、.jpg）</li>
                       <li>或手动输入作文内容</li>
                       <li>选择作文类型和类别</li>
@@ -662,10 +724,13 @@
                     </el-alert>
                   </el-collapse-item>
                   
-                  <el-collapse-item title="4️⃣ 快捷键说明" name="4">
+                  <el-collapse-item name="4">
+                    <template #title>
+                      <span class="collapse-title"><span class="collapse-index">04</span> 快捷键说明</span>
+                    </template>
                     <ul>
-                      <li><kbd>Ctrl + →</kbd> 或 <kbd>Ctrl + N</kbd>：下一个句子</li>
-                      <li><kbd>Ctrl + ←</kbd> 或 <kbd>Ctrl + P</kbd>：上一个句子</li>
+                      <li><kbd>Ctrl + <el-icon class="guide-arrow"><ArrowRight /></el-icon></kbd> 或 <kbd>Ctrl + N</kbd>：下一个句子</li>
+                      <li><kbd>Ctrl + <el-icon class="guide-arrow"><ArrowLeft /></el-icon></kbd> 或 <kbd>Ctrl + P</kbd>：上一个句子</li>
                       <li><kbd>Ctrl + R</kbd>：清空输入</li>
                       <li><kbd>Tab</kbd>：插入空格</li>
                     </ul>
@@ -677,7 +742,7 @@
             <!-- 功能说明 -->
             <div v-if="currentSection.id === 'start-3'" class="info-card">
               <el-card shadow="hover">
-                <h2>⚙️ 功能说明</h2>
+                <h2><el-icon class="title-icon"><Setting /></el-icon> 功能说明</h2>
                 
                 <el-descriptions :column="1" border>
                   <el-descriptions-item label="句子背诵">
@@ -702,7 +767,7 @@
             <!-- 评分标准 -->
             <div v-if="currentSection.id === 'corr-1'" class="info-card">
               <el-card shadow="hover">
-                <h2>📊 考研英语写作评分标准</h2>
+                <h2><el-icon class="title-icon"><DataAnalysis /></el-icon> 考研英语写作评分标准</h2>
                 
                 <el-divider content-position="left">一、评分维度</el-divider>
                 
@@ -730,7 +795,7 @@
             <!-- 历年真题 -->
             <div v-if="currentSection.id === 'corr-2'" class="info-card">
               <el-card shadow="hover">
-                <h2>📝 历年大作文主题一览</h2>
+                <h2><el-icon class="title-icon"><Document /></el-icon> 历年大作文主题一览</h2>
                 
                 <el-divider content-position="left">英语一 (2005-2024)</el-divider>
                 
@@ -753,7 +818,7 @@
             <!-- 写作报告模板 -->
             <div v-if="currentSection.id === 'corr-3'" class="info-card">
               <el-card shadow="hover">
-                <h2>📋 写作报告生成样式</h2>
+                <h2><el-icon class="title-icon"><Memo /></el-icon> 写作报告生成样式</h2>
                 
                 <el-steps :active="4" finish-status="success" simple>
                   <el-step title="整体分析" />
@@ -791,7 +856,7 @@
             <!-- KIMI使用指南 -->
             <div v-if="currentSection.id === 'corr-4'" class="info-card">
               <el-card shadow="hover">
-                <h2>🤖 KIMI作文批改操作指南</h2>
+                <h2><el-icon class="title-icon"><ChatDotRound /></el-icon> KIMI作文批改操作指南</h2>
                 
                 <el-steps :active="7" finish-status="success" simple>
                   <el-step title="注册" />
@@ -862,7 +927,7 @@
           <!-- 框架构建内容 -->
           <div v-if="currentSection.type === 'framework'" class="framework-content">
             <el-card shadow="hover">
-              <h2>📐 写作框架构建</h2>
+              <h2><el-icon class="title-icon"><Tools /></el-icon> 写作框架构建</h2>
               
               <!-- 应用文框架 -->
               <div v-if="currentSection.id === 'app-1'">
@@ -1153,6 +1218,16 @@
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
+  Notebook,
+  Memo,
+  Trophy,
+  Aim,
+  Tools,
+  ChatDotRound,
+  CircleCheckFilled,
+  CircleCloseFilled,
+  WarningFilled,
+  TrendCharts,
   UploadFilled,
   Reading,
   ArrowLeft,
@@ -1198,6 +1273,7 @@ const fileError = ref(false)
 
 // 背诵/默写模式：背诵模式默认显示中英文，默写模式只显示中文
 const practiceMode = ref('recite') // 'recite' 背诵模式 | 'dictation' 默写模式
+const showChineseHint = ref(true)
 
 // 真题参考模式相关
 const referenceEntries = ref([]) // 所有真题条目
@@ -1385,6 +1461,14 @@ const english2Topics = ref([
 ])
 
 // 计算属性
+const currentChapterTitle = computed(() => {
+  if (!currentSection.value) return ''
+  const chapter = chapters.find((item) =>
+    item.sections.some((section) => section.id === currentSection.value?.id)
+  )
+  return chapter?.title || ''
+})
+
 const currentSentence = computed(() => {
   return sentences.value[currentIndex.value] || { number: '', chinese: '', english: '' }
 })
@@ -1466,6 +1550,17 @@ const handleModeChange = (mode) => {
         inputRef.value.focus()
       }
     })
+  }
+}
+
+const toggleChineseHint = () => {
+  showChineseHint.value = !showChineseHint.value
+}
+
+const handleSentenceJump = (index) => {
+  if (index >= 0 && index < sentences.value.length) {
+    currentIndex.value = index
+    resetInput()
   }
 }
 
@@ -1930,7 +2025,7 @@ const handleAIFileChange = (file) => {
     const reader = new FileReader()
     reader.onload = (e) => {
       aiEssayForm.value.content = e.target.result
-      aiFileInfo.value = `✅ 已加载文本文件：${file.name}`
+      aiFileInfo.value = `已加载文本文件：${file.name}`
       aiFileSuccess.value = true
       aiFileError.value = false
       ElMessage.success('文件加载成功！请填写其他信息后开始批改')
@@ -1954,7 +2049,7 @@ const handleAIFileChange = (file) => {
         aiEssayForm.value.imageData = e.target.result
         aiEssayForm.value.imageName = file.name
         aiEssayForm.value.content = `[图片文件：${file.name}，将由AI自动识别]`
-        aiFileInfo.value = `📷 已加载图片文件：${file.name}，AI将自动识别图片中的文字`
+        aiFileInfo.value = `已加载图片文件：${file.name}，AI将自动识别图片中的文字`
         aiFileSuccess.value = true
         aiFileError.value = false
         ElMessage.success('图片加载成功！请填写其他信息后开始批改')
@@ -1964,7 +2059,7 @@ const handleAIFileChange = (file) => {
       // 用户选择手动输入
       if (action === 'cancel') {
         aiEssayForm.value.content = ' '
-        aiFileInfo.value = `📷 图片已选择，请手动输入作文内容`
+        aiFileInfo.value = `图片已选择，请手动输入作文内容`
         aiFileSuccess.value = true
         aiFileError.value = false
         ElMessage.info('请在下方文本框中输入图片中的作文内容')
@@ -3136,6 +3231,11 @@ onUnmounted(() => {
   font-size: 14px;
 }
 
+.info-card .guide-arrow {
+  vertical-align: -0.12em;
+  margin: 0 2px;
+}
+
 .info-card a {
   color: #4facfe;
   text-decoration: none;
@@ -3310,5 +3410,1165 @@ onUnmounted(() => {
 
 .reference-empty {
   padding: 60px 0;
+}
+
+/* iOS 风格网页界面 */
+.app-container {
+  background:
+    radial-gradient(circle at 8% 6%, rgba(10, 132, 255, 0.08), transparent 26%),
+    linear-gradient(160deg, #eef1f6 0%, #f7f8fb 54%, #e9eef6 100%);
+  padding: 18px;
+}
+
+.main-container {
+  background: #f5f6fa;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+  height: calc(100vh - 36px);
+}
+
+.sidebar {
+  background: rgba(255, 255, 255, 0.88);
+  border-right: 1px solid rgba(15, 23, 42, 0.07);
+  border-radius: 24px 0 0 24px;
+  backdrop-filter: blur(20px);
+}
+
+.sidebar-header {
+  height: 92px;
+  padding: 22px 24px 18px;
+  background: transparent;
+  box-shadow: none;
+  justify-content: flex-start;
+  text-align: left;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.sidebar-header h2 {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: #101828;
+  line-height: 1.25;
+}
+
+.sidebar-content {
+  padding: 12px 12px 20px;
+}
+
+.chapter-menu {
+  background: transparent;
+}
+
+.chapter-menu :deep(.el-sub-menu__title),
+.chapter-menu :deep(.el-menu-item) {
+  height: 44px;
+  margin: 2px 0;
+  padding-right: 12px;
+  border-radius: 12px;
+  color: #3f4756;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.chapter-menu :deep(.el-sub-menu__title:hover),
+.chapter-menu :deep(.el-menu-item:hover) {
+  background: rgba(10, 132, 255, 0.07);
+  color: #0a84ff;
+}
+
+.chapter-menu :deep(.el-menu-item.is-active) {
+  background: #0a84ff;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(10, 132, 255, 0.28);
+}
+
+.chapter-menu :deep(.el-menu-item.is-active .el-tag) {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.34);
+  color: #fff;
+}
+
+.chapter-menu :deep(.el-sub-menu .el-menu) {
+  background: transparent;
+  padding: 0 0 0 12px;
+}
+
+.chapter-menu :deep(.el-sub-menu__icon-arrow) {
+  color: #98a2b3;
+}
+
+.menu-tag {
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.main-content {
+  padding: 30px 34px 40px;
+  background: #f5f6fa;
+}
+
+.mobile-header {
+  background: rgba(255, 255, 255, 0.84);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  backdrop-filter: blur(18px);
+  padding: 14px 16px;
+}
+
+.mobile-logo {
+  color: #101828;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.menu-toggle {
+  background: #0a84ff;
+  border-color: #0a84ff;
+}
+
+.sidebar-overlay {
+  background: rgba(15, 23, 42, 0.36);
+  backdrop-filter: blur(3px);
+}
+
+.page-header {
+  min-height: 64px;
+  margin-bottom: 24px;
+  gap: 18px;
+  justify-content: space-between;
+}
+
+.page-title-wrap {
+  min-width: 0;
+}
+
+.page-kicker {
+  margin-bottom: 7px;
+  color: #0a84ff;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.page-header h1 {
+  color: #101828;
+  font-size: 30px;
+  font-weight: 750;
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+
+.page-header :deep(.el-tag) {
+  border-radius: 999px;
+  padding: 0 14px;
+  height: 32px;
+  border: 1px solid rgba(10, 132, 255, 0.22);
+  background: rgba(10, 132, 255, 0.08);
+  color: #0a70d5;
+  font-weight: 650;
+}
+
+.upload-section :deep(.el-card) {
+  border-radius: 20px;
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  box-shadow: 0 10px 34px rgba(15, 23, 42, 0.07);
+}
+
+.upload-section :deep(.el-card__body) {
+  padding: 26px;
+}
+
+.upload-section :deep(.el-upload-dragger) {
+  border-radius: 18px;
+  border: 1.5px dashed rgba(10, 132, 255, 0.42);
+  background: #fbfcfe;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.upload-section :deep(.el-upload-dragger:hover) {
+  border-color: #0a84ff;
+  background: #f3f8ff;
+}
+
+.upload-section :deep(.el-button--primary) {
+  background: #0a84ff;
+  border-color: #0a84ff;
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(10, 132, 255, 0.24);
+}
+
+.file-info {
+  border-radius: 12px;
+  font-weight: 550;
+}
+
+.file-info.success {
+  background: #ecfdf3;
+  border: 1px solid #b7f0c7;
+  color: #087f3a;
+}
+
+.file-info.error {
+  background: #fff1f0;
+  border: 1px solid #ffc6c2;
+  color: #b42318;
+}
+
+.practice-toolbar {
+  display: grid;
+  grid-template-columns: 150px minmax(180px, 1fr) minmax(260px, 360px);
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 20px;
+  padding: 18px 22px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  border-radius: 20px;
+  box-shadow: 0 10px 32px rgba(15, 23, 42, 0.06);
+  min-width: 0;
+}
+
+.practice-toolbar > * {
+  min-width: 0;
+}
+
+.practice-toolbar-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.practice-toolbar-copy span {
+  color: #667085;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.practice-toolbar-copy strong {
+  color: #101828;
+  font-size: 20px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.practice-toolbar .progress-bar {
+  margin: 0;
+  width: 100%;
+}
+
+.practice-toolbar :deep(.el-progress-bar__outer) {
+  background: #e9edf3;
+  border-radius: 999px;
+}
+
+.practice-toolbar :deep(.el-progress-bar__inner) {
+  border-radius: 999px;
+}
+
+.sentence-jump {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sentence-jump :deep(.el-select__wrapper) {
+  border-radius: 999px;
+  background: #f3f5f9;
+  box-shadow: none;
+  border: 1px solid #e4e7ec;
+  min-height: 36px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sentence-jump :deep(.el-select__selection) {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sentence-jump :deep(.el-select__selected-item),
+.sentence-jump :deep(.el-select__placeholder) {
+  color: #667085;
+  font-size: 13px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mode-switch {
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.mode-switch :deep(.el-radio-group) {
+  padding: 4px;
+  background: #e9edf3;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 999px;
+}
+
+.mode-switch :deep(.el-radio-button) {
+  margin: 0;
+}
+
+.mode-switch :deep(.el-radio-button__inner) {
+  padding: 10px 22px;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #667085;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.mode-switch :deep(.el-radio-button.is-active .el-radio-button__inner) {
+  background: #fff !important;
+  color: #0a84ff !important;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12) !important;
+}
+
+.mode-switch .hint-toggle {
+  border: 1px solid rgba(10, 132, 255, 0.24);
+  color: #0a84ff;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.sentence-container {
+  margin-bottom: 22px;
+}
+
+.sentence-card {
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  border-left: 4px solid #0a84ff;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 14px 42px rgba(15, 23, 42, 0.09);
+  overflow: hidden;
+}
+
+.sentence-card :deep(.el-card__body) {
+  padding: 26px 28px 30px;
+}
+
+.sentence-number {
+  margin-bottom: 14px;
+  color: #0a84ff;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: 0;
+}
+
+.chinese-text {
+  margin-bottom: 20px;
+  padding: 20px 22px;
+  background: #f5f7fb;
+  border: 1px solid #e7ebf2;
+  border-radius: 16px;
+  color: #101828;
+  font-size: 19px;
+  line-height: 1.8;
+}
+
+.english-answer :deep(.el-alert) {
+  border-radius: 16px;
+  border: 1px solid rgba(48, 209, 88, 0.22);
+  background: #f2fcf6;
+}
+
+.english-answer :deep(.el-alert__title) {
+  color: #087f3a;
+  font-weight: 700;
+}
+
+.answer-text {
+  padding: 18px 20px;
+  border: 1px solid #c9ecd5;
+  border-radius: 14px;
+  background: #fff;
+  color: #1f2937;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.input-textarea :deep(.el-textarea__inner) {
+  border-radius: 16px;
+  border: 1px solid #d8dee8;
+  padding: 16px 18px;
+  font-family: "SF Mono", Consolas, "Courier New", monospace;
+  font-size: 16px;
+  line-height: 1.7;
+  box-shadow: inset 0 2px 6px rgba(15, 23, 42, 0.03);
+}
+
+.input-textarea :deep(.el-textarea__inner:focus) {
+  border-color: #0a84ff;
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.14);
+}
+
+.result-section :deep(.el-alert) {
+  border-radius: 16px;
+  border: 1px solid rgba(10, 132, 255, 0.2);
+  background: #f4f9ff;
+}
+
+.result-section :deep(.el-alert__title) {
+  color: #0a70d5;
+  font-weight: 700;
+}
+
+.result-legend {
+  gap: 8px;
+}
+
+.legend-item {
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.legend-item.correct {
+  color: #087f3a;
+  background: #ecfdf3;
+}
+
+.legend-item.incorrect {
+  color: #b42318;
+  background: #fff1f0;
+}
+
+.legend-item.missing {
+  color: #b25e09;
+  background: #fff7e6;
+}
+
+.result-text {
+  border: 1px solid #dbe5f5;
+  border-radius: 14px;
+  background: #fff;
+  color: #1f2937;
+  font-family: "SF Mono", Consolas, "Courier New", monospace;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.result-text :deep(.correct-char) {
+  color: #0a7d3a;
+  background: rgba(48, 209, 88, 0.12);
+  border-radius: 3px;
+}
+
+.result-text :deep(.incorrect-char) {
+  color: #d92d20;
+  background: rgba(255, 59, 48, 0.14);
+}
+
+.result-text :deep(.missing-char) {
+  color: #b25e09;
+  background: rgba(255, 159, 10, 0.2);
+}
+
+.result-text :deep(.extra-char) {
+  color: #d92d20;
+  background: rgba(255, 59, 48, 0.12);
+}
+
+.stats-container {
+  margin-bottom: 24px;
+  padding: 18px 8px;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  border-radius: 20px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05);
+}
+
+.stats-container :deep(.el-statistic) {
+  text-align: center;
+}
+
+.stats-container :deep(.el-statistic__head) {
+  color: #667085;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.stats-container :deep(.el-statistic__content) {
+  color: #101828;
+  font-size: 24px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.controls {
+  gap: 10px;
+}
+
+.controls :deep(.el-button) {
+  min-height: 42px;
+  border-radius: 999px;
+  padding: 0 18px;
+  font-weight: 650;
+}
+
+.controls :deep(.el-button--primary) {
+  background: #0a84ff;
+  border-color: #0a84ff;
+  box-shadow: 0 8px 20px rgba(10, 132, 255, 0.22);
+}
+
+.controls :deep(.el-button--success) {
+  background: #30d158;
+  border-color: #30d158;
+}
+
+.controls :deep(.el-button--warning) {
+  background: #ff9f0a;
+  border-color: #ff9f0a;
+}
+
+.controls :deep(.el-button--danger) {
+  background: #ff3b30;
+  border-color: #ff3b30;
+}
+
+.ai-correction :deep(.el-card),
+.api-settings :deep(.el-card),
+.info-card :deep(.el-card),
+.framework-content :deep(.el-card),
+.reference-card {
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 10px 34px rgba(15, 23, 42, 0.07);
+}
+
+.ai-correction :deep(.el-card__header),
+.api-settings :deep(.el-card__header),
+.info-card :deep(.el-card__header),
+.framework-content :deep(.el-card__header),
+.reference-card :deep(.el-card__header) {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 253, 0.92));
+  border-radius: 20px 20px 0 0;
+}
+
+.ai-correction :deep(.el-card__body),
+.api-settings :deep(.el-card__body),
+.info-card :deep(.el-card__body),
+.framework-content :deep(.el-card__body) {
+  padding: 24px;
+}
+
+.card-header h2 {
+  color: #101828;
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: 0;
+}
+
+.ai-correction :deep(.el-alert),
+.api-settings :deep(.el-alert) {
+  border-radius: 14px;
+}
+
+.ai-upload-section :deep(.el-upload-dragger) {
+  border-radius: 18px;
+  border: 1.5px dashed rgba(10, 132, 255, 0.42);
+  background: #fbfcfe;
+}
+
+.ai-upload-section :deep(.el-button--primary) {
+  border-radius: 999px;
+  background: #0a84ff;
+  border-color: #0a84ff;
+}
+
+.ai-text-input :deep(.el-input__wrapper),
+.ai-text-input :deep(.el-textarea__inner),
+.api-settings :deep(.el-input__wrapper),
+.api-settings :deep(.el-select__wrapper) {
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px #e4e7ec inset;
+}
+
+.ai-text-input :deep(.el-input__wrapper.is-focus),
+.ai-text-input :deep(.el-textarea__inner:focus),
+.api-settings :deep(.el-input__wrapper.is-focus),
+.api-settings :deep(.el-select__wrapper.is-focused) {
+  box-shadow: 0 0 0 1px #0a84ff inset, 0 0 0 3px rgba(10, 132, 255, 0.12) !important;
+}
+
+.ai-text-input :deep(.el-form-item__label),
+.api-settings :deep(.el-form-item__label) {
+  color: #344054;
+  font-weight: 600;
+}
+
+.ai-text-input :deep(.el-button--primary) {
+  border-radius: 999px;
+  background: #0a84ff;
+  border-color: #0a84ff;
+}
+
+.result-header h3 {
+  margin: 0;
+  color: #101828;
+  font-size: 19px;
+  font-weight: 750;
+}
+
+.result-content :deep(h1),
+.result-content :deep(h2),
+.result-content :deep(h3) {
+  color: #101828;
+  letter-spacing: 0;
+}
+
+.result-content :deep(h2) {
+  border-bottom-color: #e4e7ec;
+}
+
+.result-content :deep(p) {
+  color: #344054;
+}
+
+.result-content :deep(strong) {
+  color: #101828;
+}
+
+.result-content :deep(li) {
+  color: #344054;
+}
+
+.reference-content {
+  max-width: 980px;
+}
+
+.reference-selector :deep(.el-select__wrapper) {
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #e4e7ec;
+  box-shadow: none;
+}
+
+.reference-card-header {
+  padding: 2px 0;
+}
+
+.reference-title {
+  color: #101828;
+  font-size: 19px;
+  font-weight: 750;
+  letter-spacing: 0;
+}
+
+.reference-card :deep(.el-button) {
+  border-radius: 999px;
+}
+
+.reference-question-text {
+  background: #fff5f4;
+  border: 1px solid #ffd6d2;
+  border-radius: 14px;
+  color: #4a1d1b;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.reference-answer-text {
+  background: #f3faf6;
+  border: 1px solid #d5ecd9;
+  border-radius: 14px;
+  color: #24302a;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.info-card h2,
+.framework-content h2 {
+  color: #101828;
+  font-size: 24px;
+  font-weight: 750;
+  letter-spacing: 0;
+  border-bottom-color: #e4e7ec;
+}
+
+.info-card h3 {
+  color: #101828;
+}
+
+.info-card p,
+.info-card li {
+  color: #475467;
+}
+
+.info-card :deep(.el-table) {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.info-card :deep(.el-table th.el-table__cell) {
+  background: #f5f7fb !important;
+  color: #101828;
+  font-weight: 650;
+}
+
+.info-card :deep(.el-descriptions) {
+  --el-descriptions-table-border: 1px solid #e4e7ec;
+}
+
+.info-card :deep(.el-descriptions__label) {
+  color: #344054;
+  font-weight: 650;
+}
+
+.info-card :deep(.el-collapse-item__header) {
+  border-radius: 12px;
+  color: #101828;
+  font-weight: 650;
+}
+
+.framework-content :deep(.el-divider__text) {
+  color: #344054;
+  font-weight: 700;
+}
+
+.framework-content :deep(.el-descriptions__label) {
+  color: #344054;
+  font-weight: 650;
+}
+
+.framework-content :deep(.el-alert) {
+  border-radius: 14px;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 250px !important;
+  }
+
+  .practice-toolbar {
+    grid-template-columns: 120px 1fr;
+  }
+
+  .sentence-jump {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0;
+    background: #eef1f6;
+  }
+
+  .main-container {
+    height: 100vh;
+    border-radius: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .sidebar {
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.96);
+  }
+
+  .main-content {
+    padding: 20px 16px 34px;
+    background: #f5f6fa;
+  }
+
+  .page-header {
+    min-height: 0;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .page-header h1 {
+    font-size: 25px;
+  }
+
+  .page-header :deep(.el-tag) {
+    align-self: flex-start;
+  }
+
+  .practice-toolbar {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .sentence-jump {
+    grid-column: auto;
+  }
+
+  .mode-switch {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .mode-switch :deep(.el-radio-button__inner) {
+    padding: 9px 16px;
+  }
+
+  .sentence-card :deep(.el-card__body) {
+    padding: 20px 16px 24px;
+  }
+
+  .chinese-text {
+    padding: 16px;
+    font-size: 17px;
+  }
+
+  .answer-text {
+    padding: 15px;
+    font-size: 16px;
+  }
+
+  .stats-container :deep(.el-row) {
+    display: flex;
+  }
+
+  .stats-container :deep(.el-col) {
+    max-width: 33.333%;
+    flex: 1 1 33.333%;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .controls :deep(.el-button) {
+    width: 100%;
+  }
+
+  .ai-correction :deep(.el-card__body),
+  .api-settings :deep(.el-card__body),
+  .info-card :deep(.el-card__body),
+  .framework-content :deep(.el-card__body) {
+    padding: 18px;
+  }
+
+  .reference-card :deep(.el-card__header) {
+    padding: 16px;
+  }
+}
+
+/* 统一图标与 iOS 材质细节 */
+.sidebar-header h2,
+.mobile-logo,
+.reference-title,
+.card-header h2,
+.info-card h2,
+.info-card h3,
+.framework-content h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-header h2,
+.mobile-logo {
+  min-width: 0;
+}
+
+.brand-icon,
+.title-icon {
+  color: #0a84ff;
+  flex: none;
+  font-size: 1.2em;
+  filter: drop-shadow(0 4px 10px rgba(10, 132, 255, 0.22));
+}
+
+.mobile-logo .brand-icon {
+  font-size: 19px;
+}
+
+.inline-icon-title,
+.collapse-title,
+.description-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.inline-icon-title .el-icon,
+.collapse-title .el-icon,
+.description-label .el-icon {
+  flex: none;
+}
+
+.criteria-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.criteria-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  color: #475467;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.criteria-row .el-icon {
+  flex: none;
+  margin-top: 2px;
+  color: #30d158;
+}
+
+.collapse-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: rgba(10, 132, 255, 0.1);
+  color: #0a84ff;
+  font-size: 12px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.description-label {
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-item .el-icon {
+  flex: none;
+  font-size: 15px;
+}
+
+.legend-item.correct .el-icon {
+  color: #30d158;
+}
+
+.legend-item.incorrect .el-icon {
+  color: #ff3b30;
+}
+
+.legend-item.missing .el-icon {
+  color: #ff9f0a;
+}
+
+.page-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  margin: -30px -34px 24px;
+  padding: 18px 34px 14px;
+  background: linear-gradient(180deg, rgba(245, 246, 250, 0.98), rgba(245, 246, 250, 0.78));
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+}
+
+.main-content {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.content-section {
+  max-width: 1060px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.ai-correction :deep(.el-card),
+.api-settings :deep(.el-card),
+.info-card :deep(.el-card),
+.framework-content :deep(.el-card),
+.upload-section :deep(.el-card) {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.ai-correction :deep(.el-card:hover),
+.api-settings :deep(.el-card:hover),
+.info-card :deep(.el-card:hover),
+.framework-content :deep(.el-card:hover),
+.upload-section :deep(.el-card:hover) {
+  border-color: rgba(10, 132, 255, 0.18);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.1);
+}
+
+.sidebar-header {
+  background: linear-gradient(135deg, rgba(10, 132, 255, 0.14), rgba(48, 209, 88, 0.08)), rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.chapter-menu :deep(.el-sub-menu__title),
+.chapter-menu :deep(.el-menu-item) {
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.chapter-menu :deep(.el-menu-item:hover) {
+  transform: translateX(2px);
+}
+
+.chapter-menu :deep(.el-menu-item.is-active) {
+  transform: none;
+}
+
+.sentence-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sentence-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 52px rgba(15, 23, 42, 0.12);
+}
+
+.result-legend {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    margin: -20px -16px 20px;
+    padding: 14px 16px 12px;
+  }
+
+  .content-section {
+    max-width: 100%;
+  }
+
+  .card-header h2 {
+    font-size: 20px;
+  }
+
+  .info-card h2,
+  .framework-content h2 {
+    font-size: 21px;
+  }
+
+  .collapse-index {
+    width: 22px;
+    height: 22px;
+  }
+}
+</style>
+
+<style>
+:root {
+  --el-color-primary: #0a84ff;
+  --el-color-primary-light-3: #47a9ff;
+  --el-color-primary-light-5: #75bfff;
+  --el-color-primary-light-7: #b3daff;
+  --el-color-primary-light-8: #cfe7ff;
+  --el-color-primary-light-9: #ebf5ff;
+  --el-color-primary-dark-2: #0868cc;
+  --el-color-success: #30d158;
+  --el-color-warning: #ff9f0a;
+  --el-color-danger: #ff3b30;
+  --el-border-radius-base: 10px;
+  --el-border-radius-small: 8px;
+  --el-border-radius-round: 999px;
+  --el-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC",
+    "Microsoft YaHei", "Segoe UI", sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  background: #eef1f6;
+  color: #101828;
+}
+
+body {
+  min-width: 320px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC",
+    "Microsoft YaHei", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+.sentence-jump-popper {
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.16);
+}
+
+.sentence-jump-popper .el-select-dropdown__item {
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 34px;
+}
+
+.sentence-jump-popper .el-select-dropdown__item.is-hovering {
+  background: rgba(10, 132, 255, 0.08);
+}
+
+.sentence-jump-popper .el-select-dropdown__item.is-selected {
+  color: #0a84ff;
+  font-weight: 700;
+}
+
+.el-message {
+  border-radius: 999px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 14px 42px rgba(15, 23, 42, 0.14);
+}
+
+.el-message-box {
+  border-radius: 18px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.18);
+}
+
+.el-message-box__title {
+  font-weight: 750;
+}
+
+.el-button {
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 </style>

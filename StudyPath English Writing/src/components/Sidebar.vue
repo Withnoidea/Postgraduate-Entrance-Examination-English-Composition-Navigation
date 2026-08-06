@@ -1,7 +1,7 @@
 <template>
   <el-aside width="280px" class="sidebar" :class="{ 'mobile-visible': visible }">
     <div class="sidebar-header">
-      <h2>📚 考研英语作文背诵</h2>
+      <h2><el-icon class="brand-icon"><Notebook /></el-icon> 考研英语作文背诵</h2>
     </div>
     
     <el-scrollbar class="sidebar-content">
@@ -45,6 +45,7 @@
 
 <script setup>
 import { 
+  Notebook,
   Document, 
   Picture, 
   DataAnalysis, 
