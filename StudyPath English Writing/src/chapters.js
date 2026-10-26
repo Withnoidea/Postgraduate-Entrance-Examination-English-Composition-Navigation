@@ -186,12 +186,6 @@ export const chapters = [
         type: "info",
         content: null,
       },
-      {
-        id: "corr-5",
-        title: "作文自检工具",
-        type: "practice",
-        templateFile: null,
-      },
     ],
   },
   {

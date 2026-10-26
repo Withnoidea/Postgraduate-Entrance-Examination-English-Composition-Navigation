@@ -42,12 +42,12 @@
             <el-option label="A 节：应用文 / 小作文 (满分 10 分)" value="small" />
             <el-option 
               v-if="form.examType === 'english1'" 
-              label="B 节：图画大作文 (单项满分 20 分 · 总分 30 分)" 
+              label="B 节：图画大作文 (满分 20 分)" 
               value="big" 
             />
             <el-option 
               v-else 
-              label="B 节：图表大作文 (单项满分 15 分 · 总分 25 分)" 
+              label="B 节：图表大作文 (满分 15 分)" 
               value="big" 
             />
             <el-option label="短文写作 / 自拟题目练习" value="custom" />
@@ -70,28 +70,13 @@
         </div>
 
         <div class="meta-item full-width">
-          <label class="meta-label">作文标题或指令要求（强烈建议填写，以防模型误判跑题）</label>
+          <label class="meta-label">作文标题或指令要求（建议填写，以便精准判定是否扣题）</label>
           <el-input 
             v-model="form.title" 
             placeholder="例如：Directions: Write an essay based on the chart / Notice of Volunteer Recruitment..." 
             size="large"
             clearable
           />
-        </div>
-      </div>
-
-      <!-- 考研官方大纲满分说明条 -->
-      <div class="syllabus-score-banner">
-        <el-icon class="banner-icon"><InfoFilled /></el-icon>
-        <div class="banner-text">
-          <span class="banner-tag">教育部大纲标准</span>
-          <span v-if="form.examType === 'english1'">
-            考研英语（一）整套试卷写作总分共 <strong>30 分</strong>（其中 Part A 应用文小作文 <strong>10 分</strong> + Part B 图画大作文 <strong>20 分</strong>）。
-          </span>
-          <span v-else>
-            考研英语（二）整套试卷写作总分共 <strong>25 分</strong>（其中 Part A 应用文小作文 <strong>10 分</strong> + Part B 图表大作文 <strong>15 分</strong>）。
-          </span>
-          当前针对单项进行精准诊断。
         </div>
       </div>
 
@@ -631,15 +616,14 @@ const startCorrection = async () => {
 const buildEvaluationPrompt = () => {
   const isEng1 = form.value.examType === 'english1'
   const exam = isEng1 ? '考研英语（一）' : '考研英语（二）'
-  const totalExamWritingScore = isEng1 ? 30 : 25
   const itemMaxScore = form.value.essayCategory === 'small' ? 10 : (isEng1 ? 20 : 15)
 
   const categoryMap = {
-    small: `A 节：应用文小作文（本项满分 10 分 · 整卷写作总分 ${totalExamWritingScore} 分）`,
+    small: 'A 节：应用文小作文（满分 10 分）',
     big: isEng1 
-      ? 'B 节：图画大作文（本项满分 20 分 · 英语一写作总分 30 分）' 
-      : 'B 节：图表大作文（本项满分 15 分 · 英语二写作总分 25 分）',
-    custom: `短文写作（参照满分 ${itemMaxScore} 分）`
+      ? 'B 节：图画大作文（满分 20 分）' 
+      : 'B 节：图表大作文（满分 15 分）',
+    custom: `短文写作（满分 ${itemMaxScore} 分）`
   }
   const category = categoryMap[form.value.essayCategory] || '英语写作'
 
@@ -666,10 +650,7 @@ const buildEvaluationPrompt = () => {
   return `你是一名精通教育部考研英语命题规范与阅卷大纲的权威官方阅卷组专家。
 请严格对照【${exam} - ${category}】的全国统考官方评分细则，对考生提交的作文进行全方位、专业且具有针对性的诊断。
 
-【特别警示：官方大纲分值体系】
-- 本次评分题项：${category}
-- 本题单项满分：${itemMaxScore} 分（注意：考研整套试卷写作总分是 ${totalExamWritingScore} 分，其中小作文10分，英语一大作文20分 / 英语二大作文15分）
-- 你的终审得分与各维度得分总和**绝对不能超过 ${itemMaxScore} 分**！
+【满分分值】：本次评分题项：${category}，单项满分 ${itemMaxScore} 分。你的终审得分与各维度得分总和绝对不能超过 ${itemMaxScore} 分！
 
 【🔥 官方阅卷最高铁律：跑题 / 文不对题 / 生搬硬套模板“一票否决与降档惩罚机制”】
 考研阅卷评分第一原则是【审题与扣题一致性】：
@@ -686,8 +667,8 @@ const buildEvaluationPrompt = () => {
 ${formatGuidelines}
 
 【考生试卷信息】
-- 考试类型：${exam}（整卷写作总分 ${totalExamWritingScore} 分）
-- 作文类别：${category}（单项满分 ${itemMaxScore} 分）
+- 考试类型：${exam}
+- 作文类别：${category}
 - 题目年份/说明：${form.value.year || '未指定'}
 - 题目与要求：${form.value.title || '（未提供特定要求，请按标准大纲题型评估）'}
 ${imageData.value ? '- 考生已上传【答题卡/真迹图片】：请仔细辨识图片中的手写英文内容、卷面布局、首行缩进与字迹规范！' : ''}
@@ -705,7 +686,7 @@ ${form.value.content || '（考生直接上传了手写图片，未在输入框�
 | **语言规范与句式多样性** (Language Accuracy & Variety) | 语法精准度、动词时态主谓一致、高级句式运用 | X分 / ${Math.round(itemMaxScore * 0.35)}分 | 简述语言质量 |
 | **结构组织与逻辑衔接** (Organization & Coherence) | 三段式结构、指代词使用、逻辑连接词承转启合 | X分 / ${Math.round(itemMaxScore * 0.2)}分 | 简述段落衔接 |
 | **卷面格式与书写规范** (Format & Handwriting) | 首行缩进、称呼署名对齐、工整度、标点规范 | X分 / ${Math.round(itemMaxScore * 0.1)}分 | 简述是否符合 4 空格首行缩进及官方格式 |
-| **综合终审得分** | **单项满分 ${itemMaxScore} 分 (写作总分 ${totalExamWritingScore}分)** | **X分 / 档次 (如：第X档 X-X分)** | 一句话核心诊断（若文不对题请标明【严重跑题】） |
+| **综合终审得分** | **满分 ${itemMaxScore} 分** | **X分 / 档次 (如：第X档 X-X分)** | 一句话核心诊断（若文不对题请标明【严重跑题】） |
 
 > **扣题一致性核验结论**：【完全扣题 / 部分偏题 / 严重跑题套作】——（详细说明判定依据）
 
