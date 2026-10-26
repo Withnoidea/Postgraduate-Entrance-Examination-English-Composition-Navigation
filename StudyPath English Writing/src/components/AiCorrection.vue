@@ -39,8 +39,17 @@
         <div class="meta-item">
           <label class="meta-label">写作题型</label>
           <el-select v-model="form.essayCategory" placeholder="选择题型" size="large" class="meta-select">
-            <el-option label="A 节：应用文 / 小作文 (10分)" value="small" />
-            <el-option label="B 节：图画 / 图表大作文 (15/20分)" value="big" />
+            <el-option label="A 节：应用文 / 小作文 (满分 10 分)" value="small" />
+            <el-option 
+              v-if="form.examType === 'english1'" 
+              label="B 节：图画大作文 (单项满分 20 分 · 总分 30 分)" 
+              value="big" 
+            />
+            <el-option 
+              v-else 
+              label="B 节：图表大作文 (单项满分 15 分 · 总分 25 分)" 
+              value="big" 
+            />
             <el-option label="短文写作 / 自拟题目练习" value="custom" />
           </el-select>
         </div>
@@ -61,13 +70,28 @@
         </div>
 
         <div class="meta-item full-width">
-          <label class="meta-label">作文标题或指令要求（选填）</label>
+          <label class="meta-label">作文标题或指令要求（强烈建议填写，以防模型误判跑题）</label>
           <el-input 
             v-model="form.title" 
             placeholder="例如：Directions: Write an essay based on the chart / Notice of Volunteer Recruitment..." 
             size="large"
             clearable
           />
+        </div>
+      </div>
+
+      <!-- 考研官方大纲满分说明条 -->
+      <div class="syllabus-score-banner">
+        <el-icon class="banner-icon"><InfoFilled /></el-icon>
+        <div class="banner-text">
+          <span class="banner-tag">教育部大纲标准</span>
+          <span v-if="form.examType === 'english1'">
+            考研英语（一）整套试卷写作总分共 <strong>30 分</strong>（其中 Part A 应用文小作文 <strong>10 分</strong> + Part B 图画大作文 <strong>20 分</strong>）。
+          </span>
+          <span v-else>
+            考研英语（二）整套试卷写作总分共 <strong>25 分</strong>（其中 Part A 应用文小作文 <strong>10 分</strong> + Part B 图表大作文 <strong>15 分</strong>）。
+          </span>
+          当前针对单项进行精准诊断。
         </div>
       </div>
 
@@ -152,14 +176,17 @@
             <div class="stats-group">
               <span class="stat-pill">单词数：<strong>{{ wordCount }}</strong></span>
               <span class="stat-pill">字符数：<strong>{{ form.content.length }}</strong></span>
-              <el-button 
-                link 
-                type="primary" 
-                size="small" 
-                @click="fillSampleEssay"
-              >
-                填入示范范文
-              </el-button>
+              <el-dropdown trigger="click" @command="fillSampleEssay">
+                <el-button link type="primary" size="small">
+                  填入真题示范 <el-icon class="el-icon--right"><ArrowDown /></el-icon>
+                </el-button>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item command="english1">2024 英语一图画大作文（满分20分）</el-dropdown-item>
+                    <el-dropdown-item command="english2">2024 英语二图表大作文（满分15分）</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
               <el-button 
                 link 
                 type="info" 
@@ -420,12 +447,30 @@ const removeImage = () => {
 }
 
 // 示范作文填充（严格按考研真题卷面首行缩进规范）
-const fillSampleEssay = () => {
-  form.value.title = 'Directions: Write an essay based on the chart showing Chinese residents reading habits.'
-  form.value.content = `    As is vividly illustrated by the chart, the proportion of Chinese adults reading via digital devices witnessed a notable climb from 68.2% in 2018 to 80.1% in 2023. Meanwhile, traditional print reading experienced a slight downturn yet maintained a stable baseline around 58%. Such a striking contrast naturally captures extensive public attention and sparks profound reflections.
+const fillSampleEssay = (type = 'english2') => {
+  if (type === 'english1') {
+    form.value.examType = 'english1'
+    form.value.essayCategory = 'big'
+    form.value.year = '2024'
+    form.value.title = 'Directions: Write an essay based on the picture showing two students in front of a campus bulletin board discussing AI and future careers.'
+    form.value.content = `    As is vividly portrayed in the drawing, two university students stand attentively before a campus bulletin board, deeply engrossed in a lively discussion regarding artificial intelligence and their future vocations. One student expresses apprehension about career prospects, while the other maintains that emerging technologies also herald unprecedented opportunities. The caption beneath reinforces this intriguing scenario.
+
+    The profound implication conveyed by the cartoon deserves contemplation. First and foremost, the exponential rise of artificial intelligence has indeed revolutionized traditional employment sectors, prompting young intellectuals to reconsider the core competence required in the upcoming decade. Rather than succumbing to anxiety, proactive learners should regard intelligent algorithms as powerful instruments that augment human creativity and productivity. Moreover, adaptability and lifelong learning have emerged as the paramount qualities for college graduates in navigating this transformative era.
+
+    In light of the analysis elaborated above, we ought to cultivate a balanced perspective towards technological progress. On the one hand, universities and educational authorities should modernize academic curricula to foster interdisciplinary talents. On the other hand, contemporary youth must sharpen critical discernment and emotional empathy—distinctive human attributes that can never be supplanted by synthetic machines. Only through proactive adaptation can we thrive amidst technological waves.`
+    ElMessage.info('已载入 2024 年考研英语（一）图画大作文示范样例（已自动联动设置英语一、满分 20 分及对应题目要求）！')
+  } else {
+    form.value.examType = 'english2'
+    form.value.essayCategory = 'big'
+    form.value.year = '2024'
+    form.value.title = 'Directions: Write an essay based on the chart showing Chinese residents reading habits.'
+    form.value.content = `    As is vividly illustrated by the chart, the proportion of Chinese adults reading via digital devices witnessed a notable climb from 68.2% in 2018 to 80.1% in 2023. Meanwhile, traditional print reading experienced a slight downturn yet maintained a stable baseline around 58%. Such a striking contrast naturally captures extensive public attention and sparks profound reflections.
+
     Several underlying catalysts account for this salient trend. First and foremost, the rapid advancement of mobile Internet and smart gadgets has rendered digital reading exceptionally ubiquitous and convenient. Readers can effortlessly access vast oceans of information during fragmented commuting hours. Furthermore, multimedia e-books integrated with audio and interactive graphics deliver an immersive experience that paper books could hardly match. Nevertheless, the enduring charm of physical books—such as in-depth contemplation and tactile aroma—remains irreplaceable.
+
     To sum up, while digital media has undeniably evolved into the primary conduit of modern knowledge acquisition, print reading still serves as an anchor for deep cultural cultivation. Hence, we should embrace technological convenience while continuing to cherish profound reading traditions.`
-  ElMessage.info('已载入 2024 年考研英语二图表大作文示范样例（标准首行缩进）！')
+    ElMessage.info('已载入 2024 年考研英语（二）图表大作文示范样例（已自动联动设置英语二、满分 15 分及对应题目要求）！')
+  }
 }
 
 // 复制报告
@@ -584,11 +629,17 @@ const startCorrection = async () => {
 
 // 构建严谨的考研四维评分 Prompt
 const buildEvaluationPrompt = () => {
-  const exam = form.value.examType === 'english1' ? '考研英语（一）' : '考研英语（二）'
+  const isEng1 = form.value.examType === 'english1'
+  const exam = isEng1 ? '考研英语（一）' : '考研英语（二）'
+  const totalExamWritingScore = isEng1 ? 30 : 25
+  const itemMaxScore = form.value.essayCategory === 'small' ? 10 : (isEng1 ? 20 : 15)
+
   const categoryMap = {
-    small: 'A 节：应用文小作文（满分 10 分）',
-    big: form.value.examType === 'english1' ? 'B 节：图画大作文（满分 20 分）' : 'B 节：图表大作文（满分 15 分）',
-    custom: '短文写作'
+    small: `A 节：应用文小作文（本项满分 10 分 · 整卷写作总分 ${totalExamWritingScore} 分）`,
+    big: isEng1 
+      ? 'B 节：图画大作文（本项满分 20 分 · 英语一写作总分 30 分）' 
+      : 'B 节：图表大作文（本项满分 15 分 · 英语二写作总分 25 分）',
+    custom: `短文写作（参照满分 ${itemMaxScore} 分）`
   }
   const category = categoryMap[form.value.essayCategory] || '英语写作'
 
@@ -613,13 +664,30 @@ const buildEvaluationPrompt = () => {
 2. **标点与大小写**：句首首字母大写，标点符号（逗号、句号）紧跟单词且后留一个空格。`
 
   return `你是一名精通教育部考研英语命题规范与阅卷大纲的权威官方阅卷组专家。
-请严格对照【${exam} - ${category}】的全国统考评分细则，对考生提交的作文进行全方位、专业且具有针对性的诊断。
+请严格对照【${exam} - ${category}】的全国统考官方评分细则，对考生提交的作文进行全方位、专业且具有针对性的诊断。
+
+【特别警示：官方大纲分值体系】
+- 本次评分题项：${category}
+- 本题单项满分：${itemMaxScore} 分（注意：考研整套试卷写作总分是 ${totalExamWritingScore} 分，其中小作文10分，英语一大作文20分 / 英语二大作文15分）
+- 你的终审得分与各维度得分总和**绝对不能超过 ${itemMaxScore} 分**！
+
+【🔥 官方阅卷最高铁律：跑题 / 文不对题 / 生搬硬套模板“一票否决与降档惩罚机制”】
+考研阅卷评分第一原则是【审题与扣题一致性】：
+1. **题文一致性审查（第一道红线）**：
+   - 题目给定要求/背景：${form.value.title || '（通用大纲题型要求）'}；年份背景：${form.value.year || '未指定'}。
+   - 仔细对比考生正文的核心主题（Topic & Argument）与上述题目要求是否吻合！
+   - **文不对题/生搬硬套模板典型情形**：例如题目要求写“2023年关于传统文化/大学生活”，考生却通篇抄录套用“2024年图书阅读习惯”或无关联的模板框架；或者题目是“建议信”正文却写成“辞职信”；题目要求写“网络利弊”正文却写“保护环境”。
+2. **跑题惩罚量化扣分规则（严格执行降档惩罚，严禁给高分！）**：
+   - **严重跑题 / 明显套用无关年份真题模板**：【内容切题度维度得分直接判为 0~2 分】；总分**一票否决直接降入第四档（1~${Math.round(itemMaxScore * 0.3)}分）**！并在诊断报告最顶端用醒目的 ⚠️ 严重警告标出“题目与正文严重脱节，涉嫌生搬硬套无关模板，考场将面临极低分风险”。
+   - **部分偏题 / 论据牵强**：【内容切题度维度得分扣除 60% 以上】，总分最高不得超过及格线（${Math.round(itemMaxScore * 0.55)}分）。
+   - **紧密扣题且论证充实**：方可根据语言规范与逻辑正常给高分。
+【千万切记】：即使考生的英文句子语法完美、长难句华丽，只要“跑题/文不对题”，在考研统考阅卷中就必须判定为模板套作或跑题，一律降档打低分！严禁因为语言通顺而给跑题作文打高分！
 
 ${formatGuidelines}
 
 【考生试卷信息】
-- 考试类型：${exam}
-- 作文类别：${category}
+- 考试类型：${exam}（整卷写作总分 ${totalExamWritingScore} 分）
+- 作文类别：${category}（单项满分 ${itemMaxScore} 分）
 - 题目年份/说明：${form.value.year || '未指定'}
 - 题目与要求：${form.value.title || '（未提供特定要求，请按标准大纲题型评估）'}
 ${imageData.value ? '- 考生已上传【答题卡/真迹图片】：请仔细辨识图片中的手写英文内容、卷面布局、首行缩进与字迹规范！' : ''}
@@ -630,14 +698,16 @@ ${form.value.content || '（考生直接上传了手写图片，未在输入框�
 ---------------------------------
 【你的输出必须严格包含以下清晰的 Markdown 模块】：
 
-### 一、 卷面与总评打分卡
-| 评估维度 | 满分标准 | 实得分 | 核心得分点与失分主因 |
+### 一、 卷面与总评打分卡（单项满分 ${itemMaxScore} 分）
+| 评估维度 | 满分标准 | 实得分 | 核心得分点与扣分主因（重点指出是否扣题） |
 | :--- | :--- | :--- | :--- |
-| **语言规范与句式多样性** (Language) | 语法精准度、动词时态主谓一致、高级句式运用 | X分 | 简述 |
-| **结构组织与逻辑衔接** (Organization) | 三段式结构、指代词使用、逻辑连接词承转启合 | X分 | 简述 |
-| **内容切题与立意深度** (Content) | 扣题准确度、论据充实性、论点深刻性 | X分 | 简述 |
-| **卷面格式与书写规范** (Format & Handwriting) | 首行缩进、称呼署名对齐、衡水体/手写工整度、标点规范 | X分 | 简述是否符合首行缩进及官方格式 |
-| **综合终审得分** | **总满分** | **X分 / 档次 (如：第一档 17-20分)** | 核心一句话诊断 |
+| **内容切题与立意深度** (Content & Task Fulfillment) | 扣题准确度、论据是否紧扣给定题目、有无偏题套题 | X分 / ${Math.round(itemMaxScore * 0.35)}分 | 明确指出题目与作文核心论点是否一致，有无套用无关模板 |
+| **语言规范与句式多样性** (Language Accuracy & Variety) | 语法精准度、动词时态主谓一致、高级句式运用 | X分 / ${Math.round(itemMaxScore * 0.35)}分 | 简述语言质量 |
+| **结构组织与逻辑衔接** (Organization & Coherence) | 三段式结构、指代词使用、逻辑连接词承转启合 | X分 / ${Math.round(itemMaxScore * 0.2)}分 | 简述段落衔接 |
+| **卷面格式与书写规范** (Format & Handwriting) | 首行缩进、称呼署名对齐、工整度、标点规范 | X分 / ${Math.round(itemMaxScore * 0.1)}分 | 简述是否符合 4 空格首行缩进及官方格式 |
+| **综合终审得分** | **单项满分 ${itemMaxScore} 分 (写作总分 ${totalExamWritingScore}分)** | **X分 / 档次 (如：第X档 X-X分)** | 一句话核心诊断（若文不对题请标明【严重跑题】） |
+
+> **扣题一致性核验结论**：【完全扣题 / 部分偏题 / 严重跑题套作】——（详细说明判定依据）
 
 ${form.value.includeOcrTranscript && imageData.value ? `
 ### 二、 手写字迹精准转录与卷面诊断
