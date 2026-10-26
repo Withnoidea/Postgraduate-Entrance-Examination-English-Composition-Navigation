@@ -1,0 +1,334 @@
+{
+  "chapter_title": "第三章 图画作文",
+  "section_title": "第一节 写作框架构建",
+  "book_title": "写作锦囊 36句攻克考研英语高分作文",
+  "intro": "图画作文的考查通常以给定的漫画或照片为基础，要求考生根据图画内容进行描述、分析并发表观点。图画可能涉及社会、科技、文化等多个领域，考查考生需要用英文表达对图画的理解，展示自己的语言表达能力和英文素养。考研英语图画作文通常考查学生的四项能力：图画描述能力、内涵分析能力、现象剖析能力和深度评价能力。为了使作文有层次、有逻辑，我们通常采用三段式写作框架。总体如下：",
+  "framework_overview": [
+    {
+      "paragraph": "第一段：背景构筑 (90%)",
+      "components": [
+        {
+          "name": "图画描述",
+          "options": [
+            "一个人 / 一群人动作一致",
+            "A、B 之间发生互动",
+            "双图模式"
+          ],
+          "selection": "框架 3 选 1"
+        },
+        {
+          "name": "内涵分析",
+          "options": [
+            "好事情",
+            "坏事情",
+            "双刃剑",
+            "认知差异"
+          ],
+          "selection": "框架 4 选 1"
+        }
+      ]
+    },
+    {
+      "paragraph": "第二段：现象剖析",
+      "components": [
+        {
+          "name": "承上启下过渡句",
+          "detail": "引出原因或利弊分析"
+        },
+        {
+          "name": "原因/利弊展开",
+          "options": [
+            "首先，个人 / 正方 / 合理使用分析",
+            "其次，社会 / 反方 / 过度使用分析"
+          ],
+          "selection": "妙句 10 选 2"
+        }
+      ]
+    },
+    {
+      "paragraph": "第三段：深度评价",
+      "components": [
+        {
+          "name": "归纳与倡议/对策",
+          "options": [
+            "好事情",
+            "坏事情",
+            "双刃剑",
+            "认知差异"
+          ],
+          "selection": "框架 4 选 1"
+        }
+      ]
+    }
+  ],
+  "paragraph_1": {
+    "title": "第一段：背景构筑",
+    "description": "本段由两部分组成，分别是图画描述和内涵分析。图画描述作为文章的开篇内容，关键在于通过生动的语言，准确描述图画所呈现的信息，使读者能够清晰地构建起对图画的印象。需要注意的是，若没有特别年份标注，那么在描述图画时通常采用一般现在时。内涵分析要求深入挖掘图画寓意，提取关键词并揭示全文主旨，为后续分析奠定基础。具体如下：",
+    "sentence_1_description": {
+      "title": "第一句：图画描述（3选1）",
+      "cases": [
+        {
+          "case_id": "case_1",
+          "name": "情况一：图画为一个人做某事或者一群人做同样的事情",
+          "formula": "As shown in the cartoon/picture, there be sb., doing₁ sth. and doing₂ sth., which + 定语从句 或者 with/without + 名词 / 动名词.",
+          "explanation": [
+            {
+              "term": "As shown in the cartoon/picture",
+              "desc": "如漫画/照片所示。"
+            },
+            {
+              "term": "there be sb.",
+              "desc": "表示那儿有某人，sb. 作句子的主语，可以表示某个人/一群人。"
+            },
+            {
+              "term": "doing₁ sth. and doing₂ sth.",
+              "desc": "两个并列的动词短语，doing₁ sth. 描述 sb. 的位置或状态，例如在某地站着 (standing)、坐着 (sitting)、跑着 (running)、躺着 (lying)，而 doing₂ sth. 描述 sb. 正在进行的核心动作，为后续文本提供衔接。"
+            },
+            {
+              "term": "which + 定语从句",
+              "desc": "which 引导的非限定性定语从句可以是对前面最后一个 sth. 的解释或修饰，也可以是对前面句子的补充说明。这种结构常用来提供关于先行词额外的信息或背景细节，使得描述更加具体和翔实。"
+            },
+            {
+              "term": "with/without + 名词 / 动名词",
+              "desc": "介词短语充当伴随状语，描述（非）伴随的状态。"
+            }
+          ],
+          "tips": "在动笔之前，考生可根据描图口诀先用中文进行串联，若中文串联顺畅，英文表达则能水到渠成。",
+          "chant": "描图口诀：如图所示，那儿有某人，在某地站着/坐着/跑着/躺着并且在干什么（核心动作），解释或修饰前面最后一个名词或整件事/动作的结果/它包含什么/（非）伴随的状态。（手写批注：是什么/怎样）",
+          "exam_years": "2001 年真题 / 2002 年真题 / 2004 年真题 / 2008 年真题 / 2009 年真题 / 2010 年真题 / 2011 年真题 / 2013 年真题 / 2015 年真题 / 2018 年真题"
+        },
+        {
+          "case_id": "case_2",
+          "name": "情况二：图画主体为 A、B 双方，且 A 与 B 进行交流互动",
+          "note_handwritten": "A 为动作激发发起人，B 为动作回应者（手写笔记）",
+          "formula": "As shown in the cartoon/picture, there be A, doing₁ sth. and doing₂ sth., while + 完整句（描述 B 的回应）.",
+          "explanation": [
+            {
+              "term": "As shown in the cartoon/picture",
+              "desc": "如漫画/照片所示。"
+            },
+            {
+              "term": "there be A",
+              "desc": "表示那儿有 A，此处 A 为率先发起交流、互动的个体。"
+            },
+            {
+              "term": "doing₁ sth. and doing₂ sth.",
+              "desc": "与情况一类似，此处 doing₁ sth. 描述个体 A 的位置或状态，比如在某地站着、坐着、跑着、躺着，而 doing₂ sth. 一般描写个体 A 说了什么话或做了什么事情。"
+            },
+            {
+              "term": "while + 完整句",
+              "desc": "while 在这里表示转折，相当于中文的“然而/而”。接下来的完整句描述了动作的回应者 B 的反应或答复。"
+            }
+          ],
+          "exam_years": "2005 年真题 / 2007 年真题 / 2012 年真题 / 2019 年真题 / 2021 年真题 / 2022 年真题 / 2023 年真题"
+        },
+        {
+          "case_id": "case_3",
+          "name": "情况三：两幅图",
+          "formula": "In the left-hand/upper cartoon/picture, there be sb., doing₁ sth. and doing₂ sth. On the contrary, in the right-hand/lower portrayal, + 右/下图描述（简单句，主谓宾）.",
+          "explanation": [
+            {
+              "term": "In the left-hand/upper cartoon/picture",
+              "desc": "如左边/上面漫画/照片所示。"
+            },
+            {
+              "term": "there be sb.",
+              "desc": "表示那儿有某人，此处 sb. 指的是左/上图中的人物。"
+            },
+            {
+              "term": "doing₁ sth. and doing₂ sth.",
+              "desc": "doing₁ sth. 描述左/上图中人物的位置或状态，比如在某地站着、坐着、跑着、躺着，而 doing₂ sth. 描述了左/上图中人物的核心动作。"
+            },
+            {
+              "term": "On the contrary",
+              "desc": "译为“与此相反”。这个短语常用于表示与左/上图情况截然相反的情况。"
+            },
+            {
+              "term": "in the right-hand/lower portrayal",
+              "desc": "如右/下图所示。"
+            },
+            {
+              "term": "右/下图描述",
+              "desc": "由于篇幅有限，右/下图一般采用简单句，简要描述图画内容即可。"
+            }
+          ],
+          "exam_years": "2003 年真题 / 2006 年真题 / 2014 年真题 / 2016 年真题 / 2017 年真题 / 2020 年真题"
+        }
+      ]
+    },
+    "sentence_2_connotation": {
+      "title": "第二句：内涵分析（4选1）",
+      "cases": [
+        {
+          "case_id": "connotation_1",
+          "name": "情况一：好事情",
+          "condition": "当图画描绘社会或大学生成长过程中的好现象、好风尚、好品质时",
+          "template": "Evidently, the cartoonist/picture intends to convey to readers that it is *** that play(s) an important and positive role both in our personal lives and in society.",
+          "translation": "很明显，漫画作者/照片意在告诉读者，正是 *** 在我们的个人生活和社会中发挥着重要且积极的作用。",
+          "exam_years": "2001 年真题 / 2002 年真题 / 2004 年真题 / 2008 年真题 / 2010 年真题 / 2013 年真题 / 2014 年真题 / 2021 年真题 / 2023 年真题"
+        },
+        {
+          "case_id": "connotation_2",
+          "name": "情况二：坏事情",
+          "condition": "当图画描绘社会或大学生成长过程中的不良现象、弊病、不好的品质时",
+          "template": "Evidently, the cartoonist/picture intends to convey to readers that *** is an issue that requires great attention both in our personal lives and in society.",
+          "translation": "很明显，漫画作者/照片意在告诉读者，*** 是一个我们在个人生活和社会中都需要高度关注的问题。",
+          "exam_years": "2003 年真题 / 2005 年真题 / 2006 年真题 / 2007 年真题 / 2011 年真题"
+        },
+        {
+          "case_id": "connotation_3",
+          "name": "情况三：双刃剑",
+          "condition": "当图画描绘的事物具有两面性，合理使用会展现出积极的一面，而过度使用则会呈现出消极的一面时",
+          "template": "Evidently, the cartoonist/picture intends to convey to readers that it is *** that can exert a great influence both in our personal lives and in society.",
+          "translation": "很明显，漫画作者/照片意在告诉读者，正是 *** 在我们的个人生活和社会中都产生了重要影响。",
+          "exam_years": "2009 年真题 / 2015 年真题"
+        },
+        {
+          "case_id": "connotation_4",
+          "name": "情况四：认知差异",
+          "condition": "当面对相同情况，不同人的反应截然不同，形成对比、反差时",
+          "template": "Evidently, the cartoonist/picture intends to convey to readers that *** is the brush that paints a bright future, while *** is the shackle that hinders progress.",
+          "translation": "很明显，漫画作者/照片意在告诉读者，*** 是描绘远大前程的画笔，而 *** 则是阻碍进步的枷锁。",
+          "exam_years": "2012 年真题 / 2016 年真题 / 2017 年真题 / 2018 年真题 / 2019 年真题 / 2020 年真题 / 2022 年真题"
+        }
+      ],
+      "notes": [
+        "根据具体情况，从上述四个备选句中选取合适的句子。",
+        "*** 的具体内容需要根据图画内涵填入，且必须是名词性成分，例如名词、动名词、动名词短语等。"
+      ]
+    }
+  },
+  "paragraph_2": {
+    "title": "第二段：现象剖析",
+    "description": "现象剖析主要要求考生根据图画内容分析该现象产生的原因、具有的现实意义或存在的利弊，突出对现象或问题本质的深入挖掘和全面思考，展现考生的问分析能力。（手写批注：全面/合理）",
+    "sentence_1": {
+      "title": "第一句：承上启下过渡句",
+      "template": "This phenomenon is thought-provoking in several ways, but two of them are particularly significant.",
+      "translation": "这一现象在多个方面都引人深思，但其中两个方面尤为重要。",
+      "function": "本句的作用是承上启下，为下文的原因或利弊分析做铺垫。（手写批注：正反、缺少 lack of... / 忽视 neglecting...）"
+    },
+    "sentences_2_and_3": {
+      "title": "第二句和第三句：剖析展开（妙句 10 选 2）",
+      "guide": "第二句和第三句既可以从个人与社会的视角展开微观与宏观层面的分析，又可以从正方与反方这两个截然不同的维度进行利弊剖析。如此一来，可使本段的论证更为全面、客观，同时也更具说服力。",
+      "dimensions": [
+        {
+          "name": "个人 / 社会角度",
+          "sentence_2": "First and foremost, + 个人角度分析.",
+          "sentence_3": "What is more, + 社会角度分析.",
+          "exam_years": "2001 年真题 / 2002 年真题 / 2004 年真题 / 2008 年真题 / 2011 年真题 / 2014 年真题 / 2023 年真题"
+        },
+        {
+          "name": "正方 / 反方分析",
+          "sentence_2": "On the one hand, + 正方角度分析.",
+          "sentence_3": "On the other hand, + 反方角度分析.",
+          "exam_years": "2003 年真题 / 2005 年真题 / 2007 年真题 / 2010 年真题 / 2012 年真题 / 2013 年真题 / 2016—2022 年真题"
+        },
+        {
+          "name": "合理使用 / 过度使用分析",
+          "sentence_2": "On the one hand, + 合理使用分析.",
+          "sentence_3": "On the other hand, + 过度使用分析.",
+          "exam_years": "2006 年真题 / 2009 年真题 / 2015 年真题"
+        }
+      ]
+    }
+  },
+  "paragraph_3": {
+    "title": "第三段：深度评价",
+    "description": "作为全文最后一段，需要针对图画中涉及的社会现象或问题展开综合评价。同时，要与前文相应，从而使整篇文章的论述形成一个闭环。",
+    "cases": [
+      {
+        "case_id": "eval_1",
+        "name": "情况一：好事情",
+        "condition": "对于社会或大学生成长过程中的好现象、好风尚、好品质，第三段通常需要提出积极的倡议，鼓励或引导读者积极支持和弘扬这些正能量，以促进社会的进步和个体的成长。具体如下：",
+        "template": "In brief, *** is the catalyst for societal and personal development, from which we all stand to benefit. Therefore, we should actively support and advocate this quality/practice / we should actively promote and carry forward traditional culture. Only by doing so can we develop individual potential / fulfill our aspirations / create a happier life / build a more harmonious society / make our world shine with renewed brilliance.",
+        "translation": "简而言之，*** 是社会和个人发展的推进器，我们必将是其受益者。因此，我们应该积极支持和倡导这种品质/做法 / 我们应该积极弘扬传统文化，只有这样我们才能够激发个人潜能 / 实现人生抱负 / 创造更幸福的生活 / 构筑更和谐的社会 / 令我们的世界焕发新的光彩。",
+        "handwritten_note": "手写标注：催化剂（catalyst）、行为（practice）",
+        "exam_years": "2001 年真题 / 2002 年真题 / 2004 年真题 / 2008 年真题 / 2010 年真题 / 2013 年真题 / 2014 年真题 / 2021 年真题 / 2023 年真题"
+      },
+      {
+        "case_id": "eval_2",
+        "name": "情况二：坏事情",
+        "condition": "对于社会或大学生成长过程中的不良现象、弊病、不好的品质，第三段通常需要提出解决措施，包括媒体引导、加强监管、颁布法律以及培养正确的价值观念等方面的建议，以促使社会更和谐、学生更全面地发展。具体如下：",
+        "template": "How can we put an end to the problem of ***? It is suggested by many that we need a package deal, including doing₁ sth. and doing₂ sth. But would these measures be comprehensive enough? In reality, we also need to do sth. With the support of these measures, we can effectively tackle the issue at its core.",
+        "translation": "我们如何才能解决 *** 问题？很多人建议，我们需要一揽子方案，包括做某事和做某事。但这些措施是否足够全面呢？实际上，我们还需要做某事。借助这些措施，我们可以有效地从根本上解决这个问题。",
+        "sub_measures": {
+          "intro": "其中，doing₁ sth. and doing₂ sth. 以及 do sth. 这样的具体措施可以从政府、学校和个人三个维度中选择，以适应文本的情境。",
+          "dimensions": [
+            {
+              "name": "政府维度",
+              "items": [
+                {
+                  "cn": "(1) 颁布相关法律/规定",
+                  "en": "issue related laws/regulations"
+                },
+                {
+                  "cn": "(2) 加强监管",
+                  "en": "enhance supervision"
+                },
+                {
+                  "cn": "(3) 加强媒体的舆论引导作用",
+                  "en": "strengthen the guiding role of the media in public opinion"
+                }
+              ]
+            },
+            {
+              "name": "学校维度",
+              "items": [
+                {
+                  "cn": "(1) 加强道德教育",
+                  "en": "strengthen moral education"
+                },
+                {
+                  "cn": "(2) 帮助学生培养更合理的价值观",
+                  "en": "help students cultivate more rational values"
+                },
+                {
+                  "cn": "(3) 鼓励家长积极采取行动",
+                  "en": "encourage parents to take action actively"
+                },
+                {
+                  "cn": "(4) 给学生灌输 *** 思想",
+                  "en": "instill the idea of *** into students"
+                }
+              ]
+            },
+            {
+              "name": "个人维度",
+              "items": [
+                {
+                  "cn": "(1) 有意识地培养 *** 这一品质/美德",
+                  "en": "foster the quality/virtue of *** deliberately"
+                },
+                {
+                  "cn": "(2) 加强自我约束",
+                  "en": "strengthen self-discipline"
+                },
+                {
+                  "cn": "(3) 培养理性思维",
+                  "en": "cultivate rational thinking"
+                }
+              ]
+            }
+          ]
+        },
+        "exam_years": "2003 年真题 / 2005 年真题 / 2006 年真题 / 2007 年真题 / 2011 年真题"
+      },
+      {
+        "case_id": "eval_3",
+        "name": "情况三：双刃剑",
+        "condition": "在分析具有双重性质的现象时，第三段通常需要深入探究如何最大限度地发挥其积极作用，并有效地应对或减缓其负面影响，形成一个平衡且综合的结论。具体如下：",
+        "template": "Therefore, ***, which is a pervasive social phenomenon, is a double-edged sword which can have a profoundly positive or negative influence on the development of young people. When facing this phenomenon, we need to extract its essence while eliminating its drawbacks, delving into how to maximize the positive impact and effectively mitigate or alleviate the negative aspects.",
+        "translation": "因此，***，这一普遍存在的社会现象，是一把双刃剑，可以对年轻人的发展产生深刻的积极或消极影响。在面对这一现象时，我们需要在取其精华的同时剔除其糟粕，深入剖析如何最大程度地发挥其积极影响，同时有效地减轻或缓解其消极影响。",
+        "exam_years": "2009 年真题 / 2015 年真题"
+      },
+      {
+        "case_id": "eval_4",
+        "name": "情况四：认知差异",
+        "condition": "在面对相同的情况时，不同的人会有不同的理解、判断和应对方式。此时，我们应当倡导[正向]积极的态度和正向的做法，同时坚决抵制消极的态度和错误的行为。具体如下：",
+        "template": "In brief, *** is the catalyst for societal and personal development, from which we all stand to benefit. Therefore, we should actively support and advocate this quality/practice / we should actively promote and carry forward traditional culture; additionally, we must be acutely aware of the detrimental effects of *** to ensure our growth stays on course.",
+        "translation": "简而言之，*** 是社会和个人发展的推进器，我们必将是其受益者。因此，我们应该积极支持和倡导这种品质/做法 / 我们应该积极弘扬传统文化；此外，我们必须敏锐地意识到 *** 的不利影响，让成长的列车不偏离方向。",
+        "exam_years": "2012 年真题 / 2016 年真题 / 2017 年真题 / 2018 年真题 / 2019 年真题 / 2020 年真题 / 2022 年真题"
+      }
+    ]
+  }
+}

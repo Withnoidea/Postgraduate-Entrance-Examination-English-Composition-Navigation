@@ -1,0 +1,72 @@
+{
+  "chapter_title": "第六章 混合型作文",
+  "section_title": "第一节 写作框架构建",
+  "book_title": "写作锦囊 36句攻克考研英语高分作文",
+  "intro": "混合型作文是考研英语写作的一个重要趋势。在 2022 年考研英语（一）考研大纲样题中出现了双图表作文的命题形式（以往都是考查单一图表）。而在 2024 年英语（一）考试中更进一步，采用了图画和图表混合的出题形式。这一趋势意味着，以往英语（一）侧重于考查图画作文和英语（二）侧重于考查图表作文的格局被打破。混合型作文的命题设计巧妙融合了描述性、叙述性、说明性和论述性的要求，真正实现了对考研大纲中各项写作技能的全面考查。尽管混合型作文的考查难度有所上升，但考生在对前五章的内容有了清晰的把握后，应该能够较为顺利地完成混合型作文的写作。在撰写混合型作文时，为了让作文有层次、有逻辑，考生可以采用三段式写作框架。总体如下：",
+  "framework_overview": [
+    {
+      "paragraph": "第一段：介绍背景",
+      "content": "(图画/图表/文字框架自由组合)"
+    },
+    {
+      "paragraph": "第二段：剖析现象",
+      "content": "(图画框架或图表框架)"
+    },
+    {
+      "paragraph": "第三段：深度评价/预测未来",
+      "content": "(图画框架或图表框架)"
+    }
+  ],
+  "paragraph_1": {
+    "title": "第一段：介绍背景",
+    "framework": {
+      "sentence": "In the left-hand/upper cartoon/chart/excerpt, + 左/上图/表/文字描述. Simultaneously/On the contrary, in the right-hand/lower portrayal/chart/excerpt, + 右/下图/表/文字描述.",
+      "note": "注意：当两个事件同步发生，或两个观点之间存在共同点、相似之处时，可以使用 simultaneously。当两个事件不同步发生，两者之间存在对比或相反的关系，强调两者之间的差异时，可以使用 on the contrary。"
+    },
+    "backup_sentences": {
+      "situation_1": {
+        "name": "情况一：图画",
+        "sentence": "There be sb., doing1 sth. and doing2 sth.",
+        "explanation": "表示那儿有某人，doing1 sth. 描述 sb. 的位置或状态，比如在某地站着、坐着、跑着、躺着，而 doing2 sth. 描述 sb. 正在进行的具体的核心动作。"
+      },
+      "situation_2": {
+        "name": "情况二：图表",
+        "items": [
+          {
+            "en": "In 时间头, the number/percentage of 元素 1 was (approximately) 数字头, but by 时间尾, this figure/rate had substantially/gradually risen/decreased to (around) 数字尾.",
+            "cn": "在起始时间点，元素 1 的数值/比例（约）为多少，然而到了结束时间点，这个数值/比例已经显著/缓慢增加/减少到（大约）多少。"
+          },
+          {
+            "en": "In contrast, the number/proportion of 元素 2 experienced a significant/slow increase/decline of (about) *** (数字相减的结果) during the same period/from 时间 1 to 时间 2.",
+            "cn": "相比之下，在相同的时段/从时间 1 到时间 2，元素 2 的数值/比例急剧/缓慢增长/下降了约 ***（两个时间点对应数字相减的结果）。"
+          },
+          {
+            "en": "The pie chart clearly displays the percentage breakdown of *** (表头内容的中文翻译). 元素 A takes the lead at a%, followed by 元素 B at b%.",
+            "cn": "该饼状图清晰地展示了 *** 的百分比分析结果。元素 A 占比最大，为 a%，其次是元素 B，占比为 b%。"
+          }
+        ]
+      },
+      "situation_3": {
+        "name": "情况三：文字",
+        "sentence": "The author informs us that + 作者观点.",
+        "cn": "作者告诉我们 + 作者观点。"
+      }
+    }
+  },
+  "paragraph_2": {
+    "title": "第二段：剖析现象",
+    "description": "对于探讨个人品质、社会现象以及事物双重性的文章，可以参考图画作文，从个人和社会角度，正反观点，以及合理与过度使用的角度进行原因分析。若话题涉及数据分析、社会调查、市场研究以及社会发展中出现的各种变化时，可以参考图表作文，从个人和社会角度或重点元素角度进行深入分析。"
+  },
+  "paragraph_3": {
+    "title": "第三段：深度评价/预测未来",
+    "description": "对于话题涉及个人品质、社会现象以及事物双重性的题目，可以参考图画作文末段框架，从好事情、坏事情、双刃剑以及认知差异的角度分析；若话题涉及数据分析、社会调查、市场研究及社会发展中出现的各种变化，可以参考图表作文末段框架，对未来发展趋势进行预测和展望。"
+  },
+  "section_2": {
+    "title": "第二节 真题 & 大纲样题 & 模拟题套用",
+    "subsection_1": {
+      "title": "一、图画图表混合",
+      "exam": "2024年考研英语（一）真题大作文",
+      "directions": "Directions:\nWrite an essay based on the picture and the chart below. In your essay, you should\n1) describe the picture and the chart briefly,"
+    }
+  }
+}

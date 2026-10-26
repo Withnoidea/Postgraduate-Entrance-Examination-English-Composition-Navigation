@@ -1,0 +1,197 @@
+{
+  "chapter_title": "第四章 图表作文",
+  "section_title": "第一节 写作框架构建",
+  "book_title": "写作锦囊 36句攻克考研英语高分作文",
+  "intro": "对图表作文的考查，通常以柱状图、饼状图、折线图以及表格等形式为载体，要求考生对图表内容进行描述、分析并发表观点。图表可能涉及社会、科技、大学生活等各个领域。在撰写图表作文时，为了让文章有层次、有逻辑、有深度，考生可以采用三段式写作框架。总体如下：",
+  "framework_overview": [
+    {
+      "paragraph": "第一段：描述图表",
+      "branches": [
+        "动态图（时间推移/变化趋势）",
+        "静态图（特定时间点/占比构成）"
+      ],
+      "select_mode": "框架2选1",
+      "description": "引出图表主题，说明明确背景信息"
+    },
+    {
+      "paragraph": "第二段：分析原因",
+      "steps": [
+        "承上启下过渡句",
+        "首先，个人/元素一分析",
+        "其次，社会/元素二分析",
+        "段落总结句"
+      ],
+      "select_mode": "妙句7选2",
+      "description": "深入分析数据背后的深层原因，拓展多维视角"
+    },
+    {
+      "paragraph": "第三段：预测未来",
+      "branches": [
+        "动态图（稳步增长/持续减少）",
+        "静态图（真实反映/保持相对稳定）"
+      ],
+      "select_mode": "框架2选1",
+      "description": "对未来发展趋势进行预测和展望"
+    }
+  ],
+  "p1_description": {
+    "title": "第一段：描述图表",
+    "intro": "在图表作文的开篇，通过对图表的描述，引导读者对图表内容有一个明确的认识。这不仅有助于引入文章主题，明确文章的焦点，而且为后续的深度分析提供了必要的背景信息。\n根据特性，图表可以分为动态图和静态图。动态图指的是随着时间推移或特定条件变化而变化的图表，主要包括柱状图、折线图和表格。而静态图则是在特定时间点或条件下呈现的图表，不具有随时间变化的特性，主要包括饼状图。写作框架如下：",
+    "case1_dynamic": {
+      "name": "情况一：动态图（随时间变化）",
+      "applicable_types": "柱状图、折线图、表格",
+      "notes": "手写重点提示：① 时态一般用过去时（若图表年份全在过去）；② 关注「时间头」与「时间尾」的数据跨度；③ 关注「相反/同时」的对比关系。",
+      "formula_sentences": [
+        {
+          "num": 1,
+          "type": "引入图表",
+          "sentence": "The line/bar chart/table clearly depicts *** (图表上/下方注释内容的翻译).",
+          "translation": "该折线图/柱状图/表格清晰地描绘了 ***。"
+        },
+        {
+          "num": 2,
+          "type": "元素1变化（起止点与幅度）",
+          "sentence": "In 时间头, the number/percentage of 元素1 was (approximately) 数字头, but by 时间尾, this figure/rate had substantially/gradually risen/decreased to (around) 数字尾.",
+          "translation": "在起始时间点，元素1的数值/比例（约）为多少，然而到了结束时间点，这个数值/比例已经显著/缓慢增加/减少到（大约）多少。"
+        },
+        {
+          "num": 3,
+          "type": "元素2对比趋势",
+          "sentence": "In contrast/Meanwhile, the number/proportion of 元素2 experienced a significant/slow increase/decline of (about) 数字相减的结果 during the same period/from 时间1 to 时间2.",
+          "translation": "相比之下/与此同时，在相同的时段/从时间1到时间2，元素2的数值/比例急剧/缓慢增长/下降了（约）多少（两个时间点对应数字相减的结果）。"
+        },
+        {
+          "num": 4,
+          "type": "元素3平稳趋势（如有）",
+          "sentence": "Simultaneously, the number/percentage of 元素3 remained stable and steady.",
+          "translation": "与此同时，元素3的数值/比例保持稳定。"
+        }
+      ],
+      "exam_years": "2010~2014年 / 2017年 / 2019年 / 2022年 / 2023年英语（二）真题 / 2025年英语（一）真题"
+    },
+    "case2_static": {
+      "name": "情况二：静态图（特定时间点）",
+      "applicable_types": "饼状图、单年份横向柱状图",
+      "formula_sentences": [
+        {
+          "num": 1,
+          "type": "引入图表占比",
+          "sentence": "The pie/bar chart clearly displays the percentage breakdown of *** (图表上/下方注释内容的翻译).",
+          "translation": "该饼状图/柱状图清晰地展示了 *** 的百分比分析结果。"
+        },
+        {
+          "num": 2,
+          "type": "最大占比项（领头羊）",
+          "sentence": "元素A takes the lead at a%, followed by 元素B at b%.",
+          "translation": "元素A占比最大，为 a%，其次是元素B，占比为 b%。"
+        },
+        {
+          "num": 3,
+          "type": "其他要素列举",
+          "sentence": "Additionally, factors such as 元素C, 元素D, and 元素E are also considered, accounting for c%, d%, and e%, respectively.",
+          "translation": "此外，例如元素C、元素D和元素E等也被考虑其中/包含在内，它们分别占据 c%、d% 和 e%。"
+        }
+      ],
+      "exam_years": "2015年 / 2016年 / 2018年 / 2020年 / 2021年 / 2024年 / 2025年英语（二）真题"
+    },
+    "translation_rules": {
+      "title": "注释内容的翻译规则（图表核心标题翻译法）",
+      "handwritten_tips": [
+        "① 动态图条件允许，通常以 the changes 开头（删除'统计/调查/图表'等套话）",
+        "② 若图表中元素众多，可在核心词前加上 various / different"
+      ],
+      "rules": [
+        {
+          "step": "第一步：找到核心词",
+          "detail": "注释内容中起主导作用、最为关键的单词。一旦删除核心词，就会影响整个句子的意思理解。核心词通常置于注释内容的末端。\n注意：① 当核心词可数时，通常使用复数形式；② 若图表中元素众多，可在核心词前加上 various/different。"
+        },
+        {
+          "step": "第二步：划分意群",
+          "detail": "将注释内容按照语义和语法结构把表达相对完整、意思单一的词组划分在一起。"
+        },
+        {
+          "step": "第三步：近先翻，远后翻",
+          "detail": "从核心词开始，先翻译那些距离核心词较近的意群，然后逐渐延伸到距离核心词较远的意群。"
+        }
+      ],
+      "case_study": {
+        "example": "20年间中国城镇人口、乡村人口变化",
+        "step1": "找到核心词：这一内容中起主导作用的核心词是“变化”，因其可数，所以使用 changes。",
+        "step2": "划分意群：“20年间”、“中国”和“城镇人口和乡村人口”。",
+        "step3": "近先翻，远后翻：从核心词“变化”开始，首先翻译距离“变化”最近的“城镇人口和乡村人口”，再翻译“（在）中国”，最后翻译“（在）20年间”，此时需要添加适当的介词，让短语语法正确。",
+        "final_translation": "the changes in urban and rural populations in China over the past 20 years"
+      }
+    }
+  },
+  "p2_analysis": {
+    "title": "第二段：分析原因",
+    "intro": "本段的作用在于深入分析数据背后的原因，向读者提供更全面的视角，深化读者对图表所呈现信息的理解。全面的原因分析不仅有助于揭示图表所反映趋势的根本原因，同时为整篇作文建立了扎实的论述逻辑框架，进一步增强了文章的说服力。",
+    "sentences": [
+      {
+        "num": 1,
+        "role": "承上启下过渡句",
+        "sentence": "The core reasons for the observed phenomenon can be summarized as follows.",
+        "translation": "导致上述现象出现的根本原因可以总结如下。",
+        "desc": "本句的作用是承上启下，为下文的分析做铺垫。"
+      },
+      {
+        "num": 2,
+        "role": "角度一分析",
+        "sentence": "To start with, 角度一分析.",
+        "translation": "首先，从角度一展开分析。"
+      },
+      {
+        "num": 3,
+        "role": "角度二分析",
+        "sentence": "In addition, 角度二分析.",
+        "translation": "此外/其次，从角度二展开分析。"
+      },
+      {
+        "num": 4,
+        "role": "段落总结句",
+        "sentence": "Considering these factors, the depicted phenomenon in the chart/table is unsurprising.",
+        "translation": "考虑到这些因素，图表/表格中呈现的现象并不令人意外。",
+        "desc": "本句的作用是总结本段内容的同时呼应图表的内容。"
+      }
+    ],
+    "analytical_angles": [
+      {
+        "name": "个人 / 社会角度",
+        "applicable": "当图表涉及的元素相对较少、核心变化显著时，更适合从个人和社会角度进行深入分析。通过聚焦变化的主要趋势和影响，我们能够深入挖掘数据对个人和社会的具体影响，呈现更为细致和深刻的观点。",
+        "exam_years": "2010年 / 2011年 / 2013年 / 2014年 / 2023年英语（二）真题 / 2025年英语（一）真题"
+      },
+      {
+        "name": "核心元素角度",
+        "applicable": "当图表中包含多个元素、涉及多方面信息时，更适合采用核心元素角度分析的方式。这种做法有助于把注意力集中在图表中最为显著和重要的信息上，能够为读者提供一种重点明确的分析。",
+        "exam_years": "2012年 / 2015~2022年 / 2024年 / 2025年英语（二）真题"
+      }
+    ]
+  },
+  "p3_prediction": {
+    "title": "第三段：预测未来",
+    "intro": "本段的功能是对未来发展趋势进行预测和展望，使读者对未来可能发生的情况有所了解。这有助于读者更全面地理解图表所呈现的信息，提供对趋势的认知，从而使文章的论述更全面。",
+    "case1_dynamic": {
+      "name": "情况一：动态图（发展趋势预测）",
+      "sentence": "What about future trends? I am confident that the number/proportion of 某元素 (is a clear sign of social improvement and) will steadily increase in the following decades. In contrast, the number/proportion of 某元素 will likely continue to decrease/remain relatively stable.",
+      "translation": "未来的趋势会是什么呢？我坚信某元素的数量/比例（是社会进步的标志，并且）将在接下来的几十年里稳步增长。相比之下，某元素的数量/比例可能会继续减少/保持相对稳定。",
+      "exam_years": "2010~2014年 / 2017年 / 2019年 / 2022年 / 2023年英语（二）真题 / 2025年英语（一）真题"
+    },
+    "case2_static": {
+      "name": "情况二：静态图（现状总结与持续稳定）",
+      "sentence": "What about future trends? I am confident that the above statistical figures accurately and truthfully reflect the choices of *** (人), serving as a microcosm of the changes in the era, and will likely remain relatively stable in the following decades.",
+      "translation": "未来的趋势会是什么呢？我坚信上述统计数字准确而真实地反映了 *** 的选择，是时代变迁的一个缩影，并且将继续在未来几十年保持相对稳定。",
+      "exam_years": "2015年 / 2016年 / 2018年 / 2020年 / 2021年 / 2024年 / 2025年英语（二）真题"
+    }
+  },
+  "section2_golden_sentences": {
+    "title": "第二节 7个锦囊妙句（第二段原因分析核武器）",
+    "intro": "考研图表作文的本质是分析和评价社会发展过程或大学生活中的现象、变化和趋势。这7个锦囊妙句从不同维度为图表作文的第二段提供了全面而丰富的核心表达，分别是：政府努力、态度转变、面临压力、优秀品质、习惯变化、产业进步和疫情影响。这7个维度从政策层面到社会文化和经济层面，再到个体的态度和生活方式，构成了全面分析社会现象及其变化的底层逻辑。只需要巧妙地替换句子中的一些词汇和表达方式，即可灵活应用于各种场景，为呈现不同变化趋势的图表作文提供通用的表达手段。",
+    "golden_sentence_1": {
+      "title": "锦囊妙句 1：政府努力",
+      "theme": "政策与宏观投入",
+      "chinese": "作为奏响变革乐章的指挥家，我们的政府付出巨大努力①建立了健全的教育体系，使得大学生能够有充足的机会继续深造。/ ②促进经济增长并提高人民的购买力，使得人们能够负担得起曾经认为很昂贵的汽车。/ ③建造孔子学院来保护和弘扬中国的传统文化。",
+      "english": "As the conductor orchestrating the symphony of changes, our government has made tremendous efforts to ① build a sound education system, enabling university students to have ample opportunities for further education. / ② drive economic growth and elevate the purchasing power of the populace, allowing them to afford automobiles that were previously deemed luxury items. / ③ establish the Confucius Institutes, which serve as a means of preserving and promoting our traditional culture.",
+      "analysis": "句首的 As 介词短语介绍了主语“我们的政府”的角色，其中 orchestrating the symphony of changes 是非谓语动词 doing 的词组作后置定语，修饰名词 conductor。句子的主干为主谓宾结构，... has/have made tremendous efforts to do sth. 这一句式可以用来表述“某人/某部门/国家/政府付出了巨大努力来做某事”，是常用句式。句①中，enabling 现在分词短语作伴随状语，说明“健全的教育体系”的作用。句②中有两个并列的动词词组，分别为 drive economic growth 和 elevate the purchasing power of the populace。"
+    }
+  }
+}

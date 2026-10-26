@@ -28,7 +28,16 @@
           >
             <span>{{ section.title }}</span>
             <el-tag
-              v-if="section.type === 'practice'"
+              v-if="section.id.startsWith('corr2')"
+              size="small"
+              type="primary"
+              effect="light"
+              class="menu-tag"
+            >
+              AI
+            </el-tag>
+            <el-tag
+              v-else-if="section.type === 'practice'"
               size="small"
               type="success"
               effect="plain"

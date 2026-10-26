@@ -1,0 +1,93 @@
+{
+  "chapter_title": "第五章 文字作文",
+  "section_title": "第一节 写作框架构建",
+  "book_title": "写作锦囊 36句攻克考研英语高分作文",
+  "intro": "文字作文通常要求考生在阅读给定文章的节选内容后撰写一篇短文。考生要在短文中解释自己是否同意或在多大程度上同意作者的观点，并用理由和相关例子来支撑论点。文字作文主要考查考生三个方面的能力：其一，考查考生的阅读理解能力，即要求考生能够读懂节选内容并提炼出作者的观点；其二，考查考生的独立思考能力，考生需要表明对作者观点的态度；其三，结合实例进行佐证，检验考生能否灵活运用所给文字来强化论证，综合考查写作素养。在撰写文字作文时，为了让文章有层次、有逻辑，考生可以采用三段式写作框架。总体如下：",
+  "framework_overview": [
+    {
+      "paragraph": "第一段：铺垫背景",
+      "branches": [
+        "归纳作者观点",
+        "表明态度（支持/反对作者观点）"
+      ]
+    },
+    {
+      "paragraph": "第二段：分析原因",
+      "branches": [
+        "承上启下过渡句",
+        "首先，角度一分析（判定文字类型：品质类=妙句10选2 / 现象类=妙句7选2）",
+        "其次，角度二分析",
+        "举例（引用权威机构数据佐证）"
+      ]
+    },
+    {
+      "paragraph": "第三段：总结",
+      "branches": [
+        "深度评价或预测未来（复用图画/图表文末框架）"
+      ]
+    }
+  ],
+  "paragraph_1": {
+    "title": "第一段：铺垫背景",
+    "description": "在文字作文的开篇，归纳观点有助于引导读者进入文章主题，建立起对所给文字的基本了解。一般情况下，题干中会明确要求考生解释是否同意作者的观点，或在多大程度上同意作者的观点。因此在第二句中需要亮明你对于作者观点的态度，如此搭配可使阅卷老师在一开始就能了解你的立场，为后续论证提供有力的引导，增加文章的连贯性和可读性。具体框架如下：",
+    "sentences": [
+      {
+        "id": "p1-s1",
+        "name": "第一句：归纳作者观点",
+        "formula": "This is an excerpt from a simple yet thought-provoking article, in which the author informs us that + 作者观点.",
+        "translation": "该段落节选自一篇简单但发人深省的文章，其中作者告诉我们 + 作者观点。",
+        "tip": "从所给材料中精准提炼出核心主题句或论点，使用 that 宾语从句平稳嵌入。"
+      },
+      {
+        "id": "p1-s2",
+        "name": "第二句：表明态度",
+        "formula": "I wholeheartedly agree / completely disagree with the author's viewpoint.",
+        "translation": "我由衷地同意 / 完全不同意作者的观点。",
+        "tip": "绝大部分题目建议选择 agree（由衷同意），行文更容易展开正面论述。"
+      }
+    ]
+  },
+  "paragraph_2": {
+    "title": "第二段：分析原因",
+    "description": "考生需在本段阐述为什么对作者的观点表示支持或反对。这种论证不仅有助于清楚地诠释考生的立场，而且能够提供具体的理由和清晰的逻辑，使读者更容易接受所给文字中作者的观点，或认识到作者的观点是错误的。",
+    "sentences": [
+      {
+        "id": "p2-s1",
+        "name": "第一句：承上启下过渡句",
+        "formula": "The reasons can be listed as follows.",
+        "translation": "原因如下。",
+        "note": "本句的作用是承上启下，为下文的分析做铺垫。"
+      },
+      {
+        "id": "p2-s2",
+        "name": "第二句：角度一分析",
+        "formula": "First and foremost / On the one hand, + 角度一分析.",
+        "translation": "首先 / 一方面，+ 角度一分析。",
+        "note": "对于探讨个人品质、社会现象、事物双重性以及认知差异的文章，可以参考图画作文，从个人和社会角度、正反观点，以及合理与过度使用的角度进行原因分析。若所给文字涉及数据分析、社会调查、市场研究以及社会发展中出现的各种变化等，可以参考图表作文，从个人和社会角度或重点元素角度进行深入分析。"
+      },
+      {
+        "id": "p2-s3",
+        "name": "第三句：角度二分析",
+        "formula": "What is more / On the other hand, + 角度二分析.",
+        "translation": "其次 / 另一方面，+ 角度二分析。",
+        "note": "承接第二句的对应角度（如首选 On the one hand 则此处搭配 On the other hand；首选 First and foremost 则此处搭配 What is more）。"
+      },
+      {
+        "id": "p2-s4",
+        "name": "第四句：权威数据举例论证",
+        "formula": "For example, according to a recent survey conducted by the Chinese Academy of Social Sciences (CASS), 73% of the respondents believe that + ***.",
+        "translation": "例如，根据中国社会科学院（CASS）最近进行的一项统计，73%的受访者认为 ***。",
+        "note": "引用权威机构，如以中国社会科学院的统计数据为例子，会让观点更具可信度。"
+      }
+    ]
+  },
+  "paragraph_3": {
+    "title": "第三段：总结",
+    "description": "对于话题涉及个人品质、社会现象、事物双重性以及认知差异的文章，可以参考图画作文末段框架，从好事情、坏事情、双刃剑、认知差异的角度分析；若所给文字涉及数据分析、社会调查、市场研究及社会发展中出现的各种变化等，可以参考图表作文末段框架，对未来发展趋势进行预测和展望。"
+  },
+  "sample_topic": {
+    "title": "第二节 大纲样题套用",
+    "source": "2024 年英语（一）文字作文大纲样题",
+    "directions": "Read the following excerpt from an article and write an essay. In your essay, you should explain whether or to what extent you agree with the author. Support your view with reasons and relevant examples."
+  }
+}

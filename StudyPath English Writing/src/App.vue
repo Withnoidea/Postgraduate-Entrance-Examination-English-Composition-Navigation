@@ -346,305 +346,17 @@
             </div>
           </div>
 
-          <!-- AI智能批改 -->
-          <div v-if="currentSection.id === 'corr2-1'" class="ai-correction">
-            <el-card shadow="hover">
-              <template #header>
-                <div class="card-header">
-                  <h2><el-icon class="title-icon"><MagicStick /></el-icon> AI智能批改</h2>
-                </div>
-              </template>
-              <div class="ai-correction-body">
-                <el-alert
-                  title="上传作文（支持图片和文本）"
-                  type="success"
-                  :closable="false"
-                  show-icon
-                  style="margin-bottom: 20px;"
-                >
-                  支持上传作文图片（PNG、JPG）或文本文件（TXT），系统将根据考研英语评分标准进行智能批改。
-                </el-alert>
+          <!-- AI智能批改（现代多模态引擎） -->
+          <AiCorrection 
+            v-if="currentSection.id === 'corr2-1'" 
+            @switch-section="switchSection" 
+          />
 
-                <!-- 上传区域 -->
-                <div v-if="!aiEssayForm.content" class="ai-upload-section">
-                  <el-upload
-                    ref="aiUploadRef"
-                    class="ai-upload-demo"
-                    drag
-                    :auto-upload="false"
-                    :show-file-list="false"
-                    accept=".txt,.png,.jpg,.jpeg"
-                    @change="handleAIFileChange"
-                  >
-                    <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
-                    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                    <template #tip>
-                      <div class="el-upload__tip">支持上传 .txt 文本文件或 .png/.jpg 图片文件</div>
-                    </template>
-                  </el-upload>
-
-                  <el-divider content-position="center">或</el-divider>
-
-                  <el-button type="primary" size="large" @click="showTextInput" style="width: 100%;">
-                    <el-icon><Edit /></el-icon>
-                    手动输入作文
-                  </el-button>
-                </div>
-
-                <!-- 文本输入区域 -->
-                <div v-else class="ai-text-input">
-                  <el-form :model="aiEssayForm" label-width="100px" :rules="aiFormRules" ref="aiFormRef">
-                    <el-row :gutter="20">
-                      <el-col :span="12">
-                        <el-form-item label="考试类型" prop="type">
-                          <el-select v-model="aiEssayForm.type" placeholder="请选择" style="width: 100%;">
-                            <el-option label="英语一" value="english1" />
-                            <el-option label="英语二" value="english2" />
-                          </el-select>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="12">
-                        <el-form-item label="作文年份" prop="year">
-                          <el-select v-model="aiEssayForm.year" placeholder="请选择年份" style="width: 100%;" filterable>
-                            <el-option v-for="year in availableYears" :key="year" :label="year + '年'" :value="year" />
-                          </el-select>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    
-                    <el-row :gutter="20">
-                      <el-col :span="12">
-                        <el-form-item label="作文类别" prop="category">
-                          <el-select v-model="aiEssayForm.category" placeholder="请选择类别" style="width: 100%;">
-                            <el-option label="小作文（应用文）" value="application" />
-                            <el-option label="大作文（图画/图表）" value="essay" />
-                          </el-select>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="12">
-                        <el-form-item label="作文题型" prop="essayType" v-if="aiEssayForm.category === 'essay'">
-                          <el-select v-model="aiEssayForm.essayType" placeholder="请选择题型" style="width: 100%;">
-                            <el-option label="图画作文" value="picture" v-if="aiEssayForm.type === 'english1'" />
-                            <el-option label="图表作文" value="chart" v-if="aiEssayForm.type === 'english2'" />
-                          </el-select>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    
-                    <el-form-item label="作文题目">
-                      <el-input v-model="aiEssayForm.title" placeholder="请输入作文题目（可选）" />
-                    </el-form-item>
-                    
-                    <el-form-item label="作文内容" prop="content">
-                      <el-input
-                        v-model="aiEssayForm.content"
-                        type="textarea"
-                        :rows="15"
-                        placeholder="请输入你的作文内容..."
-                        show-word-limit
-                        maxlength="1000"
-                      />
-                    </el-form-item>
-                  </el-form>
-                  
-                  <el-alert type="info" :closable="false" style="margin-bottom: 15px;">
-                    <template #title>
-                      <strong class="inline-icon-title"><el-icon><Memo /></el-icon> 评分标准说明</strong>
-                    </template>
-                    <div class="criteria-list">
-                      <p class="criteria-row"><el-icon><CircleCheckFilled /></el-icon><span><strong>内容</strong>：符合作文考查主题，不能偏题、瞎写乱写</span></p>
-                      <p class="criteria-row"><el-icon><CircleCheckFilled /></el-icon><span><strong>结构</strong>：符合应用文/正常文体格式要求；结构层次清晰</span></p>
-                      <p class="criteria-row"><el-icon><CircleCheckFilled /></el-icon><span><strong>语言</strong>：词汇拼写正确、优美高级；句子无语法错误、句式多样</span></p>
-                    </div>
-                  </el-alert>
-
-                  <el-button type="primary" @click="performAICorrection" :loading="aiCorrectionLoading" style="width: 100%;" size="large">
-                    <el-icon><Check /></el-icon>
-                    {{ aiCorrectionLoading ? '正在批改中...' : '开始智能批改' }}
-                  </el-button>
-                </div>
-
-                <!-- 批改结果 -->
-                <div v-if="aiCorrectionResult" class="ai-result">
-                  <el-divider />
-                  
-                  <div class="result-header">
-                    <el-icon :size="24" color="#4facfe"><DataAnalysis /></el-icon>
-                    <h3>批改结果</h3>
-                  </div>
-                  
-                  <el-card shadow="hover" class="result-card">
-                    <div class="result-content" v-html="aiCorrectionResult"></div>
-                  </el-card>
-                  
-                  <div class="result-actions">
-                    <el-button type="success" size="large" @click="exportAIResult">
-                      <el-icon><Download /></el-icon>
-                      导出批改结果
-                    </el-button>
-                  </div>
-                </div>
-              </div>
-            </el-card>
-          </div>
-
-          <!-- API设置 -->
-          <div v-if="currentSection.id === 'corr2-2'" class="api-settings">
-            <el-card shadow="hover">
-              <template #header>
-                <div class="card-header">
-                  <h2><el-icon class="title-icon"><Setting /></el-icon> API设置</h2>
-                </div>
-              </template>
-              <div class="api-settings-body">
-                <el-alert
-                  title="API Key配置"
-                  type="info"
-                  :closable="false"
-                  show-icon
-                  style="margin-bottom: 20px;"
-                >
-                  请选择AI服务提供商并输入API Key。API Key将保存在本地浏览器中，不会上传到服务器。
-                </el-alert>
-
-                <el-form :model="apiConfig" label-width="120px">
-                  <el-form-item label="API提供商">
-                    <el-select v-model="apiConfig.provider" placeholder="请选择API提供商" @change="handleProviderChange">
-                      <el-option label="通义千问（阿里云）" value="qwen" />
-                      <el-option label="OpenAI" value="openai" />
-                      <el-option label="智增增" value="zhizengzeng" />
-                      <el-option label="DeepSeek" value="deepseek" />
-                      <el-option label="Kimi（月之暗面）" value="kimi" />
-                      <el-option label="Claude" value="claude" />
-                      <el-option label="自定义" value="custom" />
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item label="Base URL">
-                    <el-input v-model="apiConfig.baseUrl" placeholder="API基础地址" :disabled="apiConfig.provider !== 'custom'">
-                      <template #append>
-                        <el-button @click="apiConfig.provider = 'custom'">自定义</el-button>
-                      </template>
-                    </el-input>
-                    <div style="font-size: 12px; color: #909399; margin-top: 5px;">
-                      当前：{{ apiConfig.baseUrl }}
-                    </div>
-                  </el-form-item>
-                  <el-form-item label="API Key">
-                    <el-input v-model="apiConfig.apiKey" type="password" placeholder="请输入API Key" show-password />
-                  </el-form-item>
-                  <el-form-item label="模型名称">
-                    <el-select v-model="apiConfig.model" placeholder="请选择模型" filterable allow-create>
-                      <!-- 通义千问模型 -->
-                      <el-option-group v-if="apiConfig.provider === 'qwen'" label="Qwen Omni系列（全模态）">
-                        <el-option label="qwen-omni-plus（支持图文）" value="qwen-omni-plus" />
-                        <el-option label="qwen-omni-turbo（支持图文）" value="qwen-omni-turbo" />
-                        <el-option label="qwen-omni-lite（支持图文）" value="qwen-omni-lite" />
-                      </el-option-group>
-                      <el-option-group v-if="apiConfig.provider === 'qwen'" label="Qwen VL系列（支持图文）">
-                        <el-option label="qwen-vl-max（图文）" value="qwen-vl-max" />
-                        <el-option label="qwen-vl-plus（图文）" value="qwen-vl-plus" />
-                      </el-option-group>
-                      <el-option-group v-if="apiConfig.provider === 'qwen'" label="Qwen 文本系列">
-                        <el-option label="qwen-turbo（快速）" value="qwen-turbo" />
-                        <el-option label="qwen-plus（增强）" value="qwen-plus" />
-                        <el-option label="qwen-max（最强）" value="qwen-max" />
-                        <el-option label="qwen-long（长文本）" value="qwen-long" />
-                      </el-option-group>
-                      <!-- OpenAI模型 -->
-                      <el-option-group v-if="apiConfig.provider === 'openai'" label="GPT-4 系列（支持图文）">
-                        <el-option label="gpt-4o（最新多模态）" value="gpt-4o" />
-                        <el-option label="gpt-4o-mini（轻量多模态）" value="gpt-4o-mini" />
-                        <el-option label="gpt-4-turbo（快速）" value="gpt-4-turbo" />
-                        <el-option label="gpt-4（标准）" value="gpt-4" />
-                      </el-option-group>
-                      <el-option-group v-if="apiConfig.provider === 'openai'" label="GPT-3.5 系列">
-                        <el-option label="gpt-3.5-turbo（快速经济）" value="gpt-3.5-turbo" />
-                        <el-option label="gpt-3.5-turbo-16k（长文本）" value="gpt-3.5-turbo-16k" />
-                      </el-option-group>
-                      <!-- 智增增模型 -->
-                      <el-option-group v-if="apiConfig.provider === 'zhizengzeng'" label="智增增模型">
-                        <el-option label="gpt-4o（图文）" value="gpt-4o" />
-                        <el-option label="gpt-4o-mini（图文）" value="gpt-4o-mini" />
-                        <el-option label="gpt-4-turbo" value="gpt-4-turbo" />
-                        <el-option label="gpt-3.5-turbo" value="gpt-3.5-turbo" />
-                        <el-option label="claude-3-opus（图文）" value="claude-3-opus-20240229" />
-                        <el-option label="claude-3-sonnet（图文）" value="claude-3-sonnet-20240229" />
-                        <el-option label="gemini-pro（图文）" value="gemini-pro" />
-                      </el-option-group>
-                      <!-- DeepSeek模型 -->
-                      <el-option-group v-if="apiConfig.provider === 'deepseek'" label="DeepSeek模型">
-                        <el-option label="deepseek-chat（对话）" value="deepseek-chat" />
-                        <el-option label="deepseek-coder（代码）" value="deepseek-coder" />
-                        <el-option label="deepseek-reasoner（推理）" value="deepseek-reasoner" />
-                      </el-option-group>
-                      <!-- Kimi模型 -->
-                      <el-option-group v-if="apiConfig.provider === 'kimi'" label="Kimi模型">
-                        <el-option label="moonshot-v1-8k" value="moonshot-v1-8k" />
-                        <el-option label="moonshot-v1-32k（长文本）" value="moonshot-v1-32k" />
-                        <el-option label="moonshot-v1-128k（超长文本）" value="moonshot-v1-128k" />
-                      </el-option-group>
-                      <!-- Claude模型 -->
-                      <el-option-group v-if="apiConfig.provider === 'claude'" label="Claude模型（支持图文）">
-                        <el-option label="claude-3-opus（最强）" value="claude-3-opus-20240229" />
-                        <el-option label="claude-3-sonnet（平衡）" value="claude-3-sonnet-20240229" />
-                        <el-option label="claude-3-haiku（快速）" value="claude-3-haiku-20240307" />
-                        <el-option label="claude-3.5-sonnet（最新）" value="claude-3-5-sonnet-20241022" />
-                      </el-option-group>
-                      <!-- 自定义 -->
-                      <el-option-group v-if="apiConfig.provider === 'custom'" label="自定义模型">
-                        <el-option label="自定义模型名称" value="custom-model" />
-                      </el-option-group>
-                    </el-select>
-                  </el-form-item>
-                </el-form>
-                
-                <el-collapse style="margin-top: 15px;">
-                  <el-collapse-item name="model-info">
-                    <template #title>
-                      <span class="collapse-title"><el-icon><DataAnalysis /></el-icon> 模型说明与图文支持</span>
-                    </template>
-                    <el-descriptions :column="1" border size="small">
-                      <el-descriptions-item>
-                        <template #label>
-                          <span class="description-label"><el-icon><CircleCheckFilled /></el-icon> 支持图文</span>
-                        </template>
-                        <strong>OpenAI</strong>：gpt-4o、gpt-4o-mini<br>
-                        <strong>Claude</strong>：claude-3/3.5全系列<br>
-                        <strong>智增增</strong>：gpt-4o、claude-3、gemini<br>
-                        <strong>通义千问</strong>：qwen-omni系列、qwen-vl系列
-                      </el-descriptions-item>
-                      <el-descriptions-item>
-                        <template #label>
-                          <span class="description-label"><el-icon><CircleCloseFilled /></el-icon> 仅文本</span>
-                        </template>
-                        <strong>DeepSeek</strong>：deepseek-chat/coder<br>
-                        <strong>Kimi</strong>：moonshot-v1系列<br>
-                        <strong>通义千问</strong>：qwen-turbo/plus/max/long
-                      </el-descriptions-item>
-                      <el-descriptions-item>
-                        <template #label>
-                          <span class="description-label"><el-icon><Aim /></el-icon> 性价比推荐</span>
-                        </template>
-                        <strong>通义千问</strong>：omni系列有免费额度<br>
-                        <strong>DeepSeek</strong>：极便宜，效果不错<br>
-                        <strong>Kimi</strong>：免费额度，长文本强
-                      </el-descriptions-item>
-                      <el-descriptions-item>
-                        <template #label>
-                          <span class="description-label"><el-icon><TrendCharts /></el-icon> 批改推荐</span>
-                        </template>
-                        <strong>文本批改</strong>：qwen-turbo、DeepSeek<br>
-                        <strong>图文批改</strong>：qwen-omni-plus、gpt-4o-mini
-                      </el-descriptions-item>
-                    </el-descriptions>
-                  </el-collapse-item>
-                </el-collapse>
-
-                <el-button type="primary" @click="saveAPIConfig">保存配置</el-button>
-                <el-button @click="testAPIConnection" :loading="apiTestLoading">测试连接</el-button>
-              </div>
-            </el-card>
-          </div>
+          <!-- AI API配置 -->
+          <AiConfig 
+            v-if="currentSection.id === 'corr2-2'" 
+            @switch-section="switchSection" 
+          />
 
           <!-- 信息展示内容 -->
           <div v-if="currentSection.type === 'info'" class="info-content">
@@ -1248,11 +960,19 @@ import {
   MagicStick
 } from '@element-plus/icons-vue'
 import { chapters, findSection } from './chapters.js'
+import AiCorrection from './components/AiCorrection.vue'
+import AiConfig from './components/AiConfig.vue'
 
 // 章节导航
 const activeMenu = ref('')
 const defaultOpeneds = ref(['chapter-start'])
 const currentSection = ref(null)
+
+// 章节切换辅助函数 (支持从子组件触发)
+const switchSection = (sectionId) => {
+  activeMenu.value = sectionId
+  handleMenuSelect(sectionId)
+}
 
 // 移动端控制
 const sidebarVisible = ref(false)
@@ -1567,12 +1287,12 @@ const handleSentenceJump = (index) => {
 // 获取章节类型标签
 const getSectionTypeTag = (type) => {
   const tagMap = {
-    info: '',
+    info: 'primary',
     framework: 'warning',
     practice: 'success',
     reference: 'info'
   }
-  return tagMap[type] || ''
+  return tagMap[type] || 'info'
 }
 
 // 获取章节类型文本

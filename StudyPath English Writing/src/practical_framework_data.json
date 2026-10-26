@@ -1,0 +1,235 @@
+{
+  "chapter_title": "第二章 应用文",
+  "section_title": "第一节 写作框架构建",
+  "book_title": "写作锦囊 36句攻克考研英语高分作文",
+  "intro": "应用文是一种针对具体事务或问题、目的明确的书面表达形式，其目的通常是传达信息、解决问题、请求帮助、提供建议等。应用文的主要特点是实用性和明确性，它强调针对特定目标的有效沟通。应用文的种类多样，在考研写作中，应用文考查的类型包括书信、通知、告示、纪要等。而能否巧妙地组织语言、构建严谨的框架并使用准确的格式，是决定最终得分的关键。",
+  "types": {
+    "letter": {
+      "title": "一、书信",
+      "desc": "书信是通过文字传递信息、表达感情或交流思想的载体。在考研写作中，主要考查的书信类型有建议信、推荐信、邀请信、投诉信、辞职信、感谢信、道歉信和申请信等。书信主要由三部分组成，分别是称呼、正文和落款。总体格式如下：",
+      "format": "称呼 1' (顶格) \\n\\n正文 (3段, 菱形, 8') \\n\\n落款 1' (右下)",
+      "salutation": {
+        "title": "（一）称呼",
+        "rules": "在写信时，要确保称呼礼貌得体，并根据信函的正式程度和信函与收信人的关系选择适当的称呼。具体如下：",
+        "handwritten_notes": [
+          "Dear friends ❌  -->  Dear Friends, (首字母大写 + 逗号)",
+          "Dear tom, ❌  -->  Dear Tom, (首字母大写)",
+          "Dear Jordan ❌ / Michael Jordan ❌  -->  Dear Michael, (名) 或 Dear Mr. Jordan, (称谓+姓)"
+        ],
+        "cases": [
+          {
+            "type": "亲密关系",
+            "formula": "Dear ***",
+            "explanation": "当你写信给同学、朋友或家庭成员时，这种沟通通常可以被视为有亲密关系的人之间的交流。在这种情况下，你可以在称呼中使用具体的名字，比如 Bob、Lily、James 等。"
+          },
+          {
+            "type": "公务关系",
+            "formula": "Dear Mr./Mrs./Prof. ***",
+            "explanation": "当你写信给同事、师长、领导或客户时，这种沟通通常可以被视为有公务关系的人之间的交流。在这种情况下，你可以在称呼中使用具体的姓氏，比如 Smith、White、Roberts 等。"
+          },
+          {
+            "type": "机构单位",
+            "formula": "Dear Sir or Madam,",
+            "explanation": "当你不知道收信人的具体姓名、无法确定对方的性别，或写信给某机构单位时，可使用这种称呼。这种称呼表达了尊重和礼貌，适用于正式的咨询信、求职信等情境。"
+          },
+          {
+            "type": "投诉信专有",
+            "formula": "To Whom It May Concern,",
+            "explanation": "当你向某公司或机构提出投诉，但你不知道应该直接联系哪个负责人时，这种称呼是一种常见的选择。"
+          },
+          {
+            "type": "群体 / 职务",
+            "formula": "Dear Friends/Members/Fellow Students/Experts/President,",
+            "explanation": "当你给某个群体或处于某职位的人写信时，这种称呼是一种常见的选择。"
+          }
+        ],
+        "notices": [
+          "为清晰标明称呼部分的结束，需在称呼之后添加逗号。",
+          "在英文书信中，称呼中每个实词的首字母都需要大写。这是写书信时一种正式和礼貌的惯例。"
+        ]
+      },
+      "body": {
+        "title": "（二）正文",
+        "desc": "正文作为书信的主体，承载了对具体内容、主题和要点的表达。在这一部分中，你可以阐述写信目的，详述细节内容，表达个人观点，提出建议或表达请求等。在考研写作中，正文通常分为三段，总体如下：",
+        "mindmap": {
+          "p1": "第一段：私人信件 [问候致意(去信/回信) + 表明目的]；公务信函 [问候致意 + 自我介绍 + 表明目的] (框架2选1)",
+          "p2": "第二段：首先(句子1) + 其次(句子2) + 最后(句子3) (妙句19选3至4)",
+          "p3": "第三段：表感谢 / 盼回复/见面 / 送祝福 / 提要求 / 表希望 / 致歉意 (框架自由组合)"
+        },
+        "paragraph1": {
+          "case1": {
+            "name": "情况一：私人信件",
+            "handwritten": "问候 + 表明目的（不要自我介绍）",
+            "desc": "当写信的对象是同学、朋友或家庭成员时，可将信件定义为私人信件，常见的开头形式是首先问候致意，接着简要表明写信的目的。这样的开篇方式既能营造亲切友好的交流氛围，又能明确交流的目的，为后续内容的展开做好铺垫。",
+            "sentence1": [
+              {
+                "type": "去信 · 普通问候",
+                "formula": "I hope this letter/email finds you well.",
+                "trans": "我希望你收到此信/邮件时一切安好。"
+              },
+              {
+                "type": "去信 · 欢迎+问候",
+                "formula": "Welcome to ***, and I hope this letter/email finds you well.",
+                "trans": "欢迎来到 ***，我希望你收到此信/邮件时一切安好。"
+              },
+              {
+                "type": "回信 · 普通回信",
+                "formula": "Thank you for your kind letter/email, in which you (mentioned that) ***.",
+                "trans": "感谢你亲切友好的来信/邮件，在信/邮件中你（提到）***。"
+              },
+              {
+                "type": "回信 · 好/坏事",
+                "formula": "I was truly delighted/saddened to hear that ***.",
+                "trans": "得知 ***，我感到非常高兴/难过。"
+              }
+            ],
+            "sentence2": {
+              "type": "表明目的",
+              "formula": "My purpose of this letter/email is to *** (改写题干).",
+              "trans": "我写这封信/邮件的目的是 ***。"
+            }
+          },
+          "case2": {
+            "name": "情况二：公务信函",
+            "handwritten": "问候 + 自我介绍 + 表目的",
+            "desc": "当写信的对象是同事、师长、领导或客户时，可将信件定义为公务信函。在问候致意的基础上，公务信函一般还需要自我介绍，目的是向收信人介绍写信者的身份和背景，同时清晰地说明写信的目的，为后续的交流提供明确的框架。",
+            "sentence": {
+              "formula": "I hope this letter/email finds you well. I, an ordinary consumer / a senior student [大四] (个人名义) 或者 on behalf of *** [机构(集体名义), 如 the Student Union / ABC University], am writing this letter/email to *** (改写题干).",
+              "trans": "我希望您收到此信/邮件时一切安好。我是一名普通的消费者/是一名大四学生/代表***，写这封信/邮件的目的是***。"
+            }
+          }
+        },
+        "paragraph2": {
+          "desc": "本段应根据不同的书信类型和题目要求，分点详细阐述问题，提出合理建议，说明可行的措施以及明确具体的要求等。格式如下：",
+          "formula": "First and foremost (首先), + 句1. What is more (其次), + 句2. Last but not least (最后), + 句3.",
+          "notes": [
+            "一般来说，句1、句2、句3分别只写一句话，有时也可以写两句，该段最多写四句。",
+            "特殊情况下也可以不需要连接词。"
+          ]
+        },
+        "paragraph3": {
+          "desc": "本段的内容通常需要根据信件类型及目的进行灵活调整，例如表感谢、盼回复/见面、送祝福、提要求、表希望、致歉意等。选择这些表达方式时，应结合书信的具体目的和与收信人的关系，以确保表达适当、得体。（自由组合）",
+          "items": [
+            {
+              "type": "表感谢",
+              "formula": "Thank you for your kind consideration and time.",
+              "trans": "感谢您能抽时间查看这封信件并考虑相关问题。",
+              "usage": "这是一种礼貌性的结尾，为信件的结束画上一个积极而谦恭的句号。"
+            },
+            {
+              "type": "盼回复 / 见面",
+              "formula": "Looking forward to hearing from you / meeting you at your earliest convenience.",
+              "trans": "期待您在方便之时尽早回复/期待在方便之时尽早与您会面。",
+              "usage": "如果你期待对方的回复或见面，可以在这一段中表达期待，以增加保持沟通的可能性。"
+            },
+            {
+              "type": "送祝福",
+              "formula": "Wish you all the best.",
+              "trans": "祝你一切顺利。",
+              "usage": "在信件末尾表示祝愿，如祝福对方身体健康、取得成功等，能够营造一种友好的交流氛围。"
+            },
+            {
+              "type": "提要求",
+              "formula": "It would be appreciated if the issue (I raised) could be addressed as soon as possible.",
+              "trans": "如果我提出的问题能够尽快得到解决，我将不胜感激。",
+              "usage": "如果信中包含请求或需要对方采取行动，可以在这一段中明确表达自己的需求，以推动后续步骤。一般在投诉信中使用。"
+            },
+            {
+              "type": "表希望",
+              "formula": "Hopefully, the recommendations/suggestions (provided) will be helpful to you.",
+              "trans": "希望提供的推荐/建议对你有所帮助。",
+              "usage": "通常在建议信中使用，表示希望前文中提及的措施是有效的。（手写批注：建议信）"
+            },
+            {
+              "type": "致歉意",
+              "formula": "Once again, I deeply regret any inconvenience caused and hope that you can accept my apology and understand my situation.",
+              "trans": "再次，我由衷地为造成的不便道歉，希望你能接受我的道歉并理解我的处境。",
+              "usage": "通常在道歉信中使用，再次表达自己的歉意。"
+            }
+          ]
+        }
+      },
+      "signoff": {
+        "title": "（三）落款",
+        "desc": "英文书信的落款通常包含一个以表达礼貌和感谢为主的短语，用于结束书信并表达写信人的敬意。一封信的落款一般放在正文的右下方。具体如下：",
+        "formula": "Yours sincerely,\\nLi Ming / Zhang Wei",
+        "trans": "诚挚的，\\n李明 / 张伟"
+      }
+    },
+    "notice": {
+      "title": "二、通知",
+      "desc": "通知是用于向特定对象或群体传达信息、通知事项或安排的书面形式。在考研中，通知主要由四部分组成，分别是标题、日期、正文和落款。格式如下：",
+      "format": "Notice (居中标题) \\n\\n日期(月日年, 右对齐) \\n\\n正文(3段) \\n\\n落款(右下角)",
+      "parts": [
+        {
+          "name": "（一）标题",
+          "content": "通知的标题应该简洁明了，准确概括主题。若担心在考试中出错，可以直接使用 Notice 作为标题，并居中显示。"
+        },
+        {
+          "name": "（二）日期",
+          "content": "通知的日期应该放在标题下方并与正文右对齐，通常采用“月日年”格式，例如：December 26, 2025。"
+        },
+        {
+          "name": "（三）正文",
+          "mindmap": "第一段 [欢迎 / 问候 / 活动] + 表明目的 (自由组合)；第二段 首先/其次/最后 (妙句19选3至4)；第三段 鼓励参与 / 提供联系信息 (2选1)",
+          "paragraph1": {
+            "sentence1": [
+              {
+                "type": "欢迎",
+                "formula": "Welcome sb. to ***.",
+                "trans": "欢迎某人来到 ***。"
+              },
+              {
+                "type": "问候",
+                "formula": "I hope this notice finds you well.",
+                "trans": "我希望你们看到这则通知时一切安好。"
+              },
+              {
+                "type": "活动",
+                "formula": "*** will be held.",
+                "trans": "即将举办 ***。"
+              }
+            ],
+            "sentence2": {
+              "formula": "The intention of this notice is to *** (改写题干).",
+              "trans": "这则通知的目的是 ***。"
+            }
+          },
+          "paragraph2": {
+            "desc": "提供关于通知主题的详细信息，主要包括活动的日期、时间、地点，涉及的人员或组织，以及其他相关的具体事项，使读者能够全面了解通知所涉及活动的各个方面。格式如下：",
+            "formula": "First and foremost (首先), + 句1. What is more (其次), + 句2. Last but not least (最后), + 句3."
+          },
+          "paragraph3": {
+            "items": [
+              {
+                "type": "鼓励参与",
+                "formula": "If you are interested in this activity, please scan the QR code to register.",
+                "trans": "如果你对这个活动感兴趣，请扫描二维码注册报名。",
+                "usage": "如果通知涉及活动、项目或机会等，本段通常会鼓励读者参与其中。"
+              },
+              {
+                "type": "提供联系信息",
+                "formula": "If you have any questions, please get in touch with us at telephone number 1234567 (before next Sunday).",
+                "trans": "如果你有任何问题，请（在下周日之前）与我们联系，电话号码是 1234567。",
+                "usage": "如果通知涉及事项安排、情况介绍等，本段通常会留下联系方式，给读者提供获取相关信息的途径或为读者解答疑虑。"
+              }
+            ]
+          }
+        },
+        {
+          "name": "（四）落款",
+          "content": "一般放在正文的右下方。根据场景的不同，落款可以是单位或个人，比如 The Student Union、ABC University、Li Ming 等。"
+        }
+      ]
+    },
+    "meeting_minutes": {
+      "title": "三、纪要",
+      "desc": "纪要通常由会议标题、参与者、讨论要点、决定事项和下一步行动计划组成，适用于会议、活动或工作场合。它是一种用于记录和总结重要信息、讨论结果以及决策事项的文体，有助于对事件进行梳理和归档。纪要的目的是简明扼要地呈现重要信息，让读者能够快速了解事件的关键内容。尽管过去的考试中并未出现纪要，也没有相关的大纲样题，但了解纪要的基本写作框架对考生仍有一定帮助。格式如下：",
+      "template": "Meeting Minutes\n\nTitle of Meeting: 会议标题\nDate: 日期\nTime: 会议起始和结束时间\nLocation: 地址\nAttendees: 参会人员\nPresided by: 会议主持人员\nRecorded by: 会议记录人员\nMeeting Record: 会议记录 (写会议的核心内容)\nDecisions and Action Items: 决定和行动项"
+    },
+    "bulletin": {
+      "title": "四、告示",
+      "desc": "英文中的告示通常用于公共场所，如学校、办公室等，用于传达重要的信息、规定、通告或警示。由于告示的写作格式与通知一致，此处不赘述。"
+    }
+  }
+}

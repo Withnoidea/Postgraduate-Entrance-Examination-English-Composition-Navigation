@@ -196,7 +196,7 @@ export const chapters = [
   },
   {
     id: "chapter-correction2",
-    title: "作文批改2",
+    title: "AI批改",
     icon: "MagicStick",
     sections: [
       {
