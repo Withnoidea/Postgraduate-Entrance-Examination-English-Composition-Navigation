@@ -617,3 +617,19 @@ body {
   font-weight: 600;
   box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
 }
+
+
+.dock-item .dock-icon,
+.dock-icon {
+  font-size: 19px !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 2px !important;
+}
+
+.dock-item .dock-icon svg {
+  width: 19px !important;
+  height: 19px !important;
+}

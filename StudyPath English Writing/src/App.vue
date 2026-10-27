@@ -56,47 +56,6 @@
 
       <!-- 主内容区域 -->
       <el-main class="main-content">
-        <!-- 移动端顶部横向滚动快捷分段胶囊 -->
-        <div v-if="isMobile" class="quick-pills-bar">
-          <div 
-            class="quick-pill" 
-            :class="{ active: currentSection?.id === 'app-1' }"
-            @click="handleMenuSelect('app-1')"
-          >应用文</div>
-          <div 
-            class="quick-pill" 
-            :class="{ active: currentSection?.id === 'pic-1' }"
-            @click="handleMenuSelect('pic-1')"
-          >图画</div>
-          <div 
-            class="quick-pill" 
-            :class="{ active: currentSection?.id === 'chart-1' }"
-            @click="handleMenuSelect('chart-1')"
-          >图表</div>
-          <div 
-            class="quick-pill" 
-            :class="{ active: currentSection?.id === 'text-1' }"
-            @click="handleMenuSelect('text-1')"
-          >文字</div>
-          <div 
-            class="quick-pill" 
-            :class="{ active: currentSection?.id === 'mixed-1' }"
-            @click="handleMenuSelect('mixed-1')"
-          >混合型</div>
-          <div 
-            class="quick-pill" 
-            :class="{ active: currentSection?.id === 'real-1' }"
-            @click="handleMenuSelect('real-1')"
-          >真题</div>
-          <div 
-            class="quick-pill" 
-            :class="{ active: currentSection?.id === 'corr2-1' }"
-            @click="handleMenuSelect('corr2-1')"
-          >AI批改</div>
-        </div>
-
-        
-        
         <!-- 侧边栏遮罩层 -->
         <div v-if="isMobile && sidebarVisible" class="sidebar-overlay" @click="toggleSidebar"></div>
         
@@ -706,37 +665,37 @@
     </el-container>
 
       <!-- 移动端底部高频快捷悬浮 Dock -->
-      <div v-if="isMobile && !sidebarVisible" class="mobile-bottom-dock">
+            <div v-if="isMobile && !sidebarVisible" class="mobile-bottom-dock">
         <div 
           class="dock-item" 
           :class="{ active: currentSection?.id === 'app-1' }"
           @click="handleMenuSelect('app-1')"
         >
-          <span class="dock-icon">📝</span>
+          <el-icon class="dock-icon"><Document /></el-icon>
           <span>应用文</span>
         </div>
         <div 
           class="dock-item" 
-          :class="{ active: currentSection?.id === 'pic-1' || currentSection?.id === 'chart-1' }"
-          @click="handleMenuSelect('pic-1')"
+          :class="{ active: currentSection?.id === 'chart-1' || currentSection?.id === 'pic-1' }"
+          @click="handleMenuSelect('chart-1')"
         >
-          <span class="dock-icon">📊</span>
-          <span>大作文</span>
+          <el-icon class="dock-icon"><TrendCharts /></el-icon>
+          <span>图表大作文</span>
         </div>
         <div 
           class="dock-item" 
-          :class="{ active: currentSection?.id === 'real-1' }"
-          @click="handleMenuSelect('real-1')"
+          :class="{ active: currentSection?.id === 'recite-1' }"
+          @click="handleMenuSelect('recite-1')"
         >
-          <span class="dock-icon">📖</span>
-          <span>真题库</span>
+          <el-icon class="dock-icon"><Reading /></el-icon>
+          <span>语料背诵</span>
         </div>
         <div 
           class="dock-item" 
-          :class="{ active: currentSection?.id === 'corr2-1' }"
-          @click="handleMenuSelect('corr2-1')"
+          :class="{ active: currentSection?.id === 'ai-correct' }"
+          @click="handleMenuSelect('ai-correct')"
         >
-          <span class="dock-icon">✨</span>
+          <el-icon class="dock-icon"><MagicStick /></el-icon>
           <span>AI批改</span>
         </div>
         <div 
@@ -744,7 +703,7 @@
           :class="{ active: sidebarVisible }"
           @click="toggleSidebar"
         >
-          <span class="dock-icon">☰</span>
+          <el-icon class="dock-icon"><Menu /></el-icon>
           <span>目录</span>
         </div>
       </div>
