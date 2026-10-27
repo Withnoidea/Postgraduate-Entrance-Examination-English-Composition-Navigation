@@ -108,21 +108,33 @@ body {
   margin-right: auto !important;
   width: calc(100% - 24px) !important;
   max-width: 440px !important;
-  height: 56px !important;
-  background: rgba(255, 255, 255, 0.94) !important;
+  height: 54px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  border-radius: 28px !important;
+  border-radius: 27px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-around !important;
   padding: 0 6px !important;
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.14) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.06) !important;
   z-index: 99999 !important;
   box-sizing: border-box !important;
-  transform: none !important;
+  animation: dockSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
+
+@keyframes dockSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 .dock-item {
   display: flex !important;
@@ -400,21 +412,33 @@ body {
   margin-right: auto !important;
   width: calc(100% - 24px) !important;
   max-width: 440px !important;
-  height: 56px !important;
-  background: rgba(255, 255, 255, 0.94) !important;
+  height: 54px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  border-radius: 28px !important;
+  border-radius: 27px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-around !important;
   padding: 0 6px !important;
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.14) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.06) !important;
   z-index: 99999 !important;
   box-sizing: border-box !important;
-  transform: none !important;
+  animation: dockSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
+
+@keyframes dockSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 .dock-item {
   display: flex !important;

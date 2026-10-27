@@ -706,7 +706,7 @@
     </el-container>
 
       <!-- 移动端底部高频快捷悬浮 Dock -->
-      <div v-if="isMobile" class="mobile-bottom-dock">
+      <div v-if="isMobile && !sidebarVisible" class="mobile-bottom-dock">
         <div 
           class="dock-item" 
           :class="{ active: currentSection?.id === 'app-1' }"
@@ -1059,6 +1059,9 @@ const handleMenuSelect = (sectionId) => {
   hasLoadedContent.value = false
   resetPracticeData()
   referenceAnswerExpanded.value = true
+  if (isMobile.value) {
+    sidebarVisible.value = false
+  }
   
   const section = findSection('', sectionId)
   currentSection.value = section
