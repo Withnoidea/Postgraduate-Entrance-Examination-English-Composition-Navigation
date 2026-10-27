@@ -1116,4 +1116,45 @@ const copyText = (txt) => {
 .m-val {
   color: #475569;
 }
+
+@media (max-width: 768px) {
+  .mindmap-branch-tree {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .branch-node-root {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 10px 16px !important;
+  }
+
+  .branch-leaves-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .types-grid,
+  .dim-grid,
+  .paradigm-grid,
+  .samples-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .type-card,
+  .paradigm-card,
+  .dimension-box,
+  .sample-card {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .book-section-title {
+    font-size: 19px !important;
+  }
+
+  .header-card :deep(.el-card__body),
+  .mindmap-card :deep(.el-card__body) {
+    padding: 14px !important;
+  }
+}
 </style>

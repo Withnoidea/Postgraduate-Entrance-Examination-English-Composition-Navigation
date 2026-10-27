@@ -2203,13 +2203,13 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background: white;
-  border-bottom: 1px solid #e8eaed;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 14px 18px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  position: relative;
+  z-index: 20;
+  margin: -20px -16px 20px -16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .mobile-logo {
@@ -2962,11 +2962,14 @@ onUnmounted(() => {
 }
 
 .mobile-header {
-  background: rgba(255, 255, 255, 0.84);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
-  backdrop-filter: blur(18px);
-  padding: 14px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 14px 18px;
+  margin: -20px -16px 20px -16px;
+  position: relative;
+  top: auto;
+  z-index: 20;
 }
 
 .mobile-logo {

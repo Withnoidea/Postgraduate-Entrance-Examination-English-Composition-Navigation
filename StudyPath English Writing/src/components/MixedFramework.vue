@@ -369,8 +369,8 @@ const copyText = async (text) => {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
   text-align: center;
-  writing-mode: vertical-rl;
-  letter-spacing: 4px;
+  writing-mode: horizontal-tb;
+  letter-spacing: 1px;
 }
 
 .branch-col {
@@ -658,5 +658,44 @@ const copyText = async (text) => {
   background: #f1f5f9;
   padding: 8px 12px;
   border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+  .mindmap-branch-tree {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .branch-node-root {
+    writing-mode: horizontal-tb !important;
+    letter-spacing: 1px !important;
+    padding: 10px 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .branch-leaves-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .pattern-card,
+  .paradigm-card,
+  .dimension-box {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .book-section-title {
+    font-size: 19px !important;
+  }
+
+  .header-card :deep(.el-card__body),
+  .mindmap-card :deep(.el-card__body) {
+    padding: 14px !important;
+  }
+
+  .sub-tag-group {
+    flex-wrap: wrap !important;
+  }
 }
 </style>

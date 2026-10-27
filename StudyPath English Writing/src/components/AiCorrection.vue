@@ -537,7 +537,30 @@ const exportHtmlFile = () => {
     th, td { border: 1px solid #cbd5e1; padding: 10px 14px; text-align: left; }
     th { background: #f1f5f9; }
     @media print { body { background: #fff; padding: 0; } .container { box-shadow: none; border: none; padding: 0; } }
-  </style>
+  
+@media (max-width: 768px) {
+  .preset-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .essay-workbench {
+    grid-template-columns: 1fr !important;
+  }
+
+  .workbench-col {
+    width: 100% !important;
+  }
+
+  .action-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .action-bar .el-button {
+    width: 100% !important;
+  }
+}
+</style>
 </head>
 <body>
   <div class="container">
@@ -1415,5 +1438,28 @@ const callModelAPI = async (config, prompt, base64Image) => {
   margin-bottom: 12px;
   line-height: 2;
   font-family: 'Times New Roman', Georgia, serif;
+}
+
+@media (max-width: 768px) {
+  .preset-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .essay-workbench {
+    grid-template-columns: 1fr !important;
+  }
+
+  .workbench-col {
+    width: 100% !important;
+  }
+
+  .action-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .action-bar .el-button {
+    width: 100% !important;
+  }
 }
 </style>
