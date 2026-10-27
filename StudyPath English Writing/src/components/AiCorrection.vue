@@ -597,25 +597,191 @@ const exportHtmlFile = () => {
     @media print { body { background: #fff; padding: 0; } .container { box-shadow: none; border: none; padding: 0; } }
   
 @media (max-width: 768px) {
-  .preset-grid {
-    grid-template-columns: 1fr !important;
+  .ai-correction-container {
+    padding: 0 4px !important;
+    gap: 14px !important;
   }
 
-  .essay-workbench {
-    grid-template-columns: 1fr !important;
-  }
-
-  .workbench-col {
-    width: 100% !important;
-  }
-
-  .action-bar {
+  /* 头部横幅在移动端上下堆叠 */
+  .ai-header-banner {
     flex-direction: column !important;
     align-items: stretch !important;
+    padding: 16px 14px !important;
+    gap: 14px !important;
   }
 
-  .action-bar .el-button {
+  .banner-actions {
     width: 100% !important;
+  }
+
+  .settings-trigger-btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .banner-title {
+    font-size: 19px !important;
+  }
+
+  .banner-subtitle {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* 配置网格从三列变为单列 */
+  .meta-config-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* 切换标签 */
+  .tabs-header {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .tab-btn {
+    flex: 1 1 auto !important;
+    min-width: 80px !important;
+    text-align: center !important;
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    justify-content: center !important;
+  }
+
+  /* 上传区域 */
+  .drop-zone {
+    padding: 24px 12px !important;
+  }
+
+  .drop-icon {
+    font-size: 32px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .drop-text-primary {
+    font-size: 13px !important;
+  }
+
+  .drop-text-secondary {
+    font-size: 11px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* 图片预览卡片在手机端纵向排列 */
+  .image-preview-card {
+    flex-direction: column !important;
+    padding: 12px !important;
+  }
+
+  .preview-img-box {
+    width: 100% !important;
+    height: 180px !important;
+  }
+
+  .preview-info-box {
+    width: 100% !important;
+  }
+
+  /* 底部按钮与选项 */
+  .action-footer {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+  }
+
+  .correction-options {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  .start-correct-btn {
+    width: 100% !important;
+    padding: 12px 16px !important;
+    font-size: 15px !important;
+  }
+
+  /* 进度指示条 */
+  .stepper-track {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .step-line {
+    display: none !important;
+  }
+
+  .step-item {
+    width: 100% !important;
+  }
+
+  .step-status-card {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 10px !important;
+    padding: 14px !important;
+  }
+
+  /* 报告头部与操作按钮 */
+  .result-card-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .header-left {
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+
+  .header-right {
+    width: 100% !important;
+    display: flex !important;
+    gap: 8px !important;
+  }
+
+  .header-right .el-button {
+    flex: 1 !important;
+    margin-left: 0 !important;
+    justify-content: center !important;
+    font-size: 12px !important;
+    padding: 8px 6px !important;
+  }
+
+  /* Markdown 报告排版与表格横向滚动 */
+  .markdown-report-body {
+    padding: 8px 4px !important;
+    font-size: 13px !important;
+    line-height: 1.7 !important;
+  }
+
+  .markdown-report-body :deep(table) {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .markdown-report-body :deep(th),
+  .markdown-report-body :deep(td) {
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+    white-space: normal !important;
+    min-width: 70px !important;
+  }
+
+  .markdown-report-body :deep(pre) {
+    overflow-x: auto !important;
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+  }
+
+  .markdown-report-body :deep(blockquote) {
+    padding: 8px 12px !important;
+    margin: 10px 0 !important;
+    font-size: 12px !important;
   }
 }
 </style>
@@ -1501,25 +1667,191 @@ const callModelAPI = async (config, prompt, base64Image) => {
 }
 
 @media (max-width: 768px) {
-  .preset-grid {
-    grid-template-columns: 1fr !important;
+  .ai-correction-container {
+    padding: 0 4px !important;
+    gap: 14px !important;
   }
 
-  .essay-workbench {
-    grid-template-columns: 1fr !important;
-  }
-
-  .workbench-col {
-    width: 100% !important;
-  }
-
-  .action-bar {
+  /* 头部横幅在移动端上下堆叠 */
+  .ai-header-banner {
     flex-direction: column !important;
     align-items: stretch !important;
+    padding: 16px 14px !important;
+    gap: 14px !important;
   }
 
-  .action-bar .el-button {
+  .banner-actions {
     width: 100% !important;
+  }
+
+  .settings-trigger-btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .banner-title {
+    font-size: 19px !important;
+  }
+
+  .banner-subtitle {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* 配置网格从三列变为单列 */
+  .meta-config-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* 切换标签 */
+  .tabs-header {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .tab-btn {
+    flex: 1 1 auto !important;
+    min-width: 80px !important;
+    text-align: center !important;
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    justify-content: center !important;
+  }
+
+  /* 上传区域 */
+  .drop-zone {
+    padding: 24px 12px !important;
+  }
+
+  .drop-icon {
+    font-size: 32px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .drop-text-primary {
+    font-size: 13px !important;
+  }
+
+  .drop-text-secondary {
+    font-size: 11px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* 图片预览卡片在手机端纵向排列 */
+  .image-preview-card {
+    flex-direction: column !important;
+    padding: 12px !important;
+  }
+
+  .preview-img-box {
+    width: 100% !important;
+    height: 180px !important;
+  }
+
+  .preview-info-box {
+    width: 100% !important;
+  }
+
+  /* 底部按钮与选项 */
+  .action-footer {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+  }
+
+  .correction-options {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  .start-correct-btn {
+    width: 100% !important;
+    padding: 12px 16px !important;
+    font-size: 15px !important;
+  }
+
+  /* 进度指示条 */
+  .stepper-track {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .step-line {
+    display: none !important;
+  }
+
+  .step-item {
+    width: 100% !important;
+  }
+
+  .step-status-card {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 10px !important;
+    padding: 14px !important;
+  }
+
+  /* 报告头部与操作按钮 */
+  .result-card-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .header-left {
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+
+  .header-right {
+    width: 100% !important;
+    display: flex !important;
+    gap: 8px !important;
+  }
+
+  .header-right .el-button {
+    flex: 1 !important;
+    margin-left: 0 !important;
+    justify-content: center !important;
+    font-size: 12px !important;
+    padding: 8px 6px !important;
+  }
+
+  /* Markdown 报告排版与表格横向滚动 */
+  .markdown-report-body {
+    padding: 8px 4px !important;
+    font-size: 13px !important;
+    line-height: 1.7 !important;
+  }
+
+  .markdown-report-body :deep(table) {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .markdown-report-body :deep(th),
+  .markdown-report-body :deep(td) {
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+    white-space: normal !important;
+    min-width: 70px !important;
+  }
+
+  .markdown-report-body :deep(pre) {
+    overflow-x: auto !important;
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+  }
+
+  .markdown-report-body :deep(blockquote) {
+    padding: 8px 12px !important;
+    margin: 10px 0 !important;
+    font-size: 12px !important;
   }
 }
 </style>

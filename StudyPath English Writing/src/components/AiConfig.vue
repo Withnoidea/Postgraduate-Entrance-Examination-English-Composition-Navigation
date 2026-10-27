@@ -786,9 +786,54 @@ const goCorrection = () => {
   padding-top: 8px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .ai-config-container {
+    padding: 0 4px !important;
+  }
+
+  .card-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .card-header .el-button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .header-title {
+    font-size: 18px !important;
+  }
+
+  .header-desc {
+    font-size: 12px !important;
+  }
+
+  .preset-provider-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
   .advanced-params-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .form-actions .el-button {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .test-status-box {
+    padding: 12px !important;
+    font-size: 12px !important;
   }
 }
 
