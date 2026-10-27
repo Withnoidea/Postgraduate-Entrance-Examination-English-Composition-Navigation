@@ -665,3 +665,40 @@ body {
     justify-content: center !important;
   }
 }
+
+
+/* -------------------------------------------------------------
+ * 修复 el-tag 溢出容器与换行包裹问题
+ * 确保 chart-type-box dynamic-type / static-type 内的 el-tag 严密包裹不超出
+ * ------------------------------------------------------------- */
+.chart-type-box,
+.chart-type-box.dynamic-type,
+.chart-type-box.static-type {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow-wrap: break-word !important;
+}
+
+.chart-type-box .el-tag,
+.chart-type-box.dynamic-type .el-tag,
+.chart-type-box.static-type .el-tag {
+  white-space: normal !important;
+  height: auto !important;
+  min-height: 26px !important;
+  padding: 5px 10px !important;
+  line-height: 1.5 !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  display: inline-block !important;
+}
+
+.chart-type-box .el-tag .el-tag__content,
+.chart-type-box.dynamic-type .el-tag .el-tag__content,
+.chart-type-box.static-type .el-tag .el-tag__content {
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  display: inline !important;
+}

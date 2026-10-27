@@ -647,6 +647,34 @@ const examYearMatrix = [
   border-radius: 10px;
   height: 100%;
   box-sizing: border-box;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.chart-type-box .type-body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 彻底解决 el-tag 溢出 chart-type-box dynamic-type / static-type 的问题 */
+.chart-type-box :deep(.el-tag) {
+  white-space: normal !important;
+  height: auto !important;
+  min-height: 26px !important;
+  padding: 6px 12px !important;
+  line-height: 1.5 !important;
+  word-break: break-word !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  display: inline-block !important;
+  margin-top: 8px;
+  border-radius: 6px !important;
+}
+
+.chart-type-box :deep(.el-tag__content) {
+  white-space: normal !important;
+  word-break: break-word !important;
+  display: inline !important;
 }
 
 .dynamic-type {
