@@ -3832,15 +3832,11 @@ onUnmounted(() => {
 }
 
 .page-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  margin: -30px -34px 24px;
-  padding: 18px 34px 14px;
-  background: linear-gradient(180deg, rgba(245, 246, 250, 0.98), rgba(245, 246, 250, 0.78));
+  position: static;
+  margin: 0 0 24px 0;
+  padding: 0 0 16px 0;
+  background: transparent;
   border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-  backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
 }
 
 .main-content {
@@ -3909,8 +3905,8 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .page-header {
-    margin: -20px -16px 20px;
-    padding: 14px 16px 12px;
+    margin: 0 0 20px 0;
+    padding: 0 0 14px 0;
   }
 
   .content-section {
