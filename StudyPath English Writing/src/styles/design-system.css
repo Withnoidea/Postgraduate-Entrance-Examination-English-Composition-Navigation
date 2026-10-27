@@ -633,3 +633,35 @@ body {
   width: 19px !important;
   height: 19px !important;
 }
+
+
+/* -------------------------------------------------------------
+ * 移动端底部悬浮 Dock 避让与全站按钮对齐全局修复
+ * ------------------------------------------------------------- */
+@media screen and (max-width: 768px) {
+  /* 确保主内容区域与各主要页面容器底部彻底避开悬浮 Dock (54px + bottom 12px + 呼吸间距 + safe-area) */
+  .main-content,
+  .practice-area,
+  .ai-correction,
+  .api-settings,
+  .framework-content,
+  .reference-content {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 20px)) !important;
+  }
+
+  /* 消除 Element Plus .el-button + .el-button 默认 margin-left: 12px 导致的错位锯齿 */
+  .controls :deep(.el-button),
+  .controls-row :deep(.el-button),
+  .action-footer :deep(.el-button),
+  .banner-actions :deep(.el-button),
+  .form-actions :deep(.el-button) {
+    margin-left: 0 !important;
+  }
+
+  /* 保证按钮文字与图标水平垂直严格居中 */
+  .el-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}

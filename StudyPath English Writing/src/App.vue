@@ -263,29 +263,32 @@
 
               <!-- 控制按钮 -->
               <div class="controls">
-                <el-button type="info" @click="previousSentence" :disabled="currentIndex === 0">
-                  <el-icon><ArrowLeft /></el-icon>
-                  上一个
-                </el-button>
-                <!-- 默写模式下显示这些按钮 -->
-                <template v-if="practiceMode === 'dictation'">
-                  <el-button type="danger" @click="resetInput">
-                    <el-icon><RefreshLeft /></el-icon>
-                    清空输入
+                <div class="controls-row primary-controls">
+                  <el-button class="ctrl-btn btn-prev" type="info" @click="previousSentence" :disabled="currentIndex === 0">
+                    <el-icon><ArrowLeft /></el-icon>
+                    上一个
                   </el-button>
-                  <el-button type="success" @click="checkAnswer">
-                    <el-icon><Check /></el-icon>
-                    完成
+                  <template v-if="practiceMode === 'dictation'">
+                    <el-button class="ctrl-btn btn-clear" type="danger" plain @click="resetInput">
+                      <el-icon><RefreshLeft /></el-icon>
+                      清空输入
+                    </el-button>
+                    <el-button class="ctrl-btn btn-check" type="success" @click="checkAnswer">
+                      <el-icon><Check /></el-icon>
+                      完成
+                    </el-button>
+                  </template>
+                  <el-button class="ctrl-btn btn-next" type="primary" @click="nextSentence" :disabled="currentIndex === sentences.length - 1">
+                    下一个
+                    <el-icon><ArrowRight /></el-icon>
                   </el-button>
-                </template>
-                <el-button type="primary" @click="nextSentence" :disabled="currentIndex === sentences.length - 1">
-                  下一个
-                  <el-icon><ArrowRight /></el-icon>
-                </el-button>
-                <el-button type="warning" @click="reuploadFile">
-                  <el-icon><Upload /></el-icon>
-                  重新上传
-                </el-button>
+                </div>
+                <div class="controls-row secondary-controls">
+                  <el-button class="ctrl-btn btn-reupload" type="warning" plain @click="reuploadFile">
+                    <el-icon><Upload /></el-icon>
+                    重新上传
+                  </el-button>
+                </div>
               </div>
             </div>
           </div>
@@ -2498,9 +2501,28 @@ onUnmounted(() => {
 
 .controls {
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.controls-row {
+  display: flex;
   gap: 10px;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
+  width: 100%;
+}
+
+.controls-row :deep(.el-button) {
+  margin: 0 !important; /* 彻底清除 Element Plus 引起的 margin-left 错位 */
+}
+
+.secondary-controls {
+  margin-top: 2px;
 }
 
 /* AI批改样式 */
@@ -3662,9 +3684,9 @@ onUnmounted(() => {
     background: rgba(255, 255, 255, 0.98);
   }
 
-  /* 极致释放屏幕物理净宽，解决多层 padding 吞噬可用宽度问题 */
+  /* 极致释放屏幕物理净宽，并彻底解决底部固定 Dock 遮挡（保留足够安全避让距离） */
   .main-content {
-    padding: 10px 8px 30px !important;
+    padding: 10px 8px calc(96px + env(safe-area-inset-bottom, 20px)) !important;
     background: #f4f6fb;
   }
 
@@ -3748,11 +3770,53 @@ onUnmounted(() => {
   }
 
   .controls {
-    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    margin-top: 16px;
+    box-sizing: border-box;
   }
 
-  .controls :deep(.el-button) {
+  .controls-row {
+    display: flex;
+    gap: 8px;
     width: 100%;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+
+  .primary-controls {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .primary-controls :deep(.el-button) {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0 !important;
+    padding: 10px 6px !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 42px !important;
+    box-sizing: border-box;
+  }
+
+  .secondary-controls {
+    display: flex;
+    width: 100%;
+  }
+
+  .secondary-controls :deep(.el-button) {
+    width: 100% !important;
+    margin: 0 !important;
+    height: 40px !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box;
   }
 
   .ai-correction :deep(.el-card__body),
