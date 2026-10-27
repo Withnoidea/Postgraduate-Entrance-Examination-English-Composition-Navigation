@@ -100,40 +100,63 @@ body {
 
 /* ==================== 移动端底部高频浮动Dock（解决硬伤 1） ==================== */
 .mobile-bottom-dock {
-  position: fixed;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 24px);
-  max-width: 480px;
-  height: 56px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 0 8px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  z-index: 1999;
+  position: fixed !important;
+  bottom: 12px !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: calc(100% - 24px) !important;
+  max-width: 440px !important;
+  height: 56px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+  padding: 0 6px !important;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.14) !important;
+  z-index: 99999 !important;
+  box-sizing: border-box !important;
+  transform: none !important;
 }
 
 .dock-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 6px 12px;
-  border-radius: 16px;
-  cursor: pointer;
-  color: #64748b;
-  font-size: 11px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  user-select: none;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  gap: 2px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  color: #64748b !important;
+  cursor: pointer !important;
+  border-radius: 16px !important;
+  padding: 4px 0 !important;
+  transition: all 0.2s ease !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+.dock-item .dock-icon {
+  font-size: 17px !important;
+  line-height: 1 !important;
+}
+
+.dock-item span:last-child {
+  font-size: 11px !important;
+  transform: scale(0.95) !important;
+  letter-spacing: -0.2px !important;
+}
+
+.dock-item.active {
+  color: #0284c7 !important;
+  font-weight: 600 !important;
 }
 .dock-item.active {
   color: #2563eb;
@@ -369,32 +392,63 @@ body {
 
 /* 移动端底部 Dock */
 .mobile-bottom-dock {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: calc(56px + env(safe-area-inset-bottom, 0px));
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(16px);
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  z-index: 999;
+  position: fixed !important;
+  bottom: 12px !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: calc(100% - 24px) !important;
+  max-width: 440px !important;
+  height: 56px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+  padding: 0 6px !important;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.14) !important;
+  z-index: 99999 !important;
+  box-sizing: border-box !important;
+  transform: none !important;
 }
 
 .dock-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  font-size: 11px;
-  color: #64748b;
-  cursor: pointer;
-  padding: 4px 10px;
-  transition: all 0.2s ease;
-  border-radius: 8px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  gap: 2px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  color: #64748b !important;
+  cursor: pointer !important;
+  border-radius: 16px !important;
+  padding: 4px 0 !important;
+  transition: all 0.2s ease !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+.dock-item .dock-icon {
+  font-size: 17px !important;
+  line-height: 1 !important;
+}
+
+.dock-item span:last-child {
+  font-size: 11px !important;
+  transform: scale(0.95) !important;
+  letter-spacing: -0.2px !important;
+}
+
+.dock-item.active {
+  color: #0284c7 !important;
+  font-weight: 600 !important;
 }
 
 .dock-item.active {

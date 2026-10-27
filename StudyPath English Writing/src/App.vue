@@ -707,6 +707,8 @@
           </div>
         </div>
       </el-main>
+    </el-container>
+
       <!-- 移动端底部高频快捷悬浮 Dock -->
       <div v-if="isMobile" class="mobile-bottom-dock">
         <div 
@@ -750,7 +752,6 @@
           <span>目录</span>
         </div>
       </div>
-    </el-container>
   </div>
 </template>
 
