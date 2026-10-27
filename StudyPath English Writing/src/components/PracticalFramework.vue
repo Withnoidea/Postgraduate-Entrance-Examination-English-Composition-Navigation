@@ -86,11 +86,6 @@
                 </template>
               </el-table-column>
               <el-table-column prop="desc" label="使用规则与情境释义" />
-              <el-table-column label="快捷复制" width="90" align="center">
-                <template #default="scope">
-                  <el-button link type="primary" size="small" @click="copyText(scope.row.copyVal || scope.row.formula)">复制</el-button>
-                </template>
-              </el-table-column>
             </el-table>
           </el-card>
 
@@ -122,7 +117,6 @@
                   <div class="f-item" v-for="(item, idx) in privateP1Sentence1" :key="idx">
                     <div class="f-top">
                       <span class="f-type-tag">{{ item.type }}</span>
-                      <el-button link type="primary" size="small" @click="copyText(item.en)">复制</el-button>
                     </div>
                     <div class="f-en">{{ item.en }}</div>
                     <div class="f-cn">{{ item.cn }}</div>
@@ -132,7 +126,6 @@
                   <div class="f-item">
                     <div class="f-top">
                       <span class="f-type-tag">目的核心句</span>
-                      <el-button link type="primary" size="small" @click="copyText('My purpose of this letter/email is to ')">复制</el-button>
                     </div>
                     <div class="f-en">My purpose of this letter/email is to <span class="slot-text">*** (改写题干)</span>.</div>
                     <div class="f-cn">我写这封信/邮件的目的是 ***。</div>
@@ -149,7 +142,6 @@
                 <div class="f-item" style="margin-top: 10px;">
                   <div class="f-top">
                     <span class="f-type-tag">公务万能开篇</span>
-                    <el-button link type="primary" size="small" @click="copyText(publicP1Formula)">复制</el-button>
                   </div>
                   <div class="f-en">
                     I hope this letter/email finds you well. I, <span class="slot-text">an ordinary consumer / a senior student [大四]</span> (个人名义) 或者 <span class="slot-text">on behalf of *** [机构(集体名义), 如 the Student Union / ABC University]</span>, am writing this letter/email to <span class="slot-text">*** (改写题干)</span>.
@@ -190,7 +182,6 @@
                   <div class="c-h">
                     <span class="c-type">{{ c.type }}</span>
                     <el-tag size="small" type="info" effect="plain">{{ c.scene }}</el-tag>
-                    <el-button link type="primary" size="small" @click="copyText(c.en)">复制</el-button>
                   </div>
                   <div class="c-en">{{ c.en }}</div>
                   <div class="c-cn">{{ c.cn }}</div>
@@ -336,7 +327,6 @@
                 <div class="p3-opt-card">
                   <div class="p3-h">
                     <span>选项一：鼓励参与 (活动/项目/机会)</span>
-                    <el-button link type="primary" size="small" @click="copyText('If you are interested in this activity, please scan the QR code to register.')">复制</el-button>
                   </div>
                   <div class="f-en">If you are interested in this activity, please scan the QR code to register.</div>
                   <div class="f-cn">如果你对这个活动感兴趣，请扫描二维码注册报名。</div>
@@ -344,7 +334,7 @@
                 <div class="p3-opt-card">
                   <div class="p3-h">
                     <span>选项二：提供联系信息 (事项安排/情况介绍)</span>
-                    <el-button link type="primary" size="small" @click="copyText('If you have any questions, please get in touch with us at telephone number 1234567 (before next Sunday).')">复制</el-button>
+                    
                   </div>
                   <div class="f-en">If you have any questions, please get in touch with us at telephone number 1234567 (before next Sunday).</div>
                   <div class="f-cn">如果你有任何问题，请（在下周日之前）与我们联系，电话号码是 1234567。</div>
@@ -375,7 +365,6 @@
             <template #header>
               <div class="card-h-flex">
                 <span class="h-title">纪要写作标准模板 (Meeting Minutes)</span>
-                <el-button type="primary" size="small" @click="copyText(meetingMinutesTemplate)">一键复制纪要模板</el-button>
               </div>
             </template>
 
@@ -537,14 +526,7 @@ Recorded by:
 Meeting Record: 
 Decisions and Action Items: `
 
-const copyText = (txt) => {
-  if (!txt) return
-  navigator.clipboard.writeText(txt).then(() => {
-    ElMessage.success('已复制到剪贴板！')
-  }).catch(() => {
-    ElMessage.error('复制失败，请手动选择')
-  })
-}
+
 </script>
 
 <style scoped>

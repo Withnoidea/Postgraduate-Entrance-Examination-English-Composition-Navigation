@@ -150,7 +150,6 @@
           <div class="cs-final">
             <span class="final-tag">最终高分译文：</span>
             <span class="final-en">the changes in urban and rural populations in China over the past 20 years</span>
-            <el-button size="small" type="primary" plain @click="copyText('the changes in urban and rural populations in China over the past 20 years')">复制译文</el-button>
           </div>
         </div>
       </div>
@@ -212,13 +211,6 @@
             <div class="f-trans">与此同时，元素3的数值/比例保持稳定。</div>
           </div>
         </div>
-
-        <div class="copy-bar">
-          <el-button type="primary" size="default" @click="copyDynamicP1">
-            <el-icon><DocumentCopy /></el-icon> 复制动态图第1段完整模板
-          </el-button>
-          <span class="exam-tag">真题溯源：2010~2014 / 2017 / 2019 / 2022 / 2023 英二 / 2025 英一</span>
-        </div>
       </div>
 
       <!-- 静态图模板 -->
@@ -253,13 +245,6 @@
             </div>
             <div class="f-trans">此外，例如元素C、元素D和元素E等也被考虑其中/包含在内，它们分别占据 c%、d% 和 e%。</div>
           </div>
-        </div>
-
-        <div class="copy-bar">
-          <el-button type="success" size="default" @click="copyStaticP1">
-            <el-icon><DocumentCopy /></el-icon> 复制静态图第1段完整模板
-          </el-button>
-          <span class="exam-tag">真题溯源：2015 / 2016 / 2018 / 2020 / 2021 / 2024 / 2025 英二</span>
         </div>
       </div>
     </el-card>
@@ -350,12 +335,6 @@
           </el-col>
         </el-row>
       </div>
-
-      <div class="copy-bar">
-        <el-button type="primary" plain @click="copyP2Template">
-          <el-icon><DocumentCopy /></el-icon> 复制第二段框架模板
-        </el-button>
-      </div>
     </el-card>
 
     <!-- 锦囊妙句专栏（先期集成锦囊妙句 1：政府努力） -->
@@ -399,18 +378,6 @@
             <li>后半句的 <code>enabling ...</code> / <code>allowing ...</code> 为现在分词作伴随状语，地道表达举措带来的深远成效。</li>
           </ul>
         </div>
-
-        <div class="copy-bar">
-          <el-button type="warning" size="small" @click="copyText('As the conductor orchestrating the symphony of changes, our government has made tremendous efforts to build a sound education system, enabling university students to have ample opportunities for further education.')">
-            复制版本①（教育深造）
-          </el-button>
-          <el-button type="warning" size="small" @click="copyText('As the conductor orchestrating the symphony of changes, our government has made tremendous efforts to drive economic growth and elevate the purchasing power of the populace, allowing them to afford automobiles that were previously deemed luxury items.')">
-            复制版本②（经济与消费力）
-          </el-button>
-          <el-button type="warning" size="small" @click="copyText('As the conductor orchestrating the symphony of changes, our government has made tremendous efforts to establish the Confucius Institutes, which serve as a means of preserving and promoting our traditional culture.')">
-            复制版本③（文化传播）
-          </el-button>
-        </div>
       </div>
     </el-card>
 
@@ -444,13 +411,6 @@
             </div>
           </div>
         </div>
-
-        <div class="copy-bar">
-          <el-button type="primary" size="default" @click="copyDynamicP3">
-            <el-icon><DocumentCopy /></el-icon> 复制动态图第3段模板
-          </el-button>
-          <span class="exam-tag">真题溯源：2010~2014 / 2017 / 2019 / 2022 / 2023 英二 / 2025 英一</span>
-        </div>
       </div>
 
       <!-- 静态图第三段 -->
@@ -467,13 +427,6 @@
               未来的趋势会是什么呢？我坚信上述统计数字准确而真实地反映了 [***] 的选择，是时代变迁的一个缩影，并且将继续在未来几十年保持相对稳定。
             </div>
           </div>
-        </div>
-
-        <div class="copy-bar">
-          <el-button type="success" size="default" @click="copyStaticP3">
-            <el-icon><DocumentCopy /></el-icon> 复制静态图第3段模板
-          </el-button>
-          <span class="exam-tag">真题溯源：2015 / 2016 / 2018 / 2020 / 2021 / 2024 / 2025 英二</span>
         </div>
       </div>
     </el-card>
@@ -512,8 +465,7 @@ import {
   MagicStick,
   Compass,
   StarFilled,
-  DocumentCopy,
-  Calendar
+    Calendar
 } from '@element-plus/icons-vue'
 
 const p1Mode = ref('dynamic')
@@ -534,38 +486,17 @@ const examYearMatrix = [
   }
 ]
 
-const copyText = (text) => {
-  navigator.clipboard.writeText(text).then(() => {
-    ElMessage.success('已复制到剪贴板！')
-  }).catch(() => {
-    ElMessage.error('复制失败，请手动选择复制')
-  })
-}
 
-const copyDynamicP1 = () => {
-  const tpl = `The [line/bar chart/table] clearly depicts [the changes in ... over the past ... years]. In [起始时间], the [number/percentage] of [元素1] was [数字头], but by [结束时间], this figure had substantially risen/decreased to [数字尾]. In contrast/Meanwhile, the proportion of [元素2] experienced a significant increase/decline of about [差额] during the same period. Simultaneously, the percentage of [元素3] remained stable and steady.`
-  copyText(tpl)
-}
 
-const copyStaticP1 = () => {
-  const tpl = `The [pie/bar chart] clearly displays the percentage breakdown of [***]. [元素A] takes the lead at [a%], followed by [元素B] at [b%]. Additionally, factors such as [元素C], [元素D], and [元素E] are also considered, accounting for [c%], [d%], and [e%], respectively.`
-  copyText(tpl)
-}
 
-const copyP2Template = () => {
-  const tpl = `The core reasons for the observed phenomenon can be summarized as follows. To start with, [角度一分析]. In addition, [角度二分析]. Considering these factors, the depicted phenomenon in the chart is unsurprising.`
-  copyText(tpl)
-}
 
-const copyDynamicP3 = () => {
-  const tpl = `What about future trends? I am confident that the number/proportion of [某元素] is a clear sign of social improvement and will steadily increase in the following decades. In contrast, the number/proportion of [某元素] will likely continue to decrease.`
-  copyText(tpl)
-}
 
-const copyStaticP3 = () => {
-  const tpl = `What about future trends? I am confident that the above statistical figures accurately and truthfully reflect the choices of [人群], serving as a microcosm of the changes in the era, and will likely remain relatively stable in the following decades.`
-  copyText(tpl)
-}
+
+
+
+
+
+
 </script>
 
 <style scoped>
@@ -921,16 +852,7 @@ const copyStaticP3 = () => {
   color: #64748b;
 }
 
-.copy-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 1px solid #f1f5f9;
-}
+
 
 .exam-tag {
   font-size: 12px;

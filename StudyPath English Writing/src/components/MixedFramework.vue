@@ -65,9 +65,7 @@
       <div class="mother-framework-box">
         <div class="mf-title">
           <span>👑 第一段基础母框架结构</span>
-          <el-button size="small" type="primary" @click="copyText('In the left-hand/upper cartoon/chart/excerpt, + 左/上图/表/文字描述. Simultaneously/On the contrary, in the right-hand/lower portrayal/chart/excerpt, + 右/下图/表/文字描述.')">
-            复制母框架
-          </el-button>
+          
         </div>
         <div class="mf-formula">
           <code>
@@ -96,7 +94,7 @@
       <div class="case-card">
         <div class="case-header tag-pic">
           <span>情况一：图画（核心句型）</span>
-          <el-button size="small" text type="primary" @click="copyText('There be sb., doing1 sth. and doing2 sth.')">复制</el-button>
+          
         </div>
         <div class="case-body">
           <div class="case-formula">
@@ -118,7 +116,7 @@
           <div class="chart-item">
             <div class="ci-top">
               <span class="ci-badge">1. 起止时间变化</span>
-              <el-button size="small" text type="primary" @click="copyText('In [时间头], the number/percentage of [元素 1] was (approximately) [数字头], but by [时间尾], this figure/rate had substantially/gradually risen/decreased to (around) [数字尾].')">复制</el-button>
+              
             </div>
             <div class="case-formula">
               <code>In [时间头], the number/percentage of [元素 1] was (approximately) [数字头], but by [时间尾], this figure/rate had substantially/gradually risen/decreased to (around) [数字尾].</code>
@@ -130,7 +128,7 @@
           <div class="chart-item" style="margin-top: 10px;">
             <div class="ci-top">
               <span class="ci-badge">2. 对比与差额变化</span>
-              <el-button size="small" text type="primary" @click="copyText('In contrast, the number/proportion of [元素 2] experienced a significant/slow increase/decline of (about) [差额数字] during the same period/from [时间 1] to [时间 2].')">复制</el-button>
+              
             </div>
             <div class="case-formula">
               <code>In contrast, the number/proportion of [元素 2] experienced a significant/slow increase/decline of (about) *** (数字相减的结果) during the same period/from [时间 1] to [时间 2].</code>
@@ -142,7 +140,7 @@
           <div class="chart-item" style="margin-top: 10px;">
             <div class="ci-top">
               <span class="ci-badge">3. 饼图占比分解</span>
-              <el-button size="small" text type="primary" @click="copyText('The pie chart clearly displays the percentage breakdown of [表头中文翻译]. [元素 A] takes the lead at a%, followed by [元素 B] at b%.')">复制</el-button>
+              
             </div>
             <div class="case-formula">
               <code>The pie chart clearly displays the percentage breakdown of *** (表头内容的中文翻译). [元素 A] takes the lead at a%, followed by [元素 B] at b%.</code>
@@ -156,7 +154,7 @@
       <div class="case-card" style="margin-top: 14px;">
         <div class="case-header tag-text">
           <span>情况三：文字（材料节选句型）</span>
-          <el-button size="small" text type="primary" @click="copyText('The author informs us that + 作者观点.')">复制</el-button>
+          
         </div>
         <div class="case-body">
           <div class="case-formula">
@@ -263,14 +261,7 @@ import {
   Document
 } from '@element-plus/icons-vue'
 
-const copyText = async (text) => {
-  try {
-    await navigator.clipboard.writeText(text)
-    ElMessage.success('已复制到剪贴板！')
-  } catch (err) {
-    ElMessage.error('复制失败，请手动选取复制')
-  }
-}
+
 </script>
 
 <style scoped>

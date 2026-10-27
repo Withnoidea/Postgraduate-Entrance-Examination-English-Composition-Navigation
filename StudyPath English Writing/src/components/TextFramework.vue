@@ -112,9 +112,6 @@
         <div class="formula-item">
           <div class="item-top">
             <span class="step-badge">第 1 句 · 归纳作者观点</span>
-            <el-button size="small" type="primary" plain @click="copyText('This is an excerpt from a simple yet thought-provoking article, in which the author informs us that [作者观点].')">
-              复制模板
-            </el-button>
           </div>
           <div class="formula-code">
             This is an excerpt from a simple yet thought-provoking article, in which the author informs us that <span class="slot-tag">[作者核心观点]</span>.
@@ -136,7 +133,7 @@
                 <el-radio-button label="disagree">反对作者</el-radio-button>
               </el-radio-group>
             </div>
-            <el-button size="small" type="primary" plain @click="copyAttitude">复制句子</el-button>
+            
           </div>
           
           <div class="formula-code" v-if="selectedAttitude === 'agree'">
@@ -175,7 +172,6 @@
           <div class="step-content">
             <div class="step-title-row">
               <h4>第 1 句：承上启下过渡句</h4>
-              <el-button size="small" text type="primary" @click="copyText('The reasons can be listed as follows.')">复制</el-button>
             </div>
             <div class="step-sentence">
               The reasons can be listed as follows.
@@ -245,9 +241,7 @@
           <div class="step-content">
             <div class="step-title-row">
               <h4>第 4 句：权威数据举例论证（杀手锏）</h4>
-              <el-button size="small" type="success" plain @click="copyText('For example, according to a recent survey conducted by the Chinese Academy of Social Sciences (CASS), 73% of the respondents believe that [相关观点/论点].')">
-                复制权威数据句
-              </el-button>
+              
             </div>
             <div class="step-sentence">
               For example, according to a recent survey conducted by the Chinese Academy of Social Sciences (CASS), 73% of the respondents believe that <span class="slot-tag">[受访者认同的核心论点]</span>.
@@ -338,22 +332,9 @@ import {
 const selectedAttitude = ref('agree')
 const connectorStyle = ref('styleA')
 
-const copyText = async (text) => {
-  try {
-    await navigator.clipboard.writeText(text)
-    ElMessage.success('已复制到剪贴板！')
-  } catch (err) {
-    ElMessage.error('复制失败，请手动选取复制')
-  }
-}
 
-const copyAttitude = () => {
-  if (selectedAttitude.value === 'agree') {
-    copyText("I wholeheartedly agree with the author's viewpoint.")
-  } else {
-    copyText("I completely disagree with the author's viewpoint.")
-  }
-}
+
+
 </script>
 
 <style scoped>
