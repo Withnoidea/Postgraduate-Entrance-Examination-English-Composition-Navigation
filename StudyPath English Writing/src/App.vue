@@ -2,15 +2,32 @@
   <div class="app-container" :data-recall="recallMode">
     <el-container class="main-container">
       <!-- 侧边栏 -->
-      <el-aside width="280px" class="sidebar" :class="{ 'mobile-visible': sidebarVisible }">
+      <el-aside
+        :width="isCollapse ? '68px' : '280px'"
+        class="sidebar"
+        :class="{ 'mobile-visible': sidebarVisible, 'is-collapsed': isCollapse }"
+      >
         <div class="sidebar-header">
-          <h2><el-icon class="brand-icon"><Notebook /></el-icon> 考研英语作文背诵</h2>
+          <div class="sidebar-brand" v-show="!isCollapse">
+            <h2><el-icon class="brand-icon"><Notebook /></el-icon> 考研英语作文背诵</h2>
+          </div>
+          <div class="sidebar-brand-collapsed" v-show="isCollapse" title="考研英语作文背诵">
+            <el-icon class="brand-icon-mini"><Notebook /></el-icon>
+          </div>
+          <!-- 桌面端折叠/展开切换按钮 -->
+          <el-tooltip :content="isCollapse ? '展开导航' : '折叠导航'" placement="right" :show-after="300">
+            <button class="sidebar-collapse-btn" @click="toggleCollapse" :aria-label="isCollapse ? '展开导航' : '折叠导航'">
+              <el-icon><component :is="isCollapse ? Expand : Fold" /></el-icon>
+            </button>
+          </el-tooltip>
         </div>
         
         <el-scrollbar class="sidebar-content">
           <el-menu
             :default-active="activeMenu"
             :default-openeds="defaultOpeneds"
+            :collapse="isCollapse"
+            :collapse-transition="false"
             class="chapter-menu"
             @select="handleMenuSelect"
           >
@@ -717,6 +734,8 @@
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
+  Fold,
+  Expand,
   Notebook,
   Memo,
   Trophy,
@@ -768,6 +787,12 @@ const switchSection = (sectionId) => {
 
 // 移动端控制
 const sidebarVisible = ref(false)
+// 左侧导航折叠状态（优先从本地存储恢复，默认展开）
+const isCollapse = ref(localStorage.getItem('sidebar_is_collapsed') === 'true')
+const toggleCollapse = () => {
+  isCollapse.value = !isCollapse.value
+  localStorage.setItem('sidebar_is_collapsed', String(isCollapse.value))
+}
 const isMobile = ref(false)
 const recallMode = ref('show-all')
 
@@ -2199,8 +2224,90 @@ onUnmounted(() => {
   flex-direction: column;
   flex-shrink: 0;
   overflow-y: auto;
-  transition: transform 0.3s ease;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
   z-index: 1001;
+}
+
+.sidebar.is-collapsed {
+  border-radius: 16px 0 0 16px;
+}
+
+.sidebar-header {
+  padding: 0 14px;
+  background: #4facfe;
+  color: white;
+  box-shadow: 0 2px 8px rgba(79, 172, 254, 0.2);
+  flex-shrink: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.sidebar.is-collapsed .sidebar-header {
+  padding: 0 8px;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sidebar-brand h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-brand-collapsed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-icon-mini {
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.sidebar-collapse-btn {
+  background: rgba(255, 255, 255, 0.18);
+  border: none;
+  outline: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+}
+
+.sidebar-collapse-btn:hover {
+  background: rgba(255, 255, 255, 0.32);
+  transform: scale(1.05);
+}
+
+.sidebar-collapse-btn:active {
+  transform: scale(0.95);
+}
+
+.sidebar-collapse-btn .el-icon {
+  font-size: 16px;
 }
 
 @media (max-width: 768px) {
@@ -4034,6 +4141,32 @@ onUnmounted(() => {
     height: 22px;
   }
 }
+
+/* -------------------------------------------------------------
+ * 侧边栏折叠样式适配
+ * ------------------------------------------------------------- */
+.sidebar.is-collapsed .chapter-menu.el-menu--collapse {
+  width: 100% !important;
+  border-right: none !important;
+}
+
+.sidebar.is-collapsed .el-sub-menu__title,
+.sidebar.is-collapsed .el-menu-item {
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
+.sidebar.is-collapsed .menu-tag {
+  display: none !important;
+}
+
+@media screen and (max-width: 768px) {
+  /* 移动端侧边栏常开抽屉，折叠按钮在移动端隐蔽，由底部Dock统一调度 */
+  .sidebar-collapse-btn {
+    display: none !important;
+  }
+}
+
 </style>
 
 <style>
@@ -4129,4 +4262,30 @@ select {
     scroll-behavior: auto !important;
   }
 }
+
+/* -------------------------------------------------------------
+ * 侧边栏折叠样式适配
+ * ------------------------------------------------------------- */
+.sidebar.is-collapsed .chapter-menu.el-menu--collapse {
+  width: 100% !important;
+  border-right: none !important;
+}
+
+.sidebar.is-collapsed .el-sub-menu__title,
+.sidebar.is-collapsed .el-menu-item {
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
+.sidebar.is-collapsed .menu-tag {
+  display: none !important;
+}
+
+@media screen and (max-width: 768px) {
+  /* 移动端侧边栏常开抽屉，折叠按钮在移动端隐蔽，由底部Dock统一调度 */
+  .sidebar-collapse-btn {
+    display: none !important;
+  }
+}
+
 </style>
