@@ -95,11 +95,7 @@
           >AI批改</div>
         </div>
 
-        <!-- 移动端顶部导航栏 -->
-        <div v-if="isMobile" class="mobile-header">
-          <div class="mobile-logo"><el-icon class="brand-icon"><Notebook /></el-icon> 考研英语背诵</div>
-          <el-button class="menu-toggle" type="primary" :icon="Menu" circle @click="toggleSidebar" />
-        </div>
+        
         
         <!-- 侧边栏遮罩层 -->
         <div v-if="isMobile && sidebarVisible" class="sidebar-overlay" @click="toggleSidebar"></div>
@@ -2302,33 +2298,11 @@ onUnmounted(() => {
   overflow-y: auto;
 }
 
-.mobile-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 18px;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  position: relative;
-  z-index: 20;
-  margin: -20px -16px 20px -16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
 
-.mobile-logo {
-  font-size: 16px;
-  font-weight: 600;
-  color: #4facfe;
-}
 
-.menu-toggle {
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
+
+
 
 .sidebar-overlay {
   position: fixed;
@@ -3064,27 +3038,11 @@ onUnmounted(() => {
   background: #f5f6fa;
 }
 
-.mobile-header {
-  background: #ffffff;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  padding: 14px 18px;
-  margin: -20px -16px 20px -16px;
-  position: relative;
-  top: auto;
-  z-index: 20;
-}
 
-.mobile-logo {
-  color: #101828;
-  font-size: 17px;
-  font-weight: 700;
-}
 
-.menu-toggle {
-  background: #0a84ff;
-  border-color: #0a84ff;
-}
+
+
+
 
 .sidebar-overlay {
   background: rgba(15, 23, 42, 0.36);
@@ -3861,9 +3819,7 @@ onUnmounted(() => {
 }
 
 .sidebar-header h2,
-.mobile-logo {
-  min-width: 0;
-}
+
 
 .brand-icon,
 .title-icon {

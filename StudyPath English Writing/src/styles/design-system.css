@@ -548,3 +548,48 @@ body {
   filter: none !important;
   opacity: 1 !important;
 }
+
+/* 移动端顶部横向快捷滑动分段胶囊 */
+.quick-pills-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 14px;
+  margin: -10px -10px 16px -10px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.quick-pills-bar::-webkit-scrollbar {
+  display: none;
+}
+.quick-pill {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+  background: #f1f5f9;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+.quick-pill:hover {
+  color: #0f172a;
+  background: #e2e8f0;
+}
+.quick-pill.active {
+  color: #ffffff;
+  background: #0284c7;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+}
