@@ -698,4 +698,35 @@ const copyText = async (text) => {
     flex-wrap: wrap !important;
   }
 }
+
+@media (max-width: 768px) {
+  .cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .leaf-card,
+  .sample-card,
+  .dim-card {
+    padding: 10px 12px !important;
+  }
+
+  .leaf-en {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  .leaf-cn {
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+  }
+
+  .branch-node-root {
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+  }
+}
+
 </style>

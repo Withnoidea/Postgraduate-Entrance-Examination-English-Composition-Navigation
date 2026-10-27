@@ -3624,7 +3624,7 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .app-container {
     padding: 0;
-    background: #eef1f6;
+    background: #f1f3f9;
   }
 
   .main-container {
@@ -3636,12 +3636,34 @@ onUnmounted(() => {
 
   .sidebar {
     border-radius: 0;
-    background: rgba(255, 255, 255, 0.96);
+    background: rgba(255, 255, 255, 0.98);
   }
 
+  /* 极致释放屏幕物理净宽，解决多层 padding 吞噬可用宽度问题 */
   .main-content {
-    padding: 20px 16px 34px;
-    background: #f5f6fa;
+    padding: 10px 8px 30px !important;
+    background: #f4f6fb;
+  }
+
+  .content-section {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  /* 去除移动端多余阴影与沉重感，打造高密度考研手卡风格 */
+  .el-card {
+    border-radius: 10px !important;
+    border: 1px solid rgba(226, 232, 240, 0.9) !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+    margin-bottom: 12px !important;
+  }
+
+  .el-card__header {
+    padding: 10px 12px !important;
+  }
+
+  .el-card__body {
+    padding: 10px 12px !important;
   }
 
   .page-header {

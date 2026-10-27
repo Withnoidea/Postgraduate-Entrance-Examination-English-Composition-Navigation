@@ -201,22 +201,42 @@
           </el-card>
 
           <!-- 4. (三) 落款 -->
-          <el-card class="detail-card" shadow="hover">
+          <el-card class="detail-card compact-card" shadow="hover">
             <template #header>
               <div class="card-h-flex">
-                <span class="h-title">（三）落款 规范与排版</span>
-                <el-tag type="success" effect="plain">右下对齐</el-tag>
+                <span class="h-title">（三）落款 规范与真题排版</span>
+                <el-tag type="success" effect="plain" size="small">右下对齐·标准答题纸</el-tag>
               </div>
             </template>
-            <div class="sign-demo-box">
-              <div class="sign-content">
-                <div class="sign-top">Yours sincerely,</div>
-                <div class="sign-name">Li Ming / Zhang Wei</div>
+            
+            <div class="sign-exam-container">
+              <!-- 答题纸真实信纸效果（100%全宽舒展展示，不折行） -->
+              <div class="sign-paper-canvas">
+                <div class="paper-watermark">考研英语答题纸规范</div>
+                <div class="paper-body-placeholder">
+                  <div class="placeholder-line"></div>
+                  <div class="placeholder-line short"></div>
+                </div>
+                <div class="sign-aligned-block">
+                  <div class="sign-top-phrase">Yours sincerely,</div>
+                  <div class="sign-name-phrase">Li Ming / Zhang Wei</div>
+                </div>
               </div>
-              <div class="sign-explain">
-                <div class="se-item"><strong>格式位置：</strong>英文书信落款必须放在正文的<strong>右下方</strong>。</div>
-                <div class="se-item"><strong>礼貌短语：</strong>使用 <code>Yours sincerely,</code>（首字母大写 + 逗号）。</div>
-                <div class="se-item"><strong>署名规范：</strong>根据题目指定署名（如 Li Ming 或 Zhang Wei），严禁书写真实姓名。</div>
+
+              <!-- 核心得分要点高密度药丸/列表展示（字字干货，不挤压） -->
+              <div class="sign-specs-pills">
+                <div class="spec-pill-item">
+                  <span class="pill-badge">📍 排版位置</span>
+                  <span class="pill-desc">正文下方<strong>靠右对齐</strong>（留出适当下边距）</span>
+                </div>
+                <div class="spec-pill-item">
+                  <span class="pill-badge">✍ 礼貌短语</span>
+                  <span class="pill-desc">首字母大写，<strong>末尾必带英文逗号 (,)</strong>。常用 <em>Yours sincerely,</em> 或 <em>Yours faithfully,</em></span>
+                </div>
+                <div class="spec-pill-item">
+                  <span class="pill-badge">🚫 署名红线</span>
+                  <span class="pill-desc">严格依题目要求署名（如 <em>Li Ming / Zhang Wei</em>），<strong>严禁书写真实姓名</strong></span>
+                </div>
               </div>
             </div>
           </el-card>
@@ -1157,4 +1177,205 @@ const copyText = (txt) => {
     padding: 14px !important;
   }
 }
+
+/* ================= 高密度考研手卡风格重构 (PracticalFramework) ================= */
+.sign-exam-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sign-paper-canvas {
+  background: #fdfdfd;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 16px 20px;
+  position: relative;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.paper-watermark {
+  font-size: 11px;
+  color: #94a3b8;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  font-family: monospace;
+}
+
+.paper-body-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  opacity: 0.35;
+}
+
+.placeholder-line {
+  height: 2px;
+  background: #94a3b8;
+  width: 100%;
+  border-radius: 2px;
+}
+
+.placeholder-line.short {
+  width: 75%;
+}
+
+.sign-aligned-block {
+  text-align: right;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.sign-top-phrase {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+}
+
+.sign-name-phrase {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  margin-top: 4px;
+}
+
+.sign-specs-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.spec-pill-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.pill-badge {
+  font-weight: 650;
+  color: #0369a1;
+  background: #e0f2fe;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+.pill-desc {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .spec-pill-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 10px;
+  }
+  
+  .sign-paper-canvas {
+    padding: 12px 14px;
+  }
+  
+  .sign-top-phrase {
+    font-size: 15px;
+  }
+  
+  .sign-name-phrase {
+    font-size: 16px;
+  }
+
+  .el-card__body {
+    padding: 10px !important;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .sub-intro-box {
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .letter-layout-spec {
+    gap: 10px !important;
+  }
+
+  .spec-line {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+    padding: 8px 10px !important;
+  }
+
+  .spec-diamond-box {
+    padding: 10px !important;
+  }
+
+  .d-row {
+    font-size: 12.5px !important;
+    padding: 6px 8px !important;
+  }
+
+  .sal-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .sal-card {
+    padding: 10px 12px !important;
+  }
+
+  .sal-header {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .closing-grid,
+  .notice-layout-grid,
+  .notice-p1-grid,
+  .notice-p2-grid,
+  .notice-p3-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .card-h-flex {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .h-title {
+    font-size: 15px !important;
+  }
+
+  .closing-item-card {
+    padding: 10px !important;
+  }
+
+  .ci-english {
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
+}
+
 </style>
