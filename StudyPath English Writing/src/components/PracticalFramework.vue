@@ -78,15 +78,27 @@
             </div>
 
             <!-- 5大情境称呼表格 -->
-            <el-table :data="salutationList" border stripe style="width: 100%; margin-top: 14px;">
-              <el-table-column prop="relation" label="关系类型" width="130" />
-              <el-table-column prop="formula" label="标准称呼公式" width="240">
-                <template #default="scope">
-                  <span class="code-span">{{ scope.row.formula }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="desc" label="使用规则与情境释义" />
-            </el-table>
+            <!-- 桌面端表格呈现 -->
+            <div class="desktop-only">
+              <el-table :data="salutationList" border stripe style="width: 100%; margin-top: 14px;">
+                <el-table-column prop="relation" label="关系类型" width="130" />
+                <el-table-column prop="formula" label="标准称呼公式" width="240">
+                  <template #default="scope">
+                    <span class="code-span">{{ scope.row.formula }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="desc" label="使用规则与情境释义" />
+              </el-table>
+            </div>
+
+            <!-- 移动端自适应卡片流呈现（告别横滑挤压） -->
+            <div class="mobile-only salutation-card-list">
+              <div v-for="(item, idx) in salutationList" :key="idx" class="mobile-salutation-card">
+                <div class="card-relation-badge">{{ item.relation }}</div>
+                <div class="card-formula-code">{{ item.formula }}</div>
+                <div class="card-desc-text">{{ item.desc }}</div>
+              </div>
+            </div>
           </el-card>
 
           <!-- 3. (二) 正文三段式全景脑图与逐句公式 -->
@@ -118,7 +130,7 @@
                     <div class="f-top">
                       <span class="f-type-tag">{{ item.type }}</span>
                     </div>
-                    <div class="f-en">{{ item.en }}</div>
+                    <div class="f-en"><span v-html="renderSlotPills(item.en)"></span></div>
                     <div class="f-cn">{{ item.cn }}</div>
                   </div>
 
@@ -405,6 +417,7 @@
 </template>
 
 <script setup>
+import { renderSlotPills } from '../utils/formatters'
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Document, Right, Flag, Operation, CircleCheck } from '@element-plus/icons-vue'
@@ -1360,4 +1373,57 @@ Decisions and Action Items: `
   }
 }
 
+
+/* 称呼列表响应式卡片流 */
+.desktop-only {
+  display: block;
+}
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-only {
+    display: block !important;
+  }
+  .salutation-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .mobile-salutation-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  }
+  .card-relation-badge {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--color-primary, #2563eb);
+    background: #eff6ff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    width: fit-content;
+  }
+  .card-formula-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-weight: 600;
+    font-size: 14px;
+    color: #0f172a;
+  }
+  .card-desc-text {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.5;
+  }
+}
 </style>

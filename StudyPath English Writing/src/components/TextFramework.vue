@@ -315,6 +315,7 @@
   </div>
 </template>
 <script setup>
+import { renderSlotPills } from '../utils/formatters'
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import {

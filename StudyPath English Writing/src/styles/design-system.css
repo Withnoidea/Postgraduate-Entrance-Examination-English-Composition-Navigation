@@ -1,0 +1,496 @@
+/* ==========================================================================
+   Design System: Warm Minimal & Academic Focus
+   解决痛点：企业后台风、字体混排粗糙、颜色语义过载、插槽生硬、阅读宽度失衡
+   ========================================================================== */
+
+:root {
+  /* 调色盘：学术纸质暖色 + 克制三色系统 */
+  --bg-canvas: #fcfcf9;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f4f4f0;
+  --border-light: rgba(0, 0, 0, 0.07);
+  --border-medium: rgba(0, 0, 0, 0.12);
+
+  /* 3色克制系统 */
+  --color-primary: #1e293b;       /* 石墨黑/深靛蓝：核心导航与首要权重 */
+  --color-accent: #2563eb;        /* 学术蓝：交互操作与重点聚焦 */
+  --color-gold: #d97706;          /* 考研提分金：满分/高光亮点 */
+  --color-success: #059669;       /* 规范/正确/范文 */
+  --color-muted: #64748b;         /* 次级说明/中性灰 */
+  --color-text-main: #0f172a;     /* 正文字体色 */
+
+  /* 专业西文优先字体栈 */
+  --font-academic: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", 
+                   "Charter", "Georgia", "PingFang SC", "Hiragino Sans GB", 
+                   "Microsoft YaHei", sans-serif;
+  --font-serif-essay: "Charter", "Georgia", "Cambria", "Times New Roman", serif;
+
+  /* 阴影层次 */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+  --shadow-float: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  /* 黄金阅读宽度 */
+  --content-max-width: 960px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-canvas) !important;
+  color: var(--color-text-main);
+  font-family: var(--font-academic);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==================== 黄金阅读宽度约束（解决硬伤 9） ==================== */
+.content-section, .practice-content, .reference-content {
+  max-width: var(--content-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+/* ==================== 插槽式胶囊微组件（解决硬伤 6） ==================== */
+.slot-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  margin: 0 3px;
+  font-size: 0.88em;
+  font-family: var(--font-academic);
+  color: #2563eb;
+  background-color: #eff6ff;
+  border: 1px dashed #93c5fd;
+  border-radius: 6px;
+  font-weight: 500;
+  line-height: 1.4;
+  vertical-align: baseline;
+  transition: all 0.2s ease;
+}
+.slot-pill:hover {
+  background-color: #dbeafe;
+  border-color: #3b82f6;
+}
+
+/* ==================== 背诵回忆模式遮挡样式（解决硬伤 5） ==================== */
+.recall-mask-active .masked-translation {
+  filter: blur(5px);
+  user-select: none;
+  opacity: 0.35;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border-radius: 4px;
+}
+.recall-mask-active .masked-translation:hover,
+.recall-mask-active .masked-translation:active {
+  filter: blur(0);
+  opacity: 1;
+}
+
+/* ==================== 英文范文专业呼吸感排版（解决硬伤 10） ==================== */
+.english-lead, .essay-text, .framework-sentence {
+  font-family: var(--font-serif-essay) !important;
+  line-height: 1.75 !important;
+  letter-spacing: -0.01em;
+  font-size: 15px;
+  color: #1e293b;
+}
+
+/* ==================== 移动端底部高频浮动Dock（解决硬伤 1） ==================== */
+.mobile-bottom-dock {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 24px);
+  max-width: 480px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  z-index: 1999;
+}
+
+.dock-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.dock-item.active {
+  color: #2563eb;
+  background: #eff6ff;
+}
+.dock-item .dock-icon {
+  font-size: 18px;
+}
+
+/* ==================== 移动端顶部水平可滑动胶囊分段器 ==================== */
+.mobile-pill-scroll {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 8px;
+  padding: 6px 4px 10px 4px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.mobile-pill-scroll::-webkit-scrollbar {
+  display: none;
+}
+.pill-tab {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  background: #ffffff;
+  color: #475569;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.pill-tab.active {
+  background: #1e293b;
+  color: #ffffff;
+  border-color: #1e293b;
+}
+
+/* ==================== 桌面端悬浮微型大纲电梯（解决硬伤 7） ==================== */
+.floating-toc {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 10px 8px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 100;
+}
+.toc-btn {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--color-muted);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.toc-btn:hover {
+  background: #f1f5f9;
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
+   AI 批改分阶段进度条 (Progressive Stepper) & 骨架屏 (Skeleton)
+   ========================================================================== */
+
+.progressive-stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 20px;
+  gap: 20px;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  border-radius: 12px;
+}
+
+.stepper-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 520px;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+}
+
+.step-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-item.active .step-dot {
+  background: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18);
+  transform: scale(1.1);
+}
+
+.step-item.done .step-dot {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.step-label {
+  font-size: 12px;
+  color: var(--color-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.step-item.active .step-label {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.step-line {
+  flex: 1;
+  height: 2px;
+  background: #e2e8f0;
+  margin: 0 10px 18px 10px;
+  transition: background 0.4s ease;
+}
+
+.step-line.filled {
+  background: var(--color-primary);
+}
+
+.step-status-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.spinner-pulse {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid #e2e8f0;
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.status-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.status-desc {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+/* 骨架屏 */
+.report-skeleton {
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.skeleton-bar {
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-bar.title-bar {
+  height: 24px;
+  width: 40%;
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 6px 0;
+}
+
+.skeleton-card {
+  height: 64px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 移动端底部 Dock */
+.mobile-bottom-dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(56px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 999;
+}
+
+.dock-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px 10px;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+
+.dock-item.active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.dock-icon {
+  font-size: 18px;
+}
+
+/* 顶部跟手滑动胶囊分段器 */
+.quick-pill-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  scrollbar-width: none;
+}
+.quick-pill-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.quick-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.quick-pill:hover {
+  background: #f1f5f9;
+  color: var(--color-primary);
+}
+
+.quick-pill.active {
+  background: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+
+/* 沉浸背诵模式：主动回忆 (Active Recall) 译文遮挡覆盖 */
+[data-recall="hide-zh"] .np-cn,
+[data-recall="hide-zh"] .f-cn,
+[data-recall="hide-zh"] .c-cn,
+[data-recall="hide-zh"] .gs-cn,
+[data-recall="hide-zh"] .f-trans,
+[data-recall="hide-zh"] .formula-trans,
+[data-recall="hide-zh"] .step-trans,
+[data-recall="hide-zh"] .ci-trans,
+[data-recall="hide-zh"] .p2-trans-box,
+[data-recall="hide-zh"] .pattern-cn,
+[data-recall="hide-zh"] .translation-rule-card .rule-desc {
+  filter: blur(5px) opacity(0.3);
+  user-select: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+[data-recall="hide-zh"] .np-cn:hover,
+[data-recall="hide-zh"] .f-cn:hover,
+[data-recall="hide-zh"] .c-cn:hover,
+[data-recall="hide-zh"] .gs-cn:hover,
+[data-recall="hide-zh"] .f-trans:hover,
+[data-recall="hide-zh"] .formula-trans:hover,
+[data-recall="hide-zh"] .step-trans:hover,
+[data-recall="hide-zh"] .ci-trans:hover,
+[data-recall="hide-zh"] .p2-trans-box:hover,
+[data-recall="hide-zh"] .pattern-cn:hover,
+[data-recall="hide-zh"] .translation-rule-card .rule-desc:hover,
+[data-recall="hide-zh"] .np-cn:active,
+[data-recall="hide-zh"] .f-cn:active,
+[data-recall="hide-zh"] .c-cn:active,
+[data-recall="hide-zh"] .gs-cn:active,
+[data-recall="hide-zh"] .f-trans:active,
+[data-recall="hide-zh"] .formula-trans:active,
+[data-recall="hide-zh"] .step-trans:active,
+[data-recall="hide-zh"] .ci-trans:active,
+[data-recall="hide-zh"] .p2-trans-box:active,
+[data-recall="hide-zh"] .pattern-cn:active,
+[data-recall="hide-zh"] .translation-rule-card .rule-desc:active {
+  filter: none !important;
+  opacity: 1 !important;
+}

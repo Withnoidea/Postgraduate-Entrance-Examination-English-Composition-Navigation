@@ -253,11 +253,45 @@
             </div>
           </template>
 
-          <!-- 加载中动效 -->
-          <div v-if="loading" class="loading-state-box">
-            <div class="loading-spinner"></div>
-            <div class="loading-text">大模型正在按考研官方评分标准逐句研读...</div>
-            <div class="loading-subtext">正在核查语法词汇规范、段落衔接连贯性、立意主题契合度与提分亮点</div>
+          <!-- 加载中动效：分阶段步进指示器 + 骨架屏 -->
+          <div v-if="loading" class="loading-state-box progressive-stepper">
+            <div class="stepper-track">
+              <div class="step-item" :class="{ active: currentStep >= 1, done: currentStep > 1 }">
+                <div class="step-dot">1</div>
+                <div class="step-label">多模态文本提取</div>
+              </div>
+              <div class="step-line" :class="{ filled: currentStep >= 2 }"></div>
+              <div class="step-item" :class="{ active: currentStep >= 2, done: currentStep > 2 }">
+                <div class="step-dot">2</div>
+                <div class="step-label">大纲维度深度诊断</div>
+              </div>
+              <div class="step-line" :class="{ filled: currentStep >= 3 }"></div>
+              <div class="step-item" :class="{ active: currentStep >= 3 }">
+                <div class="step-dot">3</div>
+                <div class="step-label">满分范文重构</div>
+              </div>
+            </div>
+
+            <div class="step-status-card">
+              <div class="spinner-pulse"></div>
+              <div class="status-info">
+                <div class="status-title">{{ stepMessages[currentStep - 1]?.title }}</div>
+                <div class="status-desc">{{ stepMessages[currentStep - 1]?.desc }}</div>
+              </div>
+            </div>
+
+            <!-- 仿真骨架屏，抚平等待焦虑 -->
+            <div class="report-skeleton">
+              <div class="skeleton-bar title-bar"></div>
+              <div class="skeleton-grid">
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+              </div>
+              <div class="skeleton-bar text-bar" style="width: 90%;"></div>
+              <div class="skeleton-bar text-bar" style="width: 95%;"></div>
+              <div class="skeleton-bar text-bar" style="width: 75%;"></div>
+            </div>
           </div>
 
           <!-- 正式批改报告 Markdown 渲染 -->
@@ -314,6 +348,30 @@ const isDragging = ref(false)
 const imageData = ref(null)
 const imageName = ref('')
 const loading = ref(false)
+const currentStep = ref(1)
+let stepTimer = null
+const stepMessages = [
+  { title: '正在提取与解析题目与作答正文...', desc: '多模态视觉定位考题要求、文章字数与版面分布' },
+  { title: '正在依照考研大纲逐句深度诊断...', desc: '全盘核查语法规范性、用词多样性与逻辑论证衔接' },
+  { title: '正在深度重构首行缩进规范范文与提分亮点...', desc: '生成母语级考场升华表达、段落衔接词与专属学习卡' }
+]
+
+const startStepProgress = () => {
+  currentStep.value = 1
+  if (stepTimer) clearInterval(stepTimer)
+  stepTimer = setInterval(() => {
+    if (currentStep.value < 3) {
+      currentStep.value++
+    }
+  }, 4000)
+}
+
+const stopStepProgress = () => {
+  if (stepTimer) {
+    clearInterval(stepTimer)
+    stepTimer = null
+  }
+}
 const result = ref('')
 
 // 计算单词数
@@ -620,6 +678,7 @@ const startCorrection = async () => {
   }
 
   loading.value = true
+    startStepProgress()
   result.value = ''
 
   try {
@@ -632,6 +691,7 @@ const startCorrection = async () => {
     ElMessage.error(`批改请求失败：${err.message || '未知错误'}`)
   } finally {
     loading.value = false
+    stopStepProgress()
   }
 }
 

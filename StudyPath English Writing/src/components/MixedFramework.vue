@@ -250,6 +250,7 @@
   </div>
 </template>
 <script setup>
+import { renderSlotPills } from '../utils/formatters'
 import { ElMessage } from 'element-plus'
 import {
   Connection,

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" :data-recall="recallMode">
     <el-container class="main-container">
       <!-- 侧边栏 -->
       <el-aside width="280px" class="sidebar" :class="{ 'mobile-visible': sidebarVisible }">
@@ -56,6 +56,45 @@
 
       <!-- 主内容区域 -->
       <el-main class="main-content">
+        <!-- 移动端顶部横向滚动快捷分段胶囊 -->
+        <div v-if="isMobile" class="quick-pills-bar">
+          <div 
+            class="quick-pill" 
+            :class="{ active: currentSection?.id === 'app-1' }"
+            @click="handleMenuSelect('app-1')"
+          >应用文</div>
+          <div 
+            class="quick-pill" 
+            :class="{ active: currentSection?.id === 'pic-1' }"
+            @click="handleMenuSelect('pic-1')"
+          >图画</div>
+          <div 
+            class="quick-pill" 
+            :class="{ active: currentSection?.id === 'chart-1' }"
+            @click="handleMenuSelect('chart-1')"
+          >图表</div>
+          <div 
+            class="quick-pill" 
+            :class="{ active: currentSection?.id === 'text-1' }"
+            @click="handleMenuSelect('text-1')"
+          >文字</div>
+          <div 
+            class="quick-pill" 
+            :class="{ active: currentSection?.id === 'mixed-1' }"
+            @click="handleMenuSelect('mixed-1')"
+          >混合型</div>
+          <div 
+            class="quick-pill" 
+            :class="{ active: currentSection?.id === 'real-1' }"
+            @click="handleMenuSelect('real-1')"
+          >真题</div>
+          <div 
+            class="quick-pill" 
+            :class="{ active: currentSection?.id === 'corr2-1' }"
+            @click="handleMenuSelect('corr2-1')"
+          >AI批改</div>
+        </div>
+
         <!-- 移动端顶部导航栏 -->
         <div v-if="isMobile" class="mobile-header">
           <div class="mobile-logo"><el-icon class="brand-icon"><Notebook /></el-icon> 考研英语背诵</div>
@@ -82,9 +121,28 @@
               <div class="page-kicker">{{ currentChapterTitle }}</div>
               <h1>{{ currentSection.title }}</h1>
             </div>
-            <el-tag :type="getSectionTypeTag(currentSection.type)" size="large" effect="plain" round>
-              {{ getSectionTypeText(currentSection.type) }}
-            </el-tag>
+            <div class="header-action-group">
+              <div v-if="currentSection.type === 'reference'" class="recall-mode-toggle">
+                <button 
+                  class="recall-btn" 
+                  :class="{ active: recallMode === 'show-all' }" 
+                  @click="recallMode = 'show-all'"
+                >
+                  对照
+                </button>
+                <button 
+                  class="recall-btn" 
+                  :class="{ active: recallMode === 'hide-zh' }" 
+                  @click="recallMode = 'hide-zh'"
+                  title="遮挡中文译文，轻触或悬浮可显现，辅助主动回忆检验"
+                >
+                  遮挡
+                </button>
+              </div>
+              <el-tag :type="getSectionTypeTag(currentSection.type)" size="large" effect="plain" round>
+                {{ getSectionTypeText(currentSection.type) }}
+              </el-tag>
+            </div>
           </div>
 
           <!-- 练习模式 -->
@@ -649,6 +707,49 @@
           </div>
         </div>
       </el-main>
+      <!-- 移动端底部高频快捷悬浮 Dock -->
+      <div v-if="isMobile" class="mobile-bottom-dock">
+        <div 
+          class="dock-item" 
+          :class="{ active: currentSection?.id === 'app-1' }"
+          @click="handleMenuSelect('app-1')"
+        >
+          <span class="dock-icon">📝</span>
+          <span>应用文</span>
+        </div>
+        <div 
+          class="dock-item" 
+          :class="{ active: currentSection?.id === 'pic-1' || currentSection?.id === 'chart-1' }"
+          @click="handleMenuSelect('pic-1')"
+        >
+          <span class="dock-icon">📊</span>
+          <span>大作文</span>
+        </div>
+        <div 
+          class="dock-item" 
+          :class="{ active: currentSection?.id === 'real-1' }"
+          @click="handleMenuSelect('real-1')"
+        >
+          <span class="dock-icon">📖</span>
+          <span>真题库</span>
+        </div>
+        <div 
+          class="dock-item" 
+          :class="{ active: currentSection?.id === 'corr2-1' }"
+          @click="handleMenuSelect('corr2-1')"
+        >
+          <span class="dock-icon">✨</span>
+          <span>AI批改</span>
+        </div>
+        <div 
+          class="dock-item" 
+          :class="{ active: sidebarVisible }"
+          @click="toggleSidebar"
+        >
+          <span class="dock-icon">☰</span>
+          <span>目录</span>
+        </div>
+      </div>
     </el-container>
   </div>
 </template>
@@ -709,6 +810,7 @@ const switchSection = (sectionId) => {
 // 移动端控制
 const sidebarVisible = ref(false)
 const isMobile = ref(false)
+const recallMode = ref('show-all')
 
 // 练习相关
 const sentences = ref([])
